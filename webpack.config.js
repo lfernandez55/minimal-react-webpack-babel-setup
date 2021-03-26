@@ -2,7 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  entry: path.resolve(__dirname, './src/index.js'),
+  // entry: path.resolve(__dirname, './src/index.js'),
+  entry: path.resolve(__dirname, './src/javascripts/main.js'),
+  devtool: 'inline-source-map',
+  watch: true,
   module: {
     rules: [
       {
@@ -15,9 +18,14 @@ module.exports = {
   resolve: {
     extensions: ['*', '.js', '.jsx'],
   },
+  // output: {
+  //   path: path.resolve(__dirname, './dist'),
+  //   filename: 'bundle.js',
+  // },
   output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'public'),
+    filename: 'javascripts/[name].js',
+    publicPath: '/'
   },
   plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
