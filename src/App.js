@@ -1,5 +1,12 @@
-import React from 'react';
+import React from 'react'
+import SubComponent from './SubComponent'
+import { BrowserRouter as Router } from 'react-router-dom'
 
-const App = ({ title }) => <div>{title}</div>;
-
-export default App;
+export default function Main() {
+    return (
+        <Router>
+            <h1>In App.js</h1>
+            <SubComponent />
+        </Router>
+    )
+}
