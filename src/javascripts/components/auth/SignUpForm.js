@@ -47,13 +47,13 @@ export default function SignUpForm(){
             }).then((response) => {
                     toast('Successfully signed up', {
                         onClose: () =>{
-                            document.location = "/movies"
+                            document.location = "/"
                         }
                     })
             }).catch((error)=>{
                 toast('Failed to sign up', {
                     onClose: () =>{
-                        document.location = "/movies"
+                        document.location = "/"
                     }
                 })
             })
