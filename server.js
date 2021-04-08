@@ -1,8 +1,29 @@
 let express = require('express')
 let path = require('path')
+import mongoose from 'mongoose'
+var cookieParser = require('cookie-parser');
+import { APP_TITLE } from './src/javascripts/config/vars'
+
+//onemanydb
+mongoose.connect("mongodb://localhost:27017/topmovies",{
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+},()=>{
+  console.log("Connected")
+})
 
 //create the web server
 export let app = express()
+
+//set a global var from 
+app.locals.title = app.locals.appTitle = APP_TITLE
+
+app.use(cookieParser());
+
+app.use('/',function(req, res, next){
+    console.log(req.url);
+    next();
+ });
 
 app.set('views', path.join(__dirname, 'src', 'javascripts', 'views'))
 
@@ -16,6 +37,13 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 // set up a place for static files 7:07
 app.use(express.static(path.join(__dirname, 'public')))
+
+// authentication
+import passport from 'passport'
+import {strategy} from './src/javascripts/config/passport'
+passport.use(strategy)
+app.use(passport.initialize())
+
 
 // Routing
 import {configureRoutes} from './src/javascripts/config/routes'

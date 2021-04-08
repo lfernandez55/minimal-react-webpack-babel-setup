@@ -1,6 +1,6 @@
 # minimal-react-plus-express
 
-This is built on top of minimal-react-webpack-babel-setup see (https://www.robinwieruch.de/minimal-react-webpack-babel-setup/).
+This is built on top of minimal-react-webpack-babel-setup and express branch see (https://www.robinwieruch.de/minimal-react-webpack-babel-setup/).
 
 ## Features
 
@@ -10,6 +10,7 @@ This is built on top of minimal-react-webpack-babel-setup see (https://www.robin
 - Hot Module Replacement
 - Express
 - This setup doesn't compile css thereby keeping things simpler. . . .
+- Passport Authentication
 
 ## Installation
 

@@ -10,11 +10,26 @@ import ReactDOM from 'react-dom'
 
 import App from './components/App'
 import Alt from './components/Alt'
+import SignUpForm from './components/auth/SignUpForm'
+import SignInForm from './components/auth/SignInForm'
+import SignOut from './components/auth/SignOut'
 
 if(document.getElementById('main')){
     ReactDOM.render(<App />, document.getElementById('main'))
-}else{
+}else if(document.getElementById('alt')){
     ReactDOM.render(<Alt />, document.getElementById('alt'))
+}else if(document.getElementById('signin')){
+    ReactDOM.render(<SignInForm />, document.getElementById('signin'))
+} else if(document.getElementById('signup')){
+    ReactDOM.render(<SignUpForm />, document.getElementById('signup'))
 }
 
+if(document.querySelector('#_sign_user_out')){
+    document.querySelector('#_sign_user_out').onclick = (e) => {
+        let el = document.createElement('div')
+        document.body.appendChild(el)
+        ReactDOM.render(<SignOut/>, el)
+    }
+}
 
+module.hot.accept() //see https://www.robinwieruch.de/minimal-react-webpack-babel-setup

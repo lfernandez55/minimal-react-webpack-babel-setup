@@ -1,1 +1,3 @@
 node_modules/
+public/*.hot-update.json
+public/*.hot-update.js
