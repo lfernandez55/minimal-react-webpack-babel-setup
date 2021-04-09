@@ -1,5 +1,7 @@
 # minimal-react-plus-express
 
+## branch: authentication-plus-authorization/users-and-roles
+
 This is built on top of minimal-react-webpack-babel-setup and express branch see (https://www.robinwieruch.de/minimal-react-webpack-babel-setup/).
 
 ## Features
