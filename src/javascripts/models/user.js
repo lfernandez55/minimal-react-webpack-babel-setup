@@ -32,7 +32,13 @@ let userSchema = new Schema({
         trim: true
     },
     hash: String,
-    salt: String
+    salt: String,
+    roles: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Role"
+        }
+    ]
 })
 
 // for explantation see 
