@@ -10,16 +10,16 @@ export default function Main() {
             in app.js....
                 <Switch>
                     <Route exact path="/">
-                        <h1>Dashboard</h1>
+                        <h1>Dashboardhhh</h1>
                         <p>What would you like to do?</p>
-                        <Link to="/admin"><button class="btn btn-primary"  >Use Admin Tools</button> </Link>
-                        <Link to="/other"><button class="btn btn-primary"  >Use Other Tools</button> </Link> 
+                        <Link to="/admin"><button className="btn btn-primary"  >Use Admin Tools</button> </Link>
+                        <Link to="/other"><button className="btn btn-primary"  >Use Other Tools</button> </Link> 
                     </Route>
                     <Route path="/admin">
                         <Admin/>
                     </Route>
                     <Route path="/other">
-                        <h1>Other Toolszzzzzze</h1>
+                        <h1>Other Tools</h1>
                     </Route>
                 </Switch>      
             </Router>
