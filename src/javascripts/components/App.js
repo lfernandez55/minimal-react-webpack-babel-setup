@@ -10,7 +10,7 @@ export default function Main() {
             in app.js....
                 <Switch>
                     <Route exact path="/">
-                        <h1>Dashboardhhh</h1>
+                        <h1>Dashboardqqq</h1>
                         <p>What would you like to do?</p>
                         <Link to="/admin"><button className="btn btn-primary"  >Use Admin Tools</button> </Link>
                         <Link to="/other"><button className="btn btn-primary"  >Use Other Tools</button> </Link> 
