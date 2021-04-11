@@ -1,5 +1,5 @@
 import express from 'express'
-import {indexPage, altPage, signInPage, signUpPage, notAuthorizedPage} from '../controllers/index'
+import {indexPage, dashBoardPage, signInPage, signUpPage, notAuthorizedPage} from '../controllers/index'
 import {registerUserAPI, signUserInAPI, allUsersAPI, deleteUserAPI} from '../controllers/users'
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from './vars'
@@ -39,7 +39,7 @@ export function configureRoutes(app){
 
 
     router.get('/', indexPage)
-    router.get('/alt', requireSignIn, altPage)
+    router.get('/dashboard', requireSignIn, dashBoardPage)
 
     router.get('/signup', signUpPage)  
     router.get('/signin', signInPage) 

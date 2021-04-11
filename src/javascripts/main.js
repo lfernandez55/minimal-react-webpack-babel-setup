@@ -9,15 +9,15 @@ import ReactDOM from 'react-dom'
 
 
 import App from './components/App'
-import Alt from './components/Alt'
+import DashBoard from './components/DashBoard'
 import SignUpForm from './components/auth/SignUpForm'
 import SignInForm from './components/auth/SignInForm'
 import SignOut from './components/auth/SignOut'
 
 if(document.getElementById('main')){
     ReactDOM.render(<App />, document.getElementById('main'))
-}else if(document.getElementById('alt')){
-    ReactDOM.render(<Alt />, document.getElementById('alt'))
+}else if(document.getElementById('dashboard')){
+    ReactDOM.render(<DashBoard />, document.getElementById('dashboard'))
 }else if(document.getElementById('signin')){
     ReactDOM.render(<SignInForm />, document.getElementById('signin'))
 } else if(document.getElementById('signup')){

@@ -63,3 +63,7 @@ h6{
     cursor: pointer;
     text-decoration: none;
 }
+
+a{
+    text-decoration: none;
+}

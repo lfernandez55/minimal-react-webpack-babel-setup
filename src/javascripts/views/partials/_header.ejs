@@ -1,11 +1,10 @@
 <header>
-    <div><a href="/">Load App.js component</a> |  <a href="/alt">Load Alt.js component (for logged in users only)</a></div>
-    <ul>
         <% if (signedIn) { %>
-          <div><a href="#" id="_sign_user_out">Log Out</a></div>
+            <div><a href="/">Home</a>  | <a href="/dashboard">Dashboard</a></div>
+            <div><a href="#" id="_sign_user_out">Log Out</a></div>
         <% } else { %>
+            <div><a href="/">Home</a></div>
             <div><a href="/signup">Register</a> <a href="/signin">Log In</a></div>
          <% } %> 
-      </ul>
-    
+
 </header>
