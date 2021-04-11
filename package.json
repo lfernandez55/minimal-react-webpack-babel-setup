@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --config ./webpack.config.js --mode development",
+    "buildslow": "webpack --config ./webpack.config.js --mode production",
     "start": "webpack serve --config ./webpack.config.js --mode development",
     "server": "nodemon server.js --exec babel-node",
     "test": "echo \"No test specified\" && exit 0"
   },
   "scriptsComments": {
-    "build": "--mode production compiles much more slowly than --mode development"
+    "build": "build vs buildslow. build is quicker but compiles to four times size of buildslow"
   },
   "keywords": [],
   "author": "",

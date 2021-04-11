@@ -1,6 +1,6 @@
 import express from 'express'
 import {indexPage, altPage, signInPage, signUpPage, notAuthorizedPage} from '../controllers/index'
-import {registerUserAPI, signUserInAPI} from '../controllers/users'
+import {registerUserAPI, signUserInAPI, allUsersAPI, deleteUserAPI} from '../controllers/users'
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from './vars'
 
@@ -48,6 +48,9 @@ export function configureRoutes(app){
     //Users
     router.post('/api/users/register', registerUserAPI)
     router.post('/api/users/signin', signUserInAPI)
+    router.get('/api/users', allUsersAPI)
+    // router.delete('/api/users/:id', requireSignIn, deleteUserAPI) //this route requires authorization
+    router.delete('/api/users/:id',requireSignIn, deleteUserAPI) //this route requires authorization
 
 
     app.use('/', router)

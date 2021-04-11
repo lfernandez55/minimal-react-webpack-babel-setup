@@ -52,3 +52,14 @@ footer{
 h6{
     font-size: .75em;
 }
+
+.table-header{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.link{
+    color: blue;
+    cursor: pointer;
+    text-decoration: none;
+}
