@@ -24,6 +24,31 @@ export const registerUserAPI = (req, res, next) => {
 
 }
 
+//the first api call that supports registration....
+export const createUserAPI = (req, res, next) => {
+
+    let user = new User
+    user.firstName = req.body.firstName
+    user.lastName = req.body.lastName
+    user.email = req.body.email
+    user.username = req.body.username
+    user.setPassword(req.body.password)  
+
+    user.save(err => {
+        if (err){
+            res.json({success: false, message: "Undable to register user"})
+            console.log(err)
+            res.end()
+        }else{
+            console.log("USER SAVED!!! --------------------")
+            res.end()
+        }
+    })
+
+}
+
+
+
 export const signUserInAPI = (req,res, next) => {
     passport.authenticate('local', (err,user, info) => {
         if(err){

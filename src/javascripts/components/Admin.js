@@ -31,6 +31,9 @@ export default function Admin() {
                 <Route exact path="/admin/users">
                     <Users />
                 </Route>
+                <Route exact path="/admin/users/new">
+                    <UserForm />
+                </Route>
                 <Route exact path="/admin/users/:uid/edit">
                     <UserForm />
                 </Route>

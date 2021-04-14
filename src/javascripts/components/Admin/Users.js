@@ -93,7 +93,7 @@ export default function Users() {
         <div className="react-stuff users-component">
             <h1>Users</h1>
             <div className="table-header">
-                <Link to="/admin/userform"><button className="btn btn-primary"  >Create User</button> </Link>
+                <Link to="/admin/users/new"><button className="btn btn-primary"  >Create User</button> </Link>
 
             </div>
             <table className="table">

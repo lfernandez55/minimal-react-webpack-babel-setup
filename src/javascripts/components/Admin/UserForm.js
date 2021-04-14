@@ -83,8 +83,12 @@ export default function UserForm(){
     }
     )
 
-
-
+    let title = ""
+    if (is_new){
+        title = "Create Userx"
+    }else{
+        title = "Edit Userx"
+    }
 
 
 
@@ -92,7 +96,7 @@ export default function UserForm(){
             <div className="react-stuff form">
                 
             <form onSubmit={handleSubmit}>
-               <h1>Create/Edit User</h1>
+               <h1>{title}</h1>
                <div className="field">
                 <label htmlFor="firstName">First Name</label>
                 <div className="control">
