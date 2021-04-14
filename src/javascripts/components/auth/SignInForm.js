@@ -44,7 +44,7 @@ export default function SignInForm(){
             })
             .then((response) => {
                     toast('Successfully signed in', {
-                        autoClose: 2000,
+                        autoClose: 1000,
                         onClose: () =>{
                             document.location = "/"
                         }
@@ -87,8 +87,8 @@ export default function SignInForm(){
                <div className="field">
                 <label ></label>
                 <div className="control">
-                    <button className="primary" type="submit">Submit</button>
-                    <button className="primary" onClick={() => document.location="/" }>Cancel</button>
+                    <button className="btn btn-primary" type="submit">Submit</button>
+                    <button className="btn btn-primary" onClick={() => document.location="/" }>Cancel</button>
                 </div>
                </div>
 

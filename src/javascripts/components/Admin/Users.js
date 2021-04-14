@@ -1,8 +1,22 @@
-import React, {useState, createContext, useEffect} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
+import { AppContext } from '../DashBoard'
+
 import { Switch, Route, Link, Redirect, useHistory } from 'react-router-dom'
 
 export default function Users() {
+    let { authenticated, setAuthenticated, users, setUsers} = useContext(AppContext)
+    // The following test isn't strictly needed since authentication is already checked when the user
+    // requests the dashboard prior to getting here.
+    // But it doesn't hurt to have the extra test in case the authentication test on the dashboard is
+    // compromised.
+    if(!authenticated){
+        document.location = '/signin'
+        return <></>
+    }
 
+    let history = useHistory();
+    console.log("DEBUGGGGGGGGGGGGGGGGGGGGG")
+    console.log(users)
     // useEffect(() => {
         // if(!movies){
     //     fetch('/api/users', {credentials: 'same-origin'})
@@ -29,7 +43,8 @@ export default function Users() {
     //   // },[])
     //   //   }
     //   })
-      const [users, setUsers] = useState([]);
+      // the below used to be used.  setting this instead in dashboard and sharing via context
+      //const [users, setUsers] = useState([]);
       const [DBUpdated, setDBUpdated] = useState(false);
     
       const deleteMe = (param) => {
@@ -75,7 +90,7 @@ export default function Users() {
 
 
     return (
-        <div className="react-stuff">
+        <div className="react-stuff users-component">
             <h1>Users</h1>
             <div className="table-header">
                 <Link to="/admin/userform"><button className="btn btn-primary"  >Create User</button> </Link>
@@ -85,13 +100,13 @@ export default function Users() {
                 <thead>
                 <tr >
                         <td>_id</td>
-                        <td>fname</td>
-                        <td>laname</td>
-                        <td>username</td>
-                        <td>email</td>
-                        <td>roles</td>
-                        <td>edit</td>
-                        <td>delete</td>
+                        <td>First Name</td>
+                        <td>Last name</td>
+                        <td>Username</td>
+                        <td>Email</td>
+                        <td>Roles</td>
+                        <td>Edit</td>
+                        <td>Delete</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -106,8 +121,8 @@ export default function Users() {
                                     <td>{e.username}</td>
                                     <td>{e.email}</td>
                                     <td>roles</td>
-                                    <td><button className="primary" onClick={() => history.push(`/project/${e._id}`)}>Edit</button>    </td>
-                                    <td> <a className="link" onClick={()=>{ deleteMe(e._id) }} >Delete</a>  </td>
+                                    <td><a className="link" onClick={() => history.push(`users/${e._id}/edit`)}>Edit</a></td>
+                                    <td><a className="link" onClick={()=>{ deleteMe(e._id) }} >Delete</a></td>
                                 </tr>
         
                             )

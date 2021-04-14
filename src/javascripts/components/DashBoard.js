@@ -1,14 +1,21 @@
-import React from 'react'
+import React, {useState, createContext } from 'react'
 import {Switch, Route, Link, Redirect, useHistory} from 'react-router-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
 import Admin from './Admin'
+import {useCookies} from 'react-cookie'
+
+export const AppContext = createContext()
 
 export default function DashBoard() {
 
+    const [cookies, setCookie, removeCookie] = useCookies(['token'])
+    let [authenticated, setAuthenticated] = useState(cookies.token !== undefined)
+    let [users, setUsers ] = useState([])
     // todo here:  fetch role and add to userRole context.  use it to display or hide buttons below
 
 
     return (
+        <AppContext.Provider value={{authenticated, setAuthenticated, users, setUsers}}>
         <div className="react-stuff">
             <Router>
                 <Switch>
@@ -27,6 +34,7 @@ export default function DashBoard() {
                 </Switch>      
             </Router>
         </div >
+        </AppContext.Provider>
     )
 }
 

@@ -67,3 +67,17 @@ h6{
 a{
     text-decoration: none;
 }
+
+.users-component, .roles-component{
+    background-color: white;
+    padding: 20px;
+}
+
+/* Caution this overrides a Bootstrap class */
+.btn-primary{
+    margin-right: 3px;
+}
+
+.help{
+    color: red;
+}

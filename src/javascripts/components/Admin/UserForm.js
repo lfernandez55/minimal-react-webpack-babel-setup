@@ -1,0 +1,179 @@
+import React, { useContext, useState } from 'react'
+import { AppContext } from '../DashBoard'
+import { useHistory, useParams } from 'react-router-dom'
+import { useFormik } from 'formik'
+import { toast } from 'react-toastify'
+import * as yup from 'yup'
+toast.configure()
+
+export function Vhelp({message}){
+    return(
+        <p className="help">{message}</p>
+    )
+
+}
+
+const validationSchema = yup.object({
+
+    firstname: yup.string().required(),
+    lastname: yup.string().required(),
+    email: yup.string().email().required(),
+    username: yup.string().required(),
+    password: yup.string().required()
+})
+
+export default function UserForm(){
+    let { authenticated, setAuthenticated, users, setUsers} = useContext(AppContext)
+
+    let {uid} = useParams()
+
+    if(!authenticated){
+        document.location = '/signin'
+        return <></>
+    }
+
+    const history = useHistory()
+
+    console.log(uid)
+    console.log(users)
+    let user = uid ? users.find(u => u._id == uid) : {}
+    // we set this to "dummy" if the server see's
+    // this password than it doesn't change it
+    user.password = "dummy"
+    console.log(user)
+
+    let is_new = uid === undefined
+
+    // const formik = useFormik({
+    //     initialValues: is_new? {
+    //         firstname: "",
+    //         lastname: "",
+    //         email: "",
+    //         username: "",
+    //         // password: ""
+    //     } : {...user},
+    //     validationSchema: Yup.object({
+    //       full_name: Yup.string()
+    //         .min(2, "Mininum 2 characters")
+    //         .max(15, "Maximum 15 characters")
+    //         .required("Required!"),
+    //       email: Yup.string()
+    //         .email("Invalid email format")
+    //         .required("Required!"),
+    //       password: Yup.string()
+    //         .min(8, "Minimum 8 characters")
+    //         .required("Required!"),
+    //       confirm_password: Yup.string()
+    //         .oneOf([Yup.ref("password")], "Password's not match")
+    //         .required("Required!")
+    //     }),
+    //     onSubmit: values => {
+    //       alert(JSON.stringify(values, null, 2));
+    //     }
+    //   });
+
+
+    let {handleSubmit, handleChange, values, errors, setFieldValue } = useFormik({
+        initialValues: is_new? {
+            firstname: "",
+            lastname: "",
+            email: "",
+            username: "",
+            password: "asdf"
+        } : {...user},
+        validationSchema,
+
+        onSubmit(values){
+            console.log("IN FETCH...........................")
+            fetch(`api/users${is_new ? '' : '/' + user._id}`, {
+                method: is_new ? 'POST' :"PUT",
+                headers: {'Content-Type':'application/json'},
+                credentials: 'same-origin',
+                body:  JSON.stringify(values)
+            }).then((response) => {
+                    toast('Successfully submitted', {
+                        autoClose: 500,
+                        onClose: () =>{
+                            //document.location = "admin/users"
+                            history.push("/admin/users")
+                        }
+                    })
+            }).catch((error)=>{
+                toast('Failed to submit', {
+                    autoClose: 500,
+                    onClose: () =>{
+                        //document.location = "admin/users"
+                        history.push("/admin/users")
+                    }
+                })
+            })
+
+        }
+    }
+    )
+
+
+
+
+
+
+    return(
+            <div className="react-stuff form">
+                
+            <form onSubmit={handleSubmit}>
+               <h1>Create/Edit User</h1>
+               <div className="field">
+                <label htmlFor="firstName">First Name</label>
+                <div className="control">
+                    <input type="text" name="firstname" value={values.firstname} onChange={ handleChange }    />
+                    <Vhelp message={errors.firstname}/>
+                </div>
+               </div>
+
+               <div className="field">
+                <label htmlFor="lastName">Last Name</label>
+                <div className="control">
+                    <input type="text" name="lastname" value={values.lastname} onChange={ handleChange }    />
+                    <Vhelp message={errors.lastname}/>
+                </div>
+               </div>
+
+               <div className="field">
+                <label htmlFor="email">Email</label>
+                <div className="control">
+                    <input type="text" name="email" value={values.email} onChange={ handleChange  }    />
+                    <Vhelp message={errors.email}/>
+                </div>
+               </div>
+
+               <div className="field">
+                <label htmlFor="username">Username</label>
+                <div className="control">
+                    <input type="text" name="username" value={values.username} onChange={ handleChange }    />
+                    <Vhelp message={errors.username}/>
+                </div>
+               </div>
+
+               <div className="field">
+                <label htmlFor="password">Password</label>
+                <div className="control">
+                    <input type="password" name="password" value={values.password} onChange={ handleChange }    />
+                    <Vhelp message={errors.password}/>
+                </div>
+               </div>
+
+               <div className="field">
+                <label ></label>
+                <div className="control">
+                    <button className="btn btn-primary" type="submit">Submit</button>
+                    <button className="btn btn-primary" onClick={() => document.location="/" }>Cancel</button>
+                </div>
+               </div>
+
+
+           </form>
+           </div>
+    )
+
+
+}

@@ -1,6 +1,6 @@
 import express from 'express'
 import {indexPage, dashBoardPage, signInPage, signUpPage, notAuthorizedPage} from '../controllers/index'
-import {registerUserAPI, signUserInAPI, allUsersAPI, deleteUserAPI} from '../controllers/users'
+import {registerUserAPI, signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI} from '../controllers/users'
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from './vars'
 
@@ -22,10 +22,12 @@ function isSignedIn(req){
 function requireSignIn(req, res, next){
     if(isSignedIn(req)){
         next()
-    }else{
-        res.redirect('/notauthorized')
-        // res.status(401)
-        // res.end()
+    }else{   
+        res.redirect('/signin')
+        // one could redirect to /notauthorized as below but
+        // since this is really notauthenticated the signin page is
+        // where to direct the user
+        //res.redirect('/notauthorized')
     }    
 
 }
@@ -39,7 +41,8 @@ export function configureRoutes(app){
 
 
     router.get('/', indexPage)
-    router.get('/dashboard', requireSignIn, dashBoardPage)
+    router.get('/dashboard', requireSignIn, dashBoardPage) 
+
 
     router.get('/signup', signUpPage)  
     router.get('/signin', signInPage) 
@@ -49,7 +52,7 @@ export function configureRoutes(app){
     router.post('/api/users/register', registerUserAPI)
     router.post('/api/users/signin', signUserInAPI)
     router.get('/api/users', allUsersAPI)
-    // router.delete('/api/users/:id', requireSignIn, deleteUserAPI) //this route requires authorization
+    router.put('/api/users/:id', requireSignIn, updateUserAPI)  //this route requires authorization
     router.delete('/api/users/:id',requireSignIn, deleteUserAPI) //this route requires authorization
 
 

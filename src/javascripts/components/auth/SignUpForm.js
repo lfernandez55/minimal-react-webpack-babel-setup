@@ -46,6 +46,7 @@ export default function SignUpForm(){
                 return response.text()
             }).then((response) => {
                     toast('Successfully signed up', {
+                        autoClose: 1000,
                         onClose: () =>{
                             document.location = "/"
                         }
@@ -67,7 +68,7 @@ export default function SignUpForm(){
     return(
             <div className="react-stuff form">
             <form onSubmit={handleSubmit}>
-               <h1>Sign Upxx</h1>
+               <h1>Sign Up</h1>
                <div className="field">
                 <label htmlFor="firstName">First Name</label>
                 <div className="control">
@@ -111,8 +112,8 @@ export default function SignUpForm(){
                <div className="field">
                 <label ></label>
                 <div className="control">
-                    <button className="primary" type="submit">Submit</button>
-                    <button className="primary" onClick={() => document.location="/" }>Cancel</button>
+                    <button className="btn btn-primary" type="submit">Submit</button>
+                    <button className="btn btn-primary" onClick={() => document.location="/" }>Cancel</button>
                 </div>
                </div>
 
