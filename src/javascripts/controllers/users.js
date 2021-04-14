@@ -5,8 +5,8 @@ import {User} from '../models/user'
 export const registerUserAPI = (req, res, next) => {
 
     let user = new User
-    user.firstname = req.body.firstName
-    user.lastname = req.body.lastName
+    user.firstName = req.body.firstName
+    user.lastName = req.body.lastName
     user.email = req.body.email
     user.username = req.body.username
     user.setPassword(req.body.password)  
@@ -59,8 +59,8 @@ export const allUsersAPI = (req, res, next) => {
 }
 
 // let user = new User
-// user.firstname = req.body.firstName
-// user.lastname = req.body.lastName
+// user.firstName = req.body.firstName
+// user.lastName = req.body.lastName
 // user.email = req.body.email
 // user.username = req.body.username
 // user.setPassword(req.body.password)  
@@ -71,7 +71,7 @@ export const allUsersAPI = (req, res, next) => {
 // export const updateUserAPI = (req, res, next) => {
 //     console.log("DEBUG UPDATE PROJECT")
 
-//     User.updateOne({_id:req.params.id},{firstname: req.body.firstname,lastname: req.body.lastname,email: req.body.email,username: req.body.username}, (err, doc) => {
+//     User.updateOne({_id:req.params.id},{firstName: req.body.firstName,lastName: req.body.lastName,email: req.body.email,username: req.body.username}, (err, doc) => {
 //         if (err) {
 //             res.json({success: false, message: "PUT Query failed"})
 //             res.end()

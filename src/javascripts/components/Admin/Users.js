@@ -116,8 +116,8 @@ export default function Users() {
                             return (
                                 <tr key={i}>
                                     <td>{e._id}</td>
-                                    <td>{e.firstname}</td>
-                                    <td>{e.lastname}</td>
+                                    <td>{e.firstName}</td>
+                                    <td>{e.lastName}</td>
                                     <td>{e.username}</td>
                                     <td>{e.email}</td>
                                     <td>roles</td>

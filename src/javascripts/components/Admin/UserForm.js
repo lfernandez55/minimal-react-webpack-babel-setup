@@ -15,8 +15,8 @@ export function Vhelp({message}){
 
 const validationSchema = yup.object({
 
-    firstname: yup.string().required(),
-    lastname: yup.string().required(),
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
     email: yup.string().email().required(),
     username: yup.string().required(),
     password: yup.string().required()
@@ -44,39 +44,10 @@ export default function UserForm(){
 
     let is_new = uid === undefined
 
-    // const formik = useFormik({
-    //     initialValues: is_new? {
-    //         firstname: "",
-    //         lastname: "",
-    //         email: "",
-    //         username: "",
-    //         // password: ""
-    //     } : {...user},
-    //     validationSchema: Yup.object({
-    //       full_name: Yup.string()
-    //         .min(2, "Mininum 2 characters")
-    //         .max(15, "Maximum 15 characters")
-    //         .required("Required!"),
-    //       email: Yup.string()
-    //         .email("Invalid email format")
-    //         .required("Required!"),
-    //       password: Yup.string()
-    //         .min(8, "Minimum 8 characters")
-    //         .required("Required!"),
-    //       confirm_password: Yup.string()
-    //         .oneOf([Yup.ref("password")], "Password's not match")
-    //         .required("Required!")
-    //     }),
-    //     onSubmit: values => {
-    //       alert(JSON.stringify(values, null, 2));
-    //     }
-    //   });
-
-
     let {handleSubmit, handleChange, values, errors, setFieldValue } = useFormik({
         initialValues: is_new? {
-            firstname: "",
-            lastname: "",
+            firstName: "",
+            lastName: "",
             email: "",
             username: "",
             password: "asdf"
@@ -125,16 +96,16 @@ export default function UserForm(){
                <div className="field">
                 <label htmlFor="firstName">First Name</label>
                 <div className="control">
-                    <input type="text" name="firstname" value={values.firstname} onChange={ handleChange }    />
-                    <Vhelp message={errors.firstname}/>
+                    <input type="text" name="firstName" value={values.firstName} onChange={ handleChange }    />
+                    <Vhelp message={errors.firstName}/>
                 </div>
                </div>
 
                <div className="field">
                 <label htmlFor="lastName">Last Name</label>
                 <div className="control">
-                    <input type="text" name="lastname" value={values.lastname} onChange={ handleChange }    />
-                    <Vhelp message={errors.lastname}/>
+                    <input type="text" name="lastName" value={values.lastName} onChange={ handleChange }    />
+                    <Vhelp message={errors.lastName}/>
                 </div>
                </div>
 
