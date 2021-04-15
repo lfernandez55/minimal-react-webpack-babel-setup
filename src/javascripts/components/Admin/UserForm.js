@@ -50,7 +50,7 @@ export default function UserForm(){
             lastName: "",
             email: "",
             username: "",
-            password: "asdf"
+            password: ""
         } : {...user},
         validationSchema,
 
@@ -61,23 +61,29 @@ export default function UserForm(){
                 headers: {'Content-Type':'application/json'},
                 credentials: 'same-origin',
                 body:  JSON.stringify(values)
-            }).then((response) => {
-                    toast('Successfully submitted', {
-                        autoClose: 500,
+                }).then((response) => {
+                    // response.ok checks to see if the response is in the 200 to 300 range
+                    // Duplicate account violations are NOT returning 200 range errors by design.
+                    // Instead the dupe problem is sent in the response.message and displayed in the toast 
+                    if(!response.ok) throw Error(response)
+                    return response.json()
+                }).then((response) => {
+                        toast(response.message, {
+                            autoClose: 3000,
+                            onClose: () =>{
+                                history.push("/admin/users")
+                            }
+                        })
+                }).catch((error)=>{
+                    toast("Sign up failed", {
                         onClose: () =>{
-                            //document.location = "admin/users"
                             history.push("/admin/users")
                         }
                     })
-            }).catch((error)=>{
-                toast('Failed to submit', {
-                    autoClose: 500,
-                    onClose: () =>{
-                        //document.location = "admin/users"
-                        history.push("/admin/users")
-                    }
                 })
-            })
+
+
+
 
         }
     }

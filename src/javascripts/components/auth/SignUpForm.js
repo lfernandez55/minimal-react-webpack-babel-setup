@@ -24,6 +24,14 @@ const validationSchema = yup.object({
 
 export default function SignUpForm(){
 
+    function dev(){
+        values.firstName= "aa",
+        values.lastName= "aa",
+        values.email= "aa@aa.edu",
+        values.username= "aa",
+        values.password= "aa"
+    }
+
     let {handleSubmit, handleChange, values, errors, setFieldValue } = useFormik({
         initialValues: {
             firstName: "",
@@ -42,17 +50,20 @@ export default function SignUpForm(){
                 credentials: 'same-origin',
                 body:  JSON.stringify(values),
             }).then((response) => {
-                if(!response.ok) throw Error('Failed to sign in')
-                return response.text()
+                // response.ok checks to see if the response is in the 200 to 300 range
+                // Duplicate account violations are NOT returning 200 range errors by design.
+                // Instead the dupe problem is sent in the response.message and displayed in the toast 
+                if(!response.ok) throw Error(response)
+                return response.json()
             }).then((response) => {
-                    toast('Successfully signed up', {
-                        autoClose: 1000,
+                    toast(response.message, {
+                        autoClose: 3000,
                         onClose: () =>{
                             document.location = "/"
                         }
                     })
             }).catch((error)=>{
-                toast('Failed to sign up', {
+                toast("Sign up failed", {
                     onClose: () =>{
                         document.location = "/"
                     }
@@ -114,6 +125,7 @@ export default function SignUpForm(){
                 <div className="control">
                     <button className="btn btn-primary" type="submit">Submit</button>
                     <button className="btn btn-primary" onClick={() => document.location="/" }>Cancel</button>
+                    <button className="btn btn-primary" onClick={ dev }>Dev</button>
                 </div>
                </div>
 

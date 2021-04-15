@@ -1,6 +1,6 @@
 import express from 'express'
 import {indexPage, dashBoardPage, signInPage, signUpPage, notAuthorizedPage} from '../controllers/index'
-import {registerUserAPI, signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI} from '../controllers/users'
+import {signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI} from '../controllers/users'
 import {createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI} from '../controllers/roles'
 
 import jwt from 'jsonwebtoken'
@@ -51,7 +51,7 @@ export function configureRoutes(app){
     router.get('/notauthorized', notAuthorizedPage)
 
     // Users
-    router.post('/api/users/register', registerUserAPI)
+    router.post('/api/users/register', createUserAPI)
     router.post('/api/users/signin', signUserInAPI)
     router.get('/api/users', allUsersAPI)
     router.post('/api/users', requireSignIn, createUserAPI)  //this route requires authorization

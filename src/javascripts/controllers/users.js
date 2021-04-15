@@ -2,29 +2,6 @@ import passport from 'passport'
 import {User} from '../models/user'
 
 //the first api call that supports registration....
-export const registerUserAPI = (req, res, next) => {
-
-    let user = new User
-    user.firstName = req.body.firstName
-    user.lastName = req.body.lastName
-    user.email = req.body.email
-    user.username = req.body.username
-    user.setPassword(req.body.password)  
-
-    user.save(err => {
-        if (err){
-            res.json({success: false, message: "Undable to register user"})
-            console.log(err)
-            res.end()
-        }else{
-            console.log("USER SAVED!!! --------------------")
-            res.end()
-        }
-    })
-
-}
-
-//the first api call that supports registration....
 export const createUserAPI = (req, res, next) => {
 
     let user = new User
@@ -36,18 +13,20 @@ export const createUserAPI = (req, res, next) => {
 
     user.save(err => {
         if (err){
-            res.json({success: false, message: "Undable to register user"})
-            console.log(err)
+            // err.code indicates that a duplicate key violation occurred
+            if (err.code == 11000){
+                res.status(200).json({success: false, message: "Most likely you are trying to create an account with a username or email that already exists. Try a different email and/or username."})
+            } else {
+                res.status(400).json({success: false, message: err})
+            }
             res.end()
         }else{
-            console.log("USER SAVED!!! --------------------")
+            res.status(200).json({success: true, message: "Account creation successful"})
             res.end()
         }
     })
 
 }
-
-
 
 export const signUserInAPI = (req,res, next) => {
     passport.authenticate('local', (err,user, info) => {
@@ -83,15 +62,6 @@ export const allUsersAPI = (req, res, next) => {
     })
 }
 
-// let user = new User
-// user.firstName = req.body.firstName
-// user.lastName = req.body.lastName
-// user.email = req.body.email
-// user.username = req.body.username
-// user.setPassword(req.body.password)  
-
-
-
 // update user api
 // export const updateUserAPI = (req, res, next) => {
 //     console.log("DEBUG UPDATE PROJECT")
@@ -121,10 +91,16 @@ export const updateUserAPI = (req, res, next) => {
                 user.setPassword(req.body.password) 
             }
             user.save((err)=> {
-                if(err){
-                    res.json({success: false, message: "User update failed"})
+                if (err){
+                    // err.code indicates that a duplicate key violation occurred
+                    if (err.code == 11000){
+                        res.status(200).json({success: false, message: "Most likely you are trying to update an account with a username or email that already exists. Try a different email and/or username."})
+                    } else {
+                        res.status(400).json({success: false, message: err})
+                    }
                     res.end()
                 }else{
+                    res.status(200).json({success: true, message: "Account update successful"})
                     res.end()
                 }
             })
