@@ -11,11 +11,12 @@ export default function DashBoard() {
     const [cookies, setCookie, removeCookie] = useCookies(['token'])
     let [authenticated, setAuthenticated] = useState(cookies.token !== undefined)
     let [users, setUsers ] = useState([])
+    let [roles, setRoles ] = useState([])
     // todo here:  fetch role and add to userRole context.  use it to display or hide buttons below
 
 
     return (
-        <AppContext.Provider value={{authenticated, setAuthenticated, users, setUsers}}>
+        <AppContext.Provider value={{authenticated, setAuthenticated, users, setUsers, roles, setRoles}}>
         <div className="react-stuff">
             <Router>
                 <Switch>

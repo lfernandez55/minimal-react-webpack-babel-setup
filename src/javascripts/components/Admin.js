@@ -2,6 +2,8 @@ import React from 'react'
 import { Switch, Route, Link, Redirect, useHistory } from 'react-router-dom'
 import Users from './admin/Users'
 import UserForm from './admin/UserForm'
+import Roles from './admin/Roles'
+import RoleForm from './admin/RoleForm'
 
 const highLight = (param) => {
 
@@ -38,7 +40,13 @@ export default function Admin() {
                     <UserForm />
                 </Route>
                 <Route exact path="/admin/roles">
-                    <p>admin roles</p>
+                    <Roles />
+                </Route>
+                <Route exact path="/admin/roles/new">
+                    <RoleForm />
+                </Route>
+                <Route exact path="/admin/roles/:rid/edit">
+                    <RoleForm />
                 </Route>
             </Switch>
         </div>

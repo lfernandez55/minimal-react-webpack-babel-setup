@@ -1,6 +1,8 @@
 import express from 'express'
 import {indexPage, dashBoardPage, signInPage, signUpPage, notAuthorizedPage} from '../controllers/index'
 import {registerUserAPI, signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI} from '../controllers/users'
+import {createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI} from '../controllers/roles'
+
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from './vars'
 
@@ -48,13 +50,19 @@ export function configureRoutes(app){
     router.get('/signin', signInPage) 
     router.get('/notauthorized', notAuthorizedPage)
 
-    //Users
+    // Users
     router.post('/api/users/register', registerUserAPI)
     router.post('/api/users/signin', signUserInAPI)
     router.get('/api/users', allUsersAPI)
     router.post('/api/users', requireSignIn, createUserAPI)  //this route requires authorization
     router.put('/api/users/:id', requireSignIn, updateUserAPI)  //this route requires authorization
     router.delete('/api/users/:id',requireSignIn, deleteUserAPI) //this route requires authorization
+
+    // Roles
+    router.post('/api/roles', requireSignIn, createRoleAPI)  //this route requires authorization
+    router.get('/api/roles', allRolesAPI)
+    router.put('/api/roles/:id', requireSignIn, updateRoleAPI)  //this route requires authorization
+    router.delete('/api/roles/:id',requireSignIn, deleteRoleAPI) //this route requires authorization
 
 
     app.use('/', router)
