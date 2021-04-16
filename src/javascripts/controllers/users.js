@@ -15,7 +15,7 @@ export const createUserAPI = (req, res, next) => {
         if (err){
             // err.code indicates that a duplicate key violation occurred
             if (err.code == 11000){
-                res.status(200).json({success: false, message: "Most likely you are trying to create an account with a username or email that already exists. Try a different email and/or username."})
+                res.status(200).json({success: false, errorCode:err.code, message: "Most likely you are trying to create an account with a username or email that already exists. Try a different email and/or username."})
             } else {
                 res.status(400).json({success: false, message: err})
             }

@@ -32,7 +32,7 @@ export default function SignUpForm(){
         values.password= "aa"
     }
 
-    let {handleSubmit, handleChange, values, errors, setFieldValue } = useFormik({
+    let {handleSubmit, handleChange, values, errors, setFieldValue, setFieldError } = useFormik({
         initialValues: {
             firstName: "",
             lastName: "",
@@ -42,7 +42,7 @@ export default function SignUpForm(){
         },
         validationSchema,
 
-        onSubmit(values){
+        onSubmit(values ){
             fetch('api/users/register', {
                 method: "POST",
                 headers: {'Content-Type':'application/json'},
@@ -56,12 +56,23 @@ export default function SignUpForm(){
                 if(!response.ok) throw Error(response)
                 return response.json()
             }).then((response) => {
-                    toast(response.message, {
-                        autoClose: 3000,
-                        onClose: () =>{
-                            document.location = "/"
-                        }
-                    })
+                    console.log('debug1')
+                    console.log(response.errorCode)
+                    if (response.errorCode == 11000){
+                        console.log("debug2")
+                        toast(response.message, {
+                            autoClose: 15000,
+                        })
+                        setFieldError('username', 'Username is already used');
+                        setFieldError('email', 'Email is already used');
+                    } else {
+                        toast(response.message, {
+                            autoClose: 3000,
+                            onClose: () =>{
+                                document.location = "/"
+                            }
+                        })
+                    }
             }).catch((error)=>{
                 toast("Sign up failed", {
                     onClose: () =>{
@@ -73,9 +84,14 @@ export default function SignUpForm(){
         }
     }
     )
-
-    // const history = useHistory()
-
+    console.log(errors)
+    function foo(){
+        console.log("in foo....")
+        console.log(errors)
+        //errors.email = "";
+        //errors.username = "";
+        console.log(errors)
+    }
     return(
             <div className="react-stuff form">
             <form onSubmit={handleSubmit}>
@@ -99,7 +115,7 @@ export default function SignUpForm(){
                <div className="field">
                 <label htmlFor="email">Email</label>
                 <div className="control">
-                    <input type="text" name="email" value={values.email} onChange={ handleChange  }    />
+                    <input type="text" name="email" value={values.email} onChange={ handleChange }    />
                     <Vhelp message={errors.email}/>
                 </div>
                </div>
@@ -125,12 +141,14 @@ export default function SignUpForm(){
                 <div className="control">
                     <button className="btn btn-primary" type="submit">Submit</button>
                     <button className="btn btn-primary" onClick={() => document.location="/" }>Cancel</button>
-                    <button className="btn btn-primary" onClick={ dev }>Dev</button>
+
                 </div>
                </div>
 
 
            </form>
+           <button className="btn btn-primary" onClick={ dev }>Dev</button>
+           <button className="btn btn-primary" onClick={ foo }>foo</button>
            </div>
     )
 
