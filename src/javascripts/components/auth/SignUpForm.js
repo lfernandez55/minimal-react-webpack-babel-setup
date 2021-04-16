@@ -84,14 +84,6 @@ export default function SignUpForm(){
         }
     }
     )
-    console.log(errors)
-    function foo(){
-        console.log("in foo....")
-        console.log(errors)
-        //errors.email = "";
-        //errors.username = "";
-        console.log(errors)
-    }
     return(
             <div className="react-stuff form">
             <form onSubmit={handleSubmit}>
@@ -147,8 +139,6 @@ export default function SignUpForm(){
 
 
            </form>
-           <button className="btn btn-primary" onClick={ dev }>Dev</button>
-           <button className="btn btn-primary" onClick={ foo }>foo</button>
            </div>
     )
 
