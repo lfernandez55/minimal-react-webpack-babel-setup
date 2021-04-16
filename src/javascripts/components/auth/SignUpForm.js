@@ -56,10 +56,7 @@ export default function SignUpForm(){
                 if(!response.ok) throw Error(response)
                 return response.json()
             }).then((response) => {
-                    console.log('debug1')
-                    console.log(response.errorCode)
                     if (response.errorCode == 11000){
-                        console.log("debug2")
                         toast(response.message, {
                             autoClose: 15000,
                         })

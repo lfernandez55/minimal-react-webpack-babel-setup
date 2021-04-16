@@ -44,7 +44,7 @@ export default function UserForm(){
 
     let is_new = uid === undefined
 
-    let {handleSubmit, handleChange, values, errors, setFieldValue } = useFormik({
+    let {handleSubmit, handleChange, values, errors, setFieldValue, setFieldError } = useFormik({
         initialValues: is_new? {
             firstName: "",
             lastName: "",
@@ -61,26 +61,34 @@ export default function UserForm(){
                 headers: {'Content-Type':'application/json'},
                 credentials: 'same-origin',
                 body:  JSON.stringify(values)
-                }).then((response) => {
-                    // response.ok checks to see if the response is in the 200 to 300 range
-                    // Duplicate account violations are NOT returning 200 range errors by design.
-                    // Instead the dupe problem is sent in the response.message and displayed in the toast 
-                    if(!response.ok) throw Error(response)
-                    return response.json()
-                }).then((response) => {
+            }).then((response) => {
+                // response.ok checks to see if the response is in the 200 to 300 range
+                // Duplicate account violations are NOT returning 200 range errors by design.
+                // Instead the dupe problem is sent in the response.message and displayed in the toast 
+                if(!response.ok) throw Error(response)
+                return response.json()
+            }).then((response) => {
+                    if (response.errorCode == 11000){
+                        toast(response.message, {
+                            autoClose: 15000,
+                        })
+                        setFieldError('username', 'Username is already used');
+                        setFieldError('email', 'Email is already used');
+                    } else {
                         toast(response.message, {
                             autoClose: 3000,
                             onClose: () =>{
                                 history.push("/admin/users")
                             }
                         })
-                }).catch((error)=>{
-                    toast("Sign up failed", {
-                        onClose: () =>{
-                            history.push("/admin/users")
-                        }
-                    })
+                    }
+            }).catch((error)=>{
+                toast("Sign up failed", {
+                    onClose: () =>{
+                        history.push("/admin/users")
+                    }
                 })
+            })
 
 
 
@@ -91,9 +99,9 @@ export default function UserForm(){
 
     let title = ""
     if (is_new){
-        title = "Create Userx"
+        title = "Create User"
     }else{
-        title = "Edit Userx"
+        title = "Edit User"
     }
 
 
