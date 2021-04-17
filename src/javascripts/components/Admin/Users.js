@@ -103,7 +103,18 @@ export default function Users() {
                                     <td>{e.lastName}</td>
                                     <td>{e.username}</td>
                                     <td>{e.email}</td>
-                                    <td>roles</td>
+                                    <td>
+                                        {
+                                            roles.map( (r,i) => {
+                                                    const found = e.roles.find(element => element == r._id);
+                                                    if (found){
+                                                        return ( r.name + ", " )
+                                                    } 
+                                            })
+                                        }
+
+
+                                    </td>
                                     <td><a className="link" onClick={() => history.push(`users/${e._id}/edit`)}>Edit</a></td>
                                     <td><a className="link" onClick={()=>{ deleteMe(e._id) }} >Delete</a></td>
                                 </tr>

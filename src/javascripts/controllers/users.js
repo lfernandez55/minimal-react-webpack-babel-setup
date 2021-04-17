@@ -87,6 +87,8 @@ export const updateUserAPI = (req, res, next) => {
             res.end()
         }else{
             Object.assign(user, req.body)
+            console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+            console.log(req.body)
             if (req.body.password != "dummy"){
                 user.setPassword(req.body.password) 
             }

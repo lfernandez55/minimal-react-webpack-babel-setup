@@ -25,7 +25,7 @@ const validationSchema = yup.object({
 export default function UserForm(){
     let { authenticated, setAuthenticated, users, setUsers, roles} = useContext(AppContext)
     console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-    console.log(roles)
+
     let {uid} = useParams()
 
     if(!authenticated){
@@ -35,23 +35,25 @@ export default function UserForm(){
 
     const history = useHistory()
 
-    console.log(uid)
-    console.log(users)
+
     let user = uid ? users.find(u => u._id == uid) : {}
-    // we set this to "dummy" if the server see's
-    // this password than it doesn't change it
+    // We set this to "dummy". If the server see's
+    // this password, than it doesn't change it
     user.password = "dummy"
+
+    console.log("XXXXXXXXXXXXXXXXX:")
     console.log(user)
 
     let is_new = uid === undefined
 
-    let {handleSubmit, handleChange, values, errors, setFieldValue, setFieldError } = useFormik({
+    let {handleSubmit, handleChange, values, errors, setFieldValue, setFieldError, setValues } = useFormik({
         initialValues: is_new? {
             firstName: "",
             lastName: "",
             email: "",
             username: "",
-            password: ""
+            password: "",
+            roles: ""
         } : {...user},
         validationSchema,
 
@@ -104,9 +106,9 @@ export default function UserForm(){
     }else{
         title = "Edit User"
     }
-
-
-
+    console.log("AAAAAAAAAAAAAAAAAAAA")
+    console.log(values)
+    console.log("BBBBBBBBBBBBBBBBBBBB")
     return(
             <div className="react-stuff form">
                 
@@ -151,6 +153,33 @@ export default function UserForm(){
                     <Vhelp message={errors.password}/>
                 </div>
                </div>
+
+               <div className="field">
+                <label htmlFor="roles">Roles</label>
+                <div className="control">
+                    <select name="roles" multiple  onChange={ handleChange } >
+                    {
+                        roles.map( (e,i) => {
+                            if(is_new){
+                                return ( <option  key={i} value={e._id} >{e.name}</option> )
+                            }else{
+                                const found = user.roles.find(element => element == e._id);
+                                if (found){
+                                    return ( <option  key={i} selected value={e._id} >{e.name}</option> )
+                                } else{
+                                    return ( <option  key={i} value={e._id} >{e.name}</option> )
+                                }
+                            }
+
+                            
+                            
+                        })
+                    }
+                    </select>
+                    
+                </div>
+               </div>
+
 
                <div className="field">
                 <label ></label>
