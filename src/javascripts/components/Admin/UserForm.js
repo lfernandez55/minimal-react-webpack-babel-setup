@@ -23,8 +23,9 @@ const validationSchema = yup.object({
 })
 
 export default function UserForm(){
-    let { authenticated, setAuthenticated, users, setUsers} = useContext(AppContext)
-
+    let { authenticated, setAuthenticated, users, setUsers, roles} = useContext(AppContext)
+    console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+    console.log(roles)
     let {uid} = useParams()
 
     if(!authenticated){

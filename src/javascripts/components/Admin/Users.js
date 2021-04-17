@@ -4,7 +4,7 @@ import { AppContext } from '../DashBoard'
 import { Switch, Route, Link, Redirect, useHistory } from 'react-router-dom'
 
 export default function Users() {
-    let { authenticated, setAuthenticated, users, setUsers} = useContext(AppContext)
+    let { authenticated, setAuthenticated, users, setUsers, roles, setRoles} = useContext(AppContext)
     // The following test isn't strictly needed since authentication is already checked when the user
     // requests the dashboard prior to getting here.
     // But it doesn't hurt to have the extra test in case the authentication test on the dashboard is
@@ -15,39 +15,11 @@ export default function Users() {
     }
 
     let history = useHistory();
-    console.log("DEBUGGGGGGGGGGGGGGGGGGGGG")
-    console.log(users)
-    // useEffect(() => {
-        // if(!movies){
-    //     fetch('/api/users', {credentials: 'same-origin'})
-    //     .then(response => {
-    //       console.log("DEBUG IN api/users fetch")
-    //       return response.text();
-    //     } 
-    //       )
-    //     .then((data) => {
-    //       console.log('debug in data')
-    //       console.log(data)
-    //     //   setMovies(JSON.parse(data, (key, value) => {
-    //     //     const dateFormat = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:.*Z$/
-    //     //     if(typeof value === 'string' && dateFormat.test(value)){
-    //     //       return new Date(value)
-    //     //     }
-    //     //     return value
-    //     //   } ))
-    //     }
-    //     )
-    //     .catch(console.error)
-    //   // the following array par stops fetch from being called constanly
-    //   // but instead of using this Abdulmalek uses if(!movies)
-    //   // },[])
-    //   //   }
-    //   })
       // the below used to be used.  setting this instead in dashboard and sharing via context
       //const [users, setUsers] = useState([]);
       const [DBUpdated, setDBUpdated] = useState(false);
     
-      const deleteMe = (param) => {
+    const deleteMe = (param) => {
         let url = "api/users/" + param;
         fetch(url, {
             method: "DELETE",
@@ -68,7 +40,7 @@ export default function Users() {
             });
     }
     
-      useEffect(() => {
+    useEffect(() => {
         fetch('api/users', {
           method: "GET",
         })
@@ -76,18 +48,29 @@ export default function Users() {
             return response.json();
           })
           .then((resp) => {
-            console.log('something is returned....');
-            console.log(resp)
             setUsers(resp)
-            console.log(users)
             setDBUpdated(false)
           })
           .catch((err) => {
-            // Code called when an error occurs during the request
             console.log(err.message);
           });
-      }, [DBUpdated])
+    }, [DBUpdated])
 
+    useEffect(() => {
+        fetch('api/roles', {
+          method: "GET",
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((resp) => {
+            setRoles(resp)
+            setDBUpdated(false)
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+    }, [DBUpdated])
 
     return (
         <div className="react-stuff users-component">
