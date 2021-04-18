@@ -43,6 +43,7 @@ export default function UserForm(){
 
     console.log("XXXXXXXXXXXXXXXXX:")
     console.log(user)
+    console.log(user.roles)
 
     let is_new = uid === undefined
 
@@ -79,7 +80,7 @@ export default function UserForm(){
                         setFieldError('email', 'Email is already used');
                     } else {
                         toast(response.message, {
-                            autoClose: 3000,
+                            autoClose: 1000,
                             onClose: () =>{
                                 history.push("/admin/users")
                             }
@@ -157,19 +158,20 @@ export default function UserForm(){
                <div className="field">
                 <label htmlFor="roles">Roles</label>
                 <div className="control">
-                    <select name="roles" multiple  onChange={ handleChange } >
+                    <select name="roles" multiple value={values.roles} onChange={ handleChange } >
                     {
                         roles.map( (e,i) => {
-                            if(is_new){
-                                return ( <option  key={i} value={e._id} >{e.name}</option> )
-                            }else{
-                                const found = user.roles.find(element => element == e._id);
-                                if (found){
-                                    return ( <option  key={i} selected value={e._id} >{e.name}</option> )
-                                } else{
-                                    return ( <option  key={i} value={e._id} >{e.name}</option> )
-                                }
-                            }
+                            return ( <option  key={i} value={e._id} >{e.name}</option> )
+                            // if(is_new){
+                            //     return ( <option  key={i} value={e._id} >{e.name}</option> )
+                            // }else{
+                            //     const found = user.roles.find(element => element == e._id);
+                            //     if (found){
+                            //         return ( <option  key={i} selected value={e._id} >{e.name}</option> )
+                            //     } else{
+                            //         return ( <option  key={i} value={e._id} >{e.name}</option> )
+                            //     }
+                            // }
 
                             
                             

@@ -10,6 +10,7 @@ export const createUserAPI = (req, res, next) => {
     user.email = req.body.email
     user.username = req.body.username
     user.setPassword(req.body.password)  
+    user.roles = req.body.roles
 
     user.save(err => {
         if (err){
