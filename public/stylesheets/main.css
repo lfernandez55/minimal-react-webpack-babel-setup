@@ -85,10 +85,19 @@ a{
 .custom-card{
     /* width: 30%; */
     flex: 1;
+
+}
+
+.custom-card:hover{
+    background-color: lightskyblue;    
 }
 
 .dashboard-cards{
     display: flex;
     flex-direction: row;
     justify-content: space-around
+}
+
+.card-subtitle{
+    width: 200px;
 }

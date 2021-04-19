@@ -5,15 +5,46 @@ import {createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI} from '../contr
 
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from './vars'
+import {User} from '../models/user'
 
 let router = express.Router()
 
+function isAdmin(req, res, next){
+    if(isSignedIn(req)){
+        try{
+            let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
+            console.log("DEBUGGGINGGGGGGGGGGGGGGGGGGGGGGGGGGG ")
+            console.log(userDecoded)
+            User.findById({_id: userDecoded._id}). populate({
+            path: 'roles',
+            match: { name: 'admin' }
+            }).exec((err, user)=> {
+                if(err){
+                    console.log("Unable to process role code")
+                    res.redirect('/notauthorized')
+                }else{
+                    if(user.roles.length == 1){
+                        next()
+                    }else{
+                        res.redirect('/notauthorized')
+                    }
+                }
+            })
+        }catch(err){
+            console.log(err)
+            res.redirect('/notauthorized')
+        }
+    }else{   
+        res.redirect('/signin')
+    }
 
+    
+}
 
 function isSignedIn(req){
         try{
             jwt.verify(req.cookies.token, APP_SECRET)
-            console.log("the cookie token: ", req.cookies.token )
+            console.log("the cookie token: ", req.cookies.token)
             return true
         }catch(err){
             return false
@@ -33,6 +64,8 @@ function requireSignIn(req, res, next){
     }    
 
 }
+
+
 
 export function configureRoutes(app){
     app.all('*', (req, res, next) =>{
@@ -54,15 +87,15 @@ export function configureRoutes(app){
     router.post('/api/users/register', createUserAPI)
     router.post('/api/users/signin', signUserInAPI)
     router.get('/api/users', allUsersAPI)
-    router.post('/api/users', requireSignIn, createUserAPI)  //this route requires authorization
-    router.put('/api/users/:id', requireSignIn, updateUserAPI)  //this route requires authorization
-    router.delete('/api/users/:id',requireSignIn, deleteUserAPI) //this route requires authorization
+    router.post('/api/users', isAdmin, createUserAPI)  //this route requires authorization
+    router.put('/api/users/:id', isAdmin, updateUserAPI)  //this route requires authorization
+    router.delete('/api/users/:id',isAdmin, deleteUserAPI) //this route requires authorization
 
     // Roles
-    router.post('/api/roles', requireSignIn, createRoleAPI)  //this route requires authorization
+    router.post('/api/roles', isAdmin, createRoleAPI)  //this route requires authorization
     router.get('/api/roles', allRolesAPI)
-    router.put('/api/roles/:id', requireSignIn, updateRoleAPI)  //this route requires authorization
-    router.delete('/api/roles/:id',requireSignIn, deleteRoleAPI) //this route requires authorization
+    router.put('/api/roles/:id', isAdmin, updateRoleAPI)  //this route requires authorization
+    router.delete('/api/roles/:id',isAdmin, deleteRoleAPI) //this route requires authorization
 
 
     app.use('/', router)

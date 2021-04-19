@@ -80,7 +80,7 @@ export const allUsersAPI = (req, res, next) => {
 
 // }
 
-// PUT /api/movies/:id
+// PUT /api/users/:id
 export const updateUserAPI = (req, res, next) => {
     User.findOne({_id: req.params.id}).exec((err, user)=> {
         if(err){
