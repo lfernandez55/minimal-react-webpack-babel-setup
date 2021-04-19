@@ -6,10 +6,20 @@ import { toast } from 'react-toastify'
 import * as yup from 'yup'
 toast.configure()
 
-export function Vhelp({message}){
-    return(
-        <p className="help">{message}</p>
-    )
+// export function Vhelp({message}){
+
+//         return( <p className="help">{message}</p> )
+// }
+
+export function Vhelp({message, touchedField}){
+    // console.log("Message:", (typeof message) )
+    // console.log("MYtouchedField:", (typeof touchedField) )
+    if (touchedField){
+        return( <p className="help">{message}</p> )
+    }else{
+        return( <p className="help"></p> )
+    }
+
 
 }
 
@@ -24,7 +34,6 @@ const validationSchema = yup.object({
 
 export default function UserForm(){
     let { authenticated, setAuthenticated, users, setUsers, roles} = useContext(AppContext)
-    console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
 
     let {uid} = useParams()
 
@@ -41,25 +50,20 @@ export default function UserForm(){
     // this password, than it doesn't change it
     user.password = "dummy"
 
-    console.log("XXXXXXXXXXXXXXXXX:")
-    console.log(user)
-    console.log(user.roles)
-
     let is_new = uid === undefined
 
-    let {handleSubmit, handleChange, values, errors, setFieldValue, setFieldError, setValues } = useFormik({
+    let {handleSubmit, handleChange, values, errors, setFieldError, handleBlur, touched  } = useFormik({
         initialValues: is_new? {
             firstName: "",
             lastName: "",
             email: "",
             username: "",
             password: "",
-            roles: ""
+            roles: []
         } : {...user},
         validationSchema,
 
         onSubmit(values){
-            console.log("IN FETCH...........................")
             fetch(`api/users${is_new ? '' : '/' + user._id}`, {
                 method: is_new ? 'POST' :"PUT",
                 headers: {'Content-Type':'application/json'},
@@ -108,7 +112,9 @@ export default function UserForm(){
         title = "Edit User"
     }
     console.log("AAAAAAAAAAAAAAAAAAAA")
-    console.log(values)
+    console.log(touched)
+    console.log(errors.email)
+    console.log(touched.email)
     console.log("BBBBBBBBBBBBBBBBBBBB")
     return(
             <div className="react-stuff form">
@@ -118,40 +124,43 @@ export default function UserForm(){
                <div className="field">
                 <label htmlFor="firstName">First Name</label>
                 <div className="control">
-                    <input type="text" name="firstName" value={values.firstName} onChange={ handleChange }    />
-                    <Vhelp message={errors.firstName}/>
+                    <input type="text" name="firstName" value={values.firstName} onChange={ handleChange }  onBlur={handleBlur}  />
+                    <Vhelp message={errors.firstName} touchedField={touched.firstName} />
                 </div>
                </div>
 
                <div className="field">
                 <label htmlFor="lastName">Last Name</label>
                 <div className="control">
-                    <input type="text" name="lastName" value={values.lastName} onChange={ handleChange }    />
-                    <Vhelp message={errors.lastName}/>
+                    <input type="text" name="lastName" value={values.lastName} onChange={ handleChange } onBlur={handleBlur}   />
+                    
+                    <Vhelp message={errors.lastName} touchedField={touched.lastName} />
                 </div>
                </div>
 
                <div className="field">
                 <label htmlFor="email">Email</label>
                 <div className="control">
-                    <input type="text" name="email" value={values.email} onChange={ handleChange  }    />
-                    <Vhelp message={errors.email}/>
+                    <input type="text" name="email" value={values.email} onChange={ handleChange  } onBlur={handleBlur}   />
+                        
+                    <Vhelp message={errors.email} touchedField={touched.email} />
+                     
                 </div>
                </div>
 
                <div className="field">
                 <label htmlFor="username">Username</label>
                 <div className="control">
-                    <input type="text" name="username" value={values.username} onChange={ handleChange }    />
-                    <Vhelp message={errors.username}/>
+                    <input type="text" name="username" value={values.username} onChange={ handleChange } onBlur={handleBlur}    />
+                    <Vhelp message={errors.username} touchedField={touched.username} />
                 </div>
                </div>
 
                <div className="field">
                 <label htmlFor="password">Password</label>
                 <div className="control">
-                    <input type="password" name="password" value={values.password} onChange={ handleChange }    />
-                    <Vhelp message={errors.password}/>
+                    <input type="password" name="password" value={values.password} onChange={ handleChange }  onBlur={handleBlur}   />
+                    <Vhelp message={errors.password} touchedField={touched.password}  />
                 </div>
                </div>
 
