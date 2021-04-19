@@ -81,3 +81,14 @@ a{
 .help{
     color: red;
 }
+
+.custom-card{
+    /* width: 30%; */
+    flex: 1;
+}
+
+.dashboard-cards{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around
+}
