@@ -52,7 +52,7 @@ export default function UserForm(){
 
     let is_new = uid === undefined
 
-    let {handleSubmit, handleChange, values, errors, setFieldError, handleBlur, touched  } = useFormik({
+    let {handleSubmit, handleChange, values, errors, setFieldError, handleBlur, touched, getFieldProps  } = useFormik({
         initialValues: is_new? {
             firstName: "",
             lastName: "",
@@ -124,7 +124,7 @@ export default function UserForm(){
                <div className="field">
                 <label htmlFor="firstName">First Name</label>
                 <div className="control">
-                    <input type="text" name="firstName" value={values.firstName} onChange={ handleChange }  onBlur={handleBlur}  />
+                    <input type="text" {...getFieldProps('firstName')}  />
                     <Vhelp message={errors.firstName} touchedField={touched.firstName} />
                 </div>
                </div>
@@ -132,7 +132,7 @@ export default function UserForm(){
                <div className="field">
                 <label htmlFor="lastName">Last Name</label>
                 <div className="control">
-                    <input type="text" name="lastName" value={values.lastName} onChange={ handleChange } onBlur={handleBlur}   />
+                    <input type="text" {...getFieldProps('lastName')}   />
                     
                     <Vhelp message={errors.lastName} touchedField={touched.lastName} />
                 </div>
@@ -141,7 +141,7 @@ export default function UserForm(){
                <div className="field">
                 <label htmlFor="email">Email</label>
                 <div className="control">
-                    <input type="text" name="email" value={values.email} onChange={ handleChange  } onBlur={handleBlur}   />
+                    <input type="text" {...getFieldProps('email')}   />
                         
                     <Vhelp message={errors.email} touchedField={touched.email} />
                      
@@ -151,7 +151,7 @@ export default function UserForm(){
                <div className="field">
                 <label htmlFor="username">Username</label>
                 <div className="control">
-                    <input type="text" name="username" value={values.username} onChange={ handleChange } onBlur={handleBlur}    />
+                    <input type="text"  {...getFieldProps('username')}    />
                     <Vhelp message={errors.username} touchedField={touched.username} />
                 </div>
                </div>
@@ -159,7 +159,7 @@ export default function UserForm(){
                <div className="field">
                 <label htmlFor="password">Password</label>
                 <div className="control">
-                    <input type="password" name="password" value={values.password} onChange={ handleChange }  onBlur={handleBlur}   />
+                    <input type="password" {...getFieldProps('password')}   />
                     <Vhelp message={errors.password} touchedField={touched.password}  />
                 </div>
                </div>
@@ -167,23 +167,10 @@ export default function UserForm(){
                <div className="field">
                 <label htmlFor="roles">Roles</label>
                 <div className="control">
-                    <select name="roles" multiple value={values.roles} onChange={ handleChange } >
+                    <select class="form-select form-select-sm"  name="roles" multiple value={values.roles} onChange={ handleChange } >
                     {
                         roles.map( (e,i) => {
                             return ( <option  key={i} value={e._id} >{e.name}</option> )
-                            // if(is_new){
-                            //     return ( <option  key={i} value={e._id} >{e.name}</option> )
-                            // }else{
-                            //     const found = user.roles.find(element => element == e._id);
-                            //     if (found){
-                            //         return ( <option  key={i} selected value={e._id} >{e.name}</option> )
-                            //     } else{
-                            //         return ( <option  key={i} value={e._id} >{e.name}</option> )
-                            //     }
-                            // }
-
-                            
-                            
                         })
                     }
                     </select>
