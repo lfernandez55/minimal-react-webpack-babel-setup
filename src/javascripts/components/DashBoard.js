@@ -29,17 +29,15 @@ export default function DashBoard() {
           });
     },[])
 
-    function isAdminFunc(){
-        let result = userRoles.filter(obj => {
-            return obj.name === "admin"
-        })
-        if (result.length == 0){
-            return false
-        } else {
-            return true
-        }
+    function hasRole(role){
+        let roleFound = false;
+        userRoles.forEach(element => {
+           if(element.name == role){
+               roleFound = true;
+           } 
+        });
+        return roleFound;
     }
-    const isAdmin = isAdminFunc()
 
     return (
         <AppContext.Provider value={{authenticated, setAuthenticated, users, setUsers, roles, setRoles, userRoles}}>
@@ -50,7 +48,7 @@ export default function DashBoard() {
                         <h1>Dashboard</h1>
                         <p>What would you like to do?</p>
                         <div className="dashboard-cards">
-                            {isAdmin ? (
+                            {hasRole('admin') ? (
                                 <Link to="/admin/users">
                                     {/* <button className="btn btn-primary"  >Use Admin Tools</button>  */}
                                     <div className="card custom-card" >
@@ -62,6 +60,21 @@ export default function DashBoard() {
                                 </Link>
                             ):(<></>)
                             }
+
+                            {hasRole('teacher') ? (
+                                <Link to="/teacher">
+                                    {/* <button className="btn btn-primary"  >Use Admin Tools</button>  */}
+                                    <div className="card custom-card" >
+                                    <div className="card-body">
+                                        <h5 className="card-title">Teacher Tools</h5>
+                                        <h6 className="card-subtitle mb-2 text-muted">A stub for tools with teacher role</h6>
+                                    </div>
+                                    </div>
+                                </Link>
+                            ):(<></>)
+                            }   
+
+
 
                             <Link to="/other">
                                 {/* <button className="btn btn-primary"  >Use Other Tools</button>  */}
@@ -77,6 +90,9 @@ export default function DashBoard() {
                     </Route>
                     <Route path="/admin">
                         <Admin/>
+                    </Route>
+                    <Route path="/teacher">
+                        <h1>Teacher Tools</h1>
                     </Route>
                     <Route path="/other">
                         <h1>Other Tools</h1>
