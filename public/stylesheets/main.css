@@ -85,7 +85,7 @@ a{
 .custom-card{
     /* width: 30%; */
     flex: 1;
-
+    margin: 5px;
 }
 
 .custom-card:hover{
@@ -95,7 +95,9 @@ a{
 .dashboard-cards{
     display: flex;
     flex-direction: row;
-    justify-content: space-around
+    /* justify-content: space-around; */
+    align-items: flex-start;
+    
 }
 
 .card-subtitle{
