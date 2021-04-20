@@ -46,7 +46,7 @@ export default function SignInForm(){
                     toast('Successfully signed in', {
                         autoClose: 1000,
                         onClose: () =>{
-                            document.location = "/"
+                            document.location = "/dashboard"
                         }
                     })
             }).catch((error)=>{
