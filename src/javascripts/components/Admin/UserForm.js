@@ -91,7 +91,7 @@ export default function UserForm(){
                         })
                     }
             }).catch((error)=>{
-                toast("Sign up failed", {
+                toast("User create/edit failed", {
                     onClose: () =>{
                         history.push("/admin/users")
                     }

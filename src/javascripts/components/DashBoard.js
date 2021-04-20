@@ -1,4 +1,4 @@
-import React, {useState, createContext } from 'react'
+import React, {useState, createContext, useEffect } from 'react'
 import {Switch, Route, Link, Redirect, useHistory} from 'react-router-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
 import Admin from './Admin'
@@ -12,11 +12,37 @@ export default function DashBoard() {
     let [authenticated, setAuthenticated] = useState(cookies.token !== undefined)
     let [users, setUsers ] = useState([])
     let [roles, setRoles ] = useState([])
-    // todo here:  fetch role and add to userRole context.  use it to display or hide buttons below
+    let [userRoles, setuserRoles ] = useState([])
 
+    useEffect(() => {
+        fetch('/api/users/roles', {
+          method: "GET",
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((resp) => {
+            setuserRoles(resp)
+          })
+          .catch((err) => {
+            console.log(err.message);
+          });
+    },[])
+
+    function isAdminFunc(){
+        let result = userRoles.filter(obj => {
+            return obj.name === "admin"
+        })
+        if (result.length == 0){
+            return false
+        } else {
+            return true
+        }
+    }
+    const isAdmin = isAdminFunc()
 
     return (
-        <AppContext.Provider value={{authenticated, setAuthenticated, users, setUsers, roles, setRoles}}>
+        <AppContext.Provider value={{authenticated, setAuthenticated, users, setUsers, roles, setRoles, userRoles}}>
         <div className="react-stuff">
             <Router>
                 <Switch>
@@ -24,15 +50,19 @@ export default function DashBoard() {
                         <h1>Dashboard</h1>
                         <p>What would you like to do?</p>
                         <div className="dashboard-cards">
-                            <Link to="/admin/users">
-                                {/* <button className="btn btn-primary"  >Use Admin Tools</button>  */}
-                                <div className="card custom-card" >
-                                <div className="card-body">
-                                    <h5 className="card-title">Admin Tools</h5>
-                                    <h6 className="card-subtitle mb-2 text-muted">Manage Users and Roles</h6>
-                                </div>
-                                </div>
-                            </Link>
+                            {isAdmin ? (
+                                <Link to="/admin/users">
+                                    {/* <button className="btn btn-primary"  >Use Admin Tools</button>  */}
+                                    <div className="card custom-card" >
+                                    <div className="card-body">
+                                        <h5 className="card-title">Admin Tools</h5>
+                                        <h6 className="card-subtitle mb-2 text-muted">Manage Users and Roles</h6>
+                                    </div>
+                                    </div>
+                                </Link>
+                            ):(<></>)
+                            }
+
                             <Link to="/other">
                                 {/* <button className="btn btn-primary"  >Use Other Tools</button>  */}
                                 <div className="card custom-card" >

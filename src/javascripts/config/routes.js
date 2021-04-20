@@ -1,6 +1,6 @@
 import express from 'express'
 import {indexPage, dashBoardPage, signInPage, signUpPage, notAuthorizedPage} from '../controllers/index'
-import {signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI} from '../controllers/users'
+import {signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI, loggedInUserRolesAPI} from '../controllers/users'
 import {createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI} from '../controllers/roles'
 
 import jwt from 'jsonwebtoken'
@@ -13,8 +13,6 @@ function isAdmin(req, res, next){
     if(isSignedIn(req)){
         try{
             let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
-            console.log("DEBUGGGINGGGGGGGGGGGGGGGGGGGGGGGGGGG ")
-            console.log(userDecoded)
             User.findById({_id: userDecoded._id}). populate({
             path: 'roles',
             match: { name: 'admin' }
@@ -90,13 +88,14 @@ export function configureRoutes(app){
     router.post('/api/users', isAdmin, createUserAPI)  //this route requires authorization
     router.put('/api/users/:id', isAdmin, updateUserAPI)  //this route requires authorization
     router.delete('/api/users/:id',isAdmin, deleteUserAPI) //this route requires authorization
+    router.get('/api/users/roles', loggedInUserRolesAPI)
 
     // Roles
     router.post('/api/roles', isAdmin, createRoleAPI)  //this route requires authorization
     router.get('/api/roles', allRolesAPI)
     router.put('/api/roles/:id', isAdmin, updateRoleAPI)  //this route requires authorization
     router.delete('/api/roles/:id',isAdmin, deleteRoleAPI) //this route requires authorization
-
+    
 
     app.use('/', router)
 }

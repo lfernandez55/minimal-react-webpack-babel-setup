@@ -1,5 +1,7 @@
 import passport from 'passport'
 import {User} from '../models/user'
+import jwt from 'jsonwebtoken'
+import { APP_SECRET } from '../config/vars'
 
 //the first api call that supports registration....
 export const createUserAPI = (req, res, next) => {
@@ -148,3 +150,28 @@ export const deleteUserAPI = (req, res, next) => {
 //         }
 //     })
 // }
+
+
+//GET /api/users
+export const loggedInUserRolesAPI = (req, res, next) => {
+    try{
+        console.log("In loggedinUserRoles")
+        let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
+        User.findById({_id: userDecoded._id}). populate({
+        path: 'roles' 
+        }).exec((err, user)=> {
+            if(err){
+                console.log("Unable to process loggedInUserRolesAPI")
+                res.status(400).json({success: false, message: err})
+            }else{
+                console.log("XXXXXXXXXXXXXXX",user.roles)
+                // res.status(200).json({success: true, roles: user.roles})
+                res.status(200).json( user.roles)
+            }
+        })
+    }catch(err){
+        console.log("Error processing loggedInUserRolesAPI")
+        res.status(400).json({success: false, message: err})
+    }
+}
+
