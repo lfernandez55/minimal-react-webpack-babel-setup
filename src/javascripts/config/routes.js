@@ -39,6 +39,17 @@ function isAdmin(req, res, next){
     
 }
 
+function getEmail(req, app){
+        try{
+            let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
+            return userDecoded.email
+        }catch(err){
+            // this executes on log out -- when the cookie disappears
+            return ""
+        }
+}
+
+
 function isSignedIn(req){
         try{
             jwt.verify(req.cookies.token, APP_SECRET)
@@ -68,6 +79,7 @@ function requireSignIn(req, res, next){
 export function configureRoutes(app){
     app.all('*', (req, res, next) =>{
         app.locals.signedIn = isSignedIn(req)
+        app.locals.userEmail = getEmail(req)
         console.log('users signed in status: ', app.locals.signedIn)
         next()
     })
