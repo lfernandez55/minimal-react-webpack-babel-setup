@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 import { APP_TITLE } from './src/javascripts/config/vars'
 
 //onemanydb
-mongoose.connect("mongodb://localhost:27017/topmovies",{
+mongoose.connect("mongodb://localhost:27017/authdb",{
   useNewUrlParser: true,
   useUnifiedTopology: true
 },()=>{

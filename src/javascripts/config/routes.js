@@ -2,6 +2,7 @@ import express from 'express'
 import {indexPage, dashBoardPage, signInPage, signUpPage, notAuthorizedPage} from '../controllers/index'
 import {signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI, loggedInUserRolesAPI} from '../controllers/users'
 import {createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI} from '../controllers/roles'
+import {createAdmin} from '../controllers/createAdmin'
 
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from './vars'
@@ -108,6 +109,8 @@ export function configureRoutes(app){
     router.put('/api/roles/:id', isAdmin, updateRoleAPI)  //this route requires authorization
     router.delete('/api/roles/:id',isAdmin, deleteRoleAPI) //this route requires authorization
     
+    // One time route for creating admin user with username "admin" and password "admin"
+    router.get('/createAdmin', createAdmin)
 
     app.use('/', router)
 }
