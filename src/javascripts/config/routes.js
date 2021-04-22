@@ -87,7 +87,7 @@ export function configureRoutes(app){
 
 
     router.get('/', indexPage)
-    router.get('/dashboard', requireSignIn, dashBoardPage) 
+    router.get('/dashboard', requireSignIn, dashBoardPage) //this route requires authentication (not authorization)
 
 
     router.get('/signup', signUpPage)  

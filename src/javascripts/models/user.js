@@ -41,7 +41,7 @@ let userSchema = new Schema({
     ]
 })
 
-// for explantation see 
+// for explanation see 
 // https://1533221.mediaspace.kaltura.com/media/Backend+authentication+%28Part+2A+User+schema%29/1_qvtrej0f
 // min 5:40
 userSchema.methods.setPassword = function(password){

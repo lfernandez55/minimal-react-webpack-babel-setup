@@ -12,8 +12,6 @@ toast.configure()
 // }
 
 export function Vhelp({message, touchedField}){
-    // console.log("Message:", (typeof message) )
-    // console.log("MYtouchedField:", (typeof touchedField) )
     if (touchedField){
         return( <p className="help">{message}</p> )
     }else{
@@ -111,11 +109,7 @@ export default function UserForm(){
     }else{
         title = "Edit User"
     }
-    console.log("AAAAAAAAAAAAAAAAAAAA")
-    console.log(touched)
-    console.log(errors.email)
-    console.log(touched.email)
-    console.log("BBBBBBBBBBBBBBBBBBBB")
+
     return(
             <div className="react-stuff form">
                 

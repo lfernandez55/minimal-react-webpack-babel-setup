@@ -12,7 +12,7 @@ export const createRoleAPI = (req, res, next) => {
             console.log(err)
             res.end()
         }else{
-            console.log("ROLE SAVED!!! --------------------")
+            console.log("Role saved")
             res.end()
         }
     })
@@ -40,8 +40,7 @@ export const updateRoleAPI = (req, res, next) => {
             res.json({success: false, message: "PUT Query failed"})
             res.end()
         } else {
-            console.log("The doc:", doc)
-            res.json({success: true, message: "PUT Query succeeded", method: "PUT", _id: req.params.id})
+            res.json({success: true, message: "PUT Query succeeded",  _id: req.params.id})
             res.end()
         }
       });

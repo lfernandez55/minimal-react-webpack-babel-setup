@@ -3,7 +3,7 @@ import {User} from '../models/user'
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from '../config/vars'
 
-//the first api call that supports registration....
+// used for registration. and for creating new users in admin tools
 export const createUserAPI = (req, res, next) => {
 
     let user = new User
@@ -39,7 +39,7 @@ export const signUserInAPI = (req,res, next) => {
         }else{
             if(user){
                 let token = user.generateJWT()
-                console.log("USER AUTHENTICATED. . . . . . . . . . ")
+                console.log("User authenticated. . . .")
                 res.cookie("token", token, { maxAge:1000 * 60 * 60 })
                 // above cookie expires after 60 minutes
                 res.end()
@@ -65,22 +65,7 @@ export const allUsersAPI = (req, res, next) => {
     })
 }
 
-// update user api
-// export const updateUserAPI = (req, res, next) => {
-//     console.log("DEBUG UPDATE PROJECT")
 
-//     User.updateOne({_id:req.params.id},{firstName: req.body.firstName,lastName: req.body.lastName,email: req.body.email,username: req.body.username}, (err, doc) => {
-//         if (err) {
-//             res.json({success: false, message: "PUT Query failed"})
-//             res.end()
-//         } else {
-//             console.log("georgie", doc)
-//             res.json({success: true, message: "PUT Query succeeded", method: "PUT", _id: req.params.id})
-//             res.end()
-//         }
-//       });
-
-// }
 
 // PUT /api/users/:id
 export const updateUserAPI = (req, res, next) => {
@@ -90,14 +75,12 @@ export const updateUserAPI = (req, res, next) => {
             res.end()
         }else{
             Object.assign(user, req.body)
-            console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-            console.log(req.body)
             if (req.body.password != "dummy"){
                 user.setPassword(req.body.password) 
             }
             user.save((err)=> {
                 if (err){
-                    // err.code indicates that a duplicate key violation occurred
+                    // err.code 11000 indicates that a duplicate key violation occurred
                     if (err.code == 11000){
                         res.status(200).json({success: false, errorCode:err.code, message: "Most likely you are trying to create an account with a username or email that already exists. Try a different email and/or username."})
                     } else {
@@ -119,8 +102,7 @@ export const updateUserAPI = (req, res, next) => {
 
 //DELETE /api/users/:id
 export const deleteUserAPI = (req, res, next) => {
-    console.log("DEBUG DELETE USER", req.params.id)
-    User.deleteOne({_id: req.params.id }).exec((err, projects)=> {
+    User.deleteOne({_id: req.params.id }).exec((err, user)=> {
         if(err){
             res.json({success: false, message: "Delete Query failed"})
             res.end()
@@ -132,45 +114,23 @@ export const deleteUserAPI = (req, res, next) => {
 
 }
 
-// DELETE /api/users/:id
-// export const deleteUserAPI = (req, res, next) => {
-//     User.findOne({_id: req.params.id}).select('-reviews').exec((err, user)=> {
-//         if(err){
-//             res.json({success: false, message: "Unable to delete"})
-//             res.end()
-//         }else{
-//             User.findByIdAndDelete(req.params.id, err=> {
-//                 if(err){
-//                     res.json({success: false, message: "Movie delete failed"})
-//                     res.end()
-//                 }else{
-//                     res.end()
-//                 }
-//             })
-//         }
-//     })
-// }
+
 
 
 //GET /api/users
 export const loggedInUserRolesAPI = (req, res, next) => {
     try{
-        console.log("In loggedinUserRoles")
         let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
         User.findById({_id: userDecoded._id}). populate({
         path: 'roles' 
         }).exec((err, user)=> {
             if(err){
-                console.log("Unable to process loggedInUserRolesAPI")
                 res.status(400).json({success: false, message: err})
             }else{
-                console.log("XXXXXXXXXXXXXXX",user.roles)
-                // res.status(200).json({success: true, roles: user.roles})
                 res.status(200).json( user.roles)
             }
         })
     }catch(err){
-        console.log("Error processing loggedInUserRolesAPI")
         res.status(400).json({success: false, message: err})
     }
 }

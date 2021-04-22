@@ -31,10 +31,7 @@ export default function RoleForm(){
 
     const history = useHistory()
 
-    console.log(rid)
-    console.log(roles)
     let role = rid ? roles.find(r => r._id == rid) : {}
-    console.log(role)
 
     let is_new = rid === undefined
 
@@ -45,7 +42,6 @@ export default function RoleForm(){
         validationSchema,
 
         onSubmit(values){
-            console.log("IN FETCH...........................")
             fetch(`api/roles${is_new ? '' : '/' + role._id}`, {
                 method: is_new ? 'POST' :"PUT",
                 headers: {'Content-Type':'application/json'},

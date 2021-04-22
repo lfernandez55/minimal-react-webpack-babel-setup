@@ -34,9 +34,7 @@ export default function Users() {
                 setDBUpdated("changed")
             })
             .catch((err) => {
-                // Code called when an error occurs during the request
-                console.log(' xxxxx ', err.message);
-                alert("An error occurred while attempting delete. Most likely you are not authorzed")
+                alert("An error occurred while attempting delete. Most likely you are not authorized")
             });
     }
     

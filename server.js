@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 var cookieParser = require('cookie-parser');
 import { APP_TITLE } from './src/javascripts/config/vars'
 
-//onemanydb
+// the name of the db can be changed. it will be created automatically on startup
 mongoose.connect("mongodb://localhost:27017/authdb",{
   useNewUrlParser: true,
   useUnifiedTopology: true

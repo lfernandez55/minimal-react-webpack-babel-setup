@@ -1,12 +1,8 @@
 import React from 'react'
-// import { useHistory, useParams } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
-// import 'react-toastify/dist/ReactToastify.css'
 import * as yup from 'yup'
 toast.configure()
-
-// import { id } from 'date-fns/esm/locale'
 
 export function Vhelp({message}){
     return(

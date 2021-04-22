@@ -13,7 +13,6 @@ export default function Users() {
         document.location = '/signin'
         return <></>
     }
-    console.log("in roles!")
     let history = useHistory();
 
     const [DBUpdated, setDBUpdated] = useState(false);
@@ -33,9 +32,7 @@ export default function Users() {
                 setDBUpdated("changed")
             })
             .catch((err) => {
-                // Code called when an error occurs during the request
-                console.log(' xxxxx ', err.message);
-                alert("An error occurred while attempting delete. Most likely you are not authorzed")
+                alert("An error occurred while attempting delete. Most likely you are not authorized")
             });
     }
     
@@ -47,14 +44,10 @@ export default function Users() {
             return response.json();
           })
           .then((resp) => {
-            console.log('something is returned....');
-            console.log(resp)
             setRoles(resp)
-            console.log(users)
             setDBUpdated(false)
           })
           .catch((err) => {
-            // Code called when an error occurs during the request
             console.log(err.message);
           });
       }, [DBUpdated])
