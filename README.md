@@ -21,6 +21,7 @@ This is built on top of minimal-react-webpack-babel-setup and express branch see
 - in the left one do npm run build
 - in the right one do npm run serve
 - visit `http://localhost:8080/`
+- to reseed the db and create an account with username: admin, password: admin, visit http://localhost/createAdmin
 
 ### How to get from minimal-react-webpack-babel-setup to this express version:
 
