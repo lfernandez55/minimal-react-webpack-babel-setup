@@ -3,6 +3,7 @@ import {indexPage, dashBoardPage, signInPage, signUpPage, notAuthorizedPage} fro
 import {signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI, loggedInUserRolesAPI} from '../controllers/users'
 import {createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI} from '../controllers/roles'
 import {createAdmin} from '../controllers/createAdmin'
+import {usersSortedByRole} from '../controllers/misc'
 
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from './vars'
@@ -111,6 +112,9 @@ export function configureRoutes(app){
     
     // One time route for creating admin user with username "admin" and password "admin"
     router.get('/createAdmin', createAdmin)
+
+    // Misc
+    router.get('/api/roles/users', usersSortedByRole)
 
     app.use('/', router)
 }

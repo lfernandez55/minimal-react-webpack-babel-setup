@@ -4,10 +4,10 @@ const Schema = mongoose.Schema
 
 let RoleSchema = new Schema({
     name: String,
-    owner: {
-        type: Schema.Types.ObjectId,
-        ref: "User"
-    }
+    users: [{
+            type: Schema.Types.ObjectId,
+            ref: "User"
+        }]
     
 })
 

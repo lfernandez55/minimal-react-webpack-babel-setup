@@ -4,15 +4,18 @@ import Users from './admin/Users'
 import UserForm from './admin/UserForm'
 import Roles from './admin/Roles'
 import RoleForm from './admin/RoleForm'
+import UsersByRole from './admin/UsersByRole'
 
 const highLight = (param) => {
-
+    document.getElementById('usersTab').classList.remove("active")
+    document.getElementById('rolesTab').classList.remove("active")
+    document.getElementById('usersbyroleTab').classList.remove("active")
     document.getElementById(param).classList.add("active")
-    if (param == "rolesTab"){
-        document.getElementById('usersTab').classList.remove("active")
-    }else{
-        document.getElementById('rolesTab').classList.remove("active")
-    }
+    // if (param == "rolesTab"){
+    //     document.getElementById('usersTab').classList.remove("active")
+    // }else if{
+    //     document.getElementById('rolesTab').classList.remove("active")
+    // }
 }
 
 export default function Admin() {
@@ -27,6 +30,10 @@ export default function Admin() {
                 <li className="nav-item">
                     {/* <a className="nav-link" href="#">Link</a> */}
                     <Link className="nav-link " id="rolesTab"  aria-current="page" to="/admin/roles" onClick={() => highLight('rolesTab')}>Roles</Link>
+                </li>
+                <li className="nav-item">
+                    {/* <a className="nav-link" href="#">Link</a> */}
+                    <Link className="nav-link " id="usersbyroleTab"  aria-current="page" to="/admin/usersbyrole" onClick={() => highLight('usersbyroleTab')}>Users By Role</Link>
                 </li>
             </ul>
             <Switch>
@@ -47,6 +54,9 @@ export default function Admin() {
                 </Route>
                 <Route exact path="/admin/roles/:rid/edit">
                     <RoleForm />
+                </Route>
+                <Route exact path="/admin/usersbyrole">
+                    <UsersByRole />
                 </Route>
             </Switch>
         </div>

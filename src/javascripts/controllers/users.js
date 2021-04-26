@@ -13,7 +13,7 @@ export const createUserAPI = (req, res, next) => {
     user.username = req.body.username
     user.setPassword(req.body.password)  
     user.roles = req.body.roles
-
+    user.synchWithChild()
     user.save(err => {
         if (err){
             // err.code indicates that a duplicate key violation occurred
@@ -78,6 +78,7 @@ export const updateUserAPI = (req, res, next) => {
             if (req.body.password != "dummy"){
                 user.setPassword(req.body.password) 
             }
+            user.synchWithChild()
             user.save((err)=> {
                 if (err){
                     // err.code 11000 indicates that a duplicate key violation occurred

@@ -9,7 +9,7 @@ export const createAdmin = (req, res, next) => {
           // start fresh by removing all documents in the collections
           await User.remove({});
           await Role.remove({});
-
+          console.log("DEBUG in createAdmin")
           let role = new Role
           role.name = "admin"
           await role.save()
@@ -21,8 +21,9 @@ export const createAdmin = (req, res, next) => {
           user.username = "admin"
           user.setPassword("admin")  
           user.roles.push(role)
-
+          user.synchWithChild()
           await user.save()
+
           res.status(200).json({success: true, message: "Admin account creation successful"})
 
         } catch (err) {
