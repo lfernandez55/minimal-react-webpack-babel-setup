@@ -1,23 +1,23 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { AppContext } from '../DashBoard'
 
-import { Switch, Route, Link, Redirect, useHistory } from 'react-router-dom'
+import { Switch, Route, Link, useNavigate } from 'react-router-dom'
 
 export default function Users() {
-    let { authenticated, setAuthenticated, roles, setRoles} = useContext(AppContext)
+    let { authenticated, setAuthenticated, roles, setRoles } = useContext(AppContext)
     // The following test isn't strictly needed since authentication is already checked when the user
     // requests the dashboard prior to getting here.
     // But it doesn't hurt to have the extra test in case the authentication test on the dashboard is
     // compromised.
-    if(!authenticated){
+    if (!authenticated) {
         document.location = '/signin'
         return <></>
     }
-    let history = useHistory();
+    const navigate = useNavigate()
 
     const [DBUpdated, setDBUpdated] = useState(false);
-    
-      const deleteMe = (param) => {
+
+    const deleteMe = (param) => {
         let url = "api/roles/" + param;
         fetch(url, {
             method: "DELETE",
@@ -35,22 +35,22 @@ export default function Users() {
                 alert("An error occurred while attempting delete. Most likely you are not authorized")
             });
     }
-    
-      useEffect(() => {
+
+    useEffect(() => {
         fetch('api/roles', {
-          method: "GET",
+            method: "GET",
         })
-          .then((response) => {
-            return response.json();
-          })
-          .then((resp) => {
-            setRoles(resp)
-            setDBUpdated(false)
-          })
-          .catch((err) => {
-            console.log(err.message);
-          });
-      }, [DBUpdated])
+            .then((response) => {
+                return response.json();
+            })
+            .then((resp) => {
+                setRoles(resp)
+                setDBUpdated(false)
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }, [DBUpdated])
 
 
     return (
@@ -62,7 +62,7 @@ export default function Users() {
             </div>
             <table className="table">
                 <thead>
-                <tr >
+                    <tr >
                         <td>_id</td>
                         <td>Name</td>
                         <td>Edit</td>
@@ -72,15 +72,15 @@ export default function Users() {
                 <tbody>
 
                     {
-                        roles.map( (e,i) => {
+                        roles.map((e, i) => {
                             return (
                                 <tr key={i}>
                                     <td>{e._id}</td>
                                     <td>{e.name}</td>
-                                    <td><a className="link" onClick={() => history.push(`roles/${e._id}/edit`)}>Edit</a></td>
-                                    <td><a className="link" onClick={()=>{ deleteMe(e._id) }} >Delete</a></td>
+                                    <td><a className="link" onClick={() => navigate(`roles/${e._id}/edit`)}>Edit</a></td>
+                                    <td><a className="link" onClick={() => { deleteMe(e._id) }} >Delete</a></td>
                                 </tr>
-        
+
                             )
                         })
                     }
