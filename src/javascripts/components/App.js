@@ -7,7 +7,7 @@ export default function Main() {
             <p>
                 Every time you make a change to react components the code
                 is compiled via webpack.config.js . It takes the javascripts and converts them from ES6
-                to ES5.  Also compiles SASS and converts to CSS, and saves 
+                to ES5.  Also compiles SASS and converts to CSS, and saves
                 it in root/public. Once run the public folder should
                 contain an images, javascripts and stylesheets folders.
             </p>
@@ -17,8 +17,8 @@ export default function Main() {
                 line that tells webpack to automatically recompile the code.  If that's not in there then 
                 you'd have to do >npm run deploy
             </p>
-            
-                <pre>{`
+
+            <pre>{`
                 Anatomy of how this page is loaded:
                 in src/javascripts/config/routes
                     router.get['/', indexPage]
@@ -36,7 +36,7 @@ export default function Main() {
                                         src/javascripts/main.js which executes:
                                             ReactDOM dot render Alt 
                 `}</pre>
-            
+
         </div>
     )
 }
