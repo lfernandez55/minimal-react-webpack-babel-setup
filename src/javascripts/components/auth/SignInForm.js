@@ -22,7 +22,7 @@ const validationSchema = yup.object({
 
 export default function SignInForm() {
     const navigate = useNavigate();
-    let { setSync, setAuthenticated } = useContext(AppContext)
+    let { setSync, setAuthenticated, setLoggedInUser } = useContext(AppContext)
     let { handleSubmit, handleChange, values, errors, setFieldValue } = useFormik({
         // the spread operator below copies the movie object into a new object
         initialValues: {
@@ -46,8 +46,8 @@ export default function SignInForm() {
                     toast('Successfully signed in', {
                         autoClose: 1000,
                         onClose: () => {
-                            // document.location = "/dashboard"
-                            console.log("ZZZZZZZZZZZZZZZZZZZZ")
+                            let myRespObj = JSON.parse(response);
+                            setLoggedInUser(myRespObj.user)
                             setSync(true)
                             setAuthenticated(true)
                             navigate("/dashboard");
@@ -68,7 +68,7 @@ export default function SignInForm() {
     return (
         <div className="react-stuff form">
             <form onSubmit={handleSubmit}>
-                <h1>Sign Inx</h1>
+                <h1>Sign In</h1>
 
                 <div className="field">
                     <label htmlFor="username">Username</label>

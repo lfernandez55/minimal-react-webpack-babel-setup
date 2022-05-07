@@ -24,6 +24,7 @@ export default function App() {
     const [cookies, setCookie, removeCookie] = useCookies(['token'])
     let [authenticated, setAuthenticated] = useState(cookies.token !== undefined)
     let [users, setUsers] = useState([])
+    let [loggedInUser, setLoggedInUser] = useState([])
     let [roles, setRoles] = useState([])
     let [userRoles, setUserRoles] = useState([])
     let [sync, setSync] = useState(false)
@@ -55,7 +56,7 @@ export default function App() {
     }
 
     return (
-        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, userRoles, setUserRoles, setSync, hasRole }}>
+        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, userRoles, setUserRoles, setSync, hasRole, loggedInUser, setLoggedInUser }}>
             <div className="react-stuff">
                 <Router>
                     <Routes>

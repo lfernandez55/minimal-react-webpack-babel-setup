@@ -4,7 +4,7 @@ import { useContext } from 'react'
 import { AppContext } from './App';
 
 export default function Nav() {
-    let { authenticated } = useContext(AppContext)
+    let { authenticated, loggedInUser } = useContext(AppContext)
     return (
         <>
             <header>
@@ -15,7 +15,7 @@ export default function Nav() {
                             <Link to="">Home</Link> | <Link to="dashboard">Dashboard</Link>
                         </div>
                         <div>
-                            <Link to="signout">Logout</Link>
+                            {loggedInUser.email} | <Link to="signout">Logout</Link>
                         </div>
                     </>
                 ) : (
