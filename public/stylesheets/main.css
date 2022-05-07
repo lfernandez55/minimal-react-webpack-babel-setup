@@ -34,10 +34,11 @@ body{
 header, footer{
     background: lightgray;
     padding: 10px;
-    margin: 10px;
+    /* margin: 10px; */
 }
 header{
-    display: flex
+    display: flex;
+    margin-bottom: 100px;
 }
 header div:first-child{
     flex: 1;
@@ -45,6 +46,7 @@ header div:first-child{
 
 footer{
     text-align: center;
+    margin-top: 100px;
 }
 
 

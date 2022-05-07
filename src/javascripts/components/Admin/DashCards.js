@@ -1,10 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
-import { AppContext } from '../DashBoard';
+import { AppContext } from '../App';
 
 export default function DashCards() {
-    let { hasRole } = useContext(AppContext)
+    let { hasRole, setUserRoles } = useContext(AppContext)
+
+    useEffect(() => {
+        fetch('/api/users/roles', {
+            method: "GET",
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((resp) => {
+                setUserRoles(resp)
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }, [])
+
+
     return (
         <>
             <h1>Dashboard</h1>

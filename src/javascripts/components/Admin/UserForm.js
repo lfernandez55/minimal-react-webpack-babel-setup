@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { AppContext } from '../DashBoard'
+import { AppContext } from '../App'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'

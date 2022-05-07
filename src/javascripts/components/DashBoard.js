@@ -20,7 +20,7 @@ export default function DashBoard() {
     let [authenticated, setAuthenticated] = useState(cookies.token !== undefined)
     let [users, setUsers] = useState([])
     let [roles, setRoles] = useState([])
-    let [userRoles, setuserRoles] = useState([])
+    let [userRoles, setUserRoles] = useState([])
 
     useEffect(() => {
         fetch('/api/users/roles', {
@@ -30,7 +30,7 @@ export default function DashBoard() {
                 return response.json();
             })
             .then((resp) => {
-                setuserRoles(resp)
+                setUserRoles(resp)
             })
             .catch((err) => {
                 console.log(err.message);

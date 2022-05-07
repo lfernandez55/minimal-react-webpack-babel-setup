@@ -2,7 +2,10 @@ import React from 'react'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
+import { useNavigate } from 'react-router-dom'
 toast.configure()
+import { AppContext } from '../App';
+import { useContext } from 'react'
 
 export function Vhelp({ message }) {
     return (
@@ -18,7 +21,8 @@ const validationSchema = yup.object({
 })
 
 export default function SignInForm() {
-
+    const navigate = useNavigate();
+    let { setSync, setAuthenticated } = useContext(AppContext)
     let { handleSubmit, handleChange, values, errors, setFieldValue } = useFormik({
         // the spread operator below copies the movie object into a new object
         initialValues: {
@@ -42,7 +46,11 @@ export default function SignInForm() {
                     toast('Successfully signed in', {
                         autoClose: 1000,
                         onClose: () => {
-                            document.location = "/dashboard"
+                            // document.location = "/dashboard"
+                            console.log("ZZZZZZZZZZZZZZZZZZZZ")
+                            setSync(true)
+                            setAuthenticated(true)
+                            navigate("/dashboard");
                         }
                     })
                 }).catch((error) => {
@@ -60,7 +68,7 @@ export default function SignInForm() {
     return (
         <div className="react-stuff form">
             <form onSubmit={handleSubmit}>
-                <h1>Sign In</h1>
+                <h1>Sign Inx</h1>
 
                 <div className="field">
                     <label htmlFor="username">Username</label>
