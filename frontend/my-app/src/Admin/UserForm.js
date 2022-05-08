@@ -34,6 +34,13 @@ export default function UserForm() {
     let { authenticated, setAuthenticated, users, setUsers, roles } = useContext(AppContext)
     const navigate = useNavigate()
     let { uid } = useParams()
+    let is_new = uid === undefined
+
+    let user = uid ? users.find(u => u._id == uid) : {}
+    // We set this to "dummy". If the server see's
+    // this password, than it doesn't change it
+    user.password = "dummy"
+
 
     let { handleSubmit, handleChange, values, errors, setFieldError, handleBlur, touched, getFieldProps } = useFormik({
         initialValues: is_new ? {
@@ -96,12 +103,9 @@ export default function UserForm() {
 
 
 
-    let user = uid ? users.find(u => u._id == uid) : {}
-    // We set this to "dummy". If the server see's
-    // this password, than it doesn't change it
-    user.password = "dummy"
 
-    let is_new = uid === undefined
+
+
 
 
 
@@ -163,7 +167,7 @@ export default function UserForm() {
                 <div className="field">
                     <label htmlFor="roles">Roles</label>
                     <div className="control">
-                        <select class="form-select form-select-sm" name="roles" multiple value={values.roles} onChange={handleChange} >
+                        <select className="form-select form-select-sm" name="roles" multiple value={values.roles} onChange={handleChange} >
                             {
                                 roles.map((e, i) => {
                                     return (<option key={i} value={e._id} >{e.name}</option>)

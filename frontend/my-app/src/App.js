@@ -61,6 +61,14 @@ export default function App() {
                 <Router>
                     <Routes>
                         <Route path="/" element={<Nav />} >
+                            <Route
+                                index
+                                element={
+                                    <main style={{ padding: "1rem" }}>
+                                        <h2>My App</h2>
+                                    </main>
+                                }
+                            />
                             <Route path="signin" element={<SignInForm />} ></Route>
                             <Route path="signup" element={<SignUpForm />} ></Route>
                             <Route path="signout" element={<SignOut />} ></Route>
