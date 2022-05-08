@@ -62,17 +62,17 @@ module.exports = {
   // Output to dist when only running "npm run start".  This compiles much faster.  But you
   // only can run the react code, not the express server. 
   // You need to do this for compiled react changes to render in browser.
-  // output: {
-  //   path: path.resolve(__dirname, './dist'),
-  //   filename: 'bundle.js',
-  // },
+  output: {
+    path: path.resolve(__dirname, './dist'),
+    filename: 'bundle.js',
+  },
   // Output to public when running "npm run build" in one terminal and "npm run server" in other.
   // You need to do this for compiled react changes to render in browser.
-  output: {
-    path: path.resolve(__dirname, 'public'),
-    filename: 'javascripts/[name].js',
-    publicPath: '/'
-  },
+  // output: {
+  //   path: path.resolve(__dirname, 'public'),
+  //   filename: 'javascripts/[name].js',
+  //   publicPath: '/'
+  // },
   plugins: [new webpack.HotModuleReplacementPlugin()],
   devServer: {
     contentBase: path.resolve(__dirname, './dist'),
