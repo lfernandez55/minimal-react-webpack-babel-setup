@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import './bootstrap.min.css'
+//import './bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import './main.css';
 import './ReactToastify.min.css'
