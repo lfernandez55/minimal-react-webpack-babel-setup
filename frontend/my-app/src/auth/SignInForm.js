@@ -23,8 +23,7 @@ const validationSchema = yup.object({
 export default function SignInForm() {
     const navigate = useNavigate();
     let { getRoles, setAuthenticated, setLoggedInUser } = useContext(AppContext)
-    let { handleSubmit, handleChange, values, errors, setFieldValue } = useFormik({
-        // the spread operator below copies the movie object into a new object
+    let { handleSubmit, handleChange, values, errors } = useFormik({
         initialValues: {
             username: "",
             password: "",

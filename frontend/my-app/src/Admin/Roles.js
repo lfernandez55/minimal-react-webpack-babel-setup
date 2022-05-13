@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 export default function Users() {
     const navigate = useNavigate()
     const [DBUpdated, setDBUpdated] = useState(false);
-    let { authenticated, setAuthenticated, roles, setRoles } = useContext(AppContext)
+    let { authenticated, roles, setRoles } = useContext(AppContext)
     useEffect(() => {
         fetch('api/roles', {
             method: "GET",
@@ -21,6 +21,7 @@ export default function Users() {
             .catch((err) => {
                 console.log(err.message);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [DBUpdated])
 
     // The following test isn't strictly needed since authentication is already checked when the user
@@ -79,8 +80,8 @@ export default function Users() {
                                 <tr key={i}>
                                     <td>{e._id}</td>
                                     <td>{e.name}</td>
-                                    <td><a className="link" onClick={() => navigate(`roles/${e._id}/edit`)}>Edit</a></td>
-                                    <td><a className="link" onClick={() => { deleteMe(e._id) }} >Delete</a></td>
+                                    <td><button className="link" onClick={() => navigate(`${e._id}/edit`)}>Edit</button></td>
+                                    <td><button className="link" onClick={() => { deleteMe(e._id) }} >Delete</button></td>
                                 </tr>
 
                             )

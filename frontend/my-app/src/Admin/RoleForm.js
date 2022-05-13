@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { AppContext } from '../App'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useFormik } from 'formik'
@@ -24,7 +24,12 @@ const validationSchema = yup.object({
 export default function RoleForm() {
     const navigate = useNavigate()
 
-    let { handleSubmit, handleChange, values, errors, setFieldValue } = useFormik({
+    let { rid } = useParams()
+    let is_new = rid === undefined
+    let { authenticated, roles } = useContext(AppContext)
+    let role = rid ? roles.find(r => r._id === rid) : {}
+
+    let { handleSubmit, handleChange, values, errors } = useFormik({
         initialValues: is_new ? {
             firstname: "",
         } : { ...role },
@@ -56,18 +61,19 @@ export default function RoleForm() {
     }
     )
 
-    let { authenticated, setAuthenticated, roles, setRoles } = useContext(AppContext)
 
-    let { rid } = useParams()
+
+
+
 
     if (!authenticated) {
         document.location = '/signin'
         return <></>
     }
 
-    let role = rid ? roles.find(r => r._id == rid) : {}
 
-    let is_new = rid === undefined
+
+
 
 
 
@@ -99,7 +105,7 @@ export default function RoleForm() {
                     <label ></label>
                     <div className="control">
                         <button className="btn btn-primary" type="submit">Submit</button>
-                        <button className="btn btn-primary" onClick={() => document.location = "/"}>Cancel</button>
+                        <button className="btn btn-primary" onClick={() => navigate("/admin/roles")}>Cancel</button>
                     </div>
                 </div>
 

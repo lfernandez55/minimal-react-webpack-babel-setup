@@ -22,15 +22,7 @@ const validationSchema = yup.object({
 
 export default function SignUpForm() {
 
-    // function dev() {
-    //     values.firstName = "aa",
-    //         values.lastName = "aa",
-    //         values.email = "aa@aa.edu",
-    //         values.username = "aa",
-    //         values.password = "aa"
-    // }
-
-    let { handleSubmit, handleChange, values, errors, setFieldValue, setFieldError } = useFormik({
+    let { handleSubmit, handleChange, values, errors, setFieldError } = useFormik({
         initialValues: {
             firstName: "",
             lastName: "",
@@ -54,7 +46,7 @@ export default function SignUpForm() {
                 if (!response.ok) throw Error(response)
                 return response.json()
             }).then((response) => {
-                if (response.errorCode == 11000) {
+                if (response.errorCode === 11000) {
                     toast(response.message, {
                         autoClose: 15000,
                     })

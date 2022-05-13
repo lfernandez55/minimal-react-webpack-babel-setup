@@ -1,5 +1,5 @@
-import React, { useState, createContext, useEffect } from 'react'
-import { Routes, Route, Link, Outlet } from 'react-router-dom'
+import React, { useState, createContext } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
 import Admin from './Admin'
 import { useCookies } from 'react-cookie'
@@ -27,7 +27,6 @@ export default function App() {
     let [loggedInUser, setLoggedInUser] = useState([])
     let [roles, setRoles] = useState([])
     let [userRoles, setUserRoles] = useState([])
-    let [sync, setSync] = useState(false)
 
     function getRoles() {
         fetch('/api/users/roles', {
@@ -38,7 +37,6 @@ export default function App() {
             })
             .then((resp) => {
                 setUserRoles(resp)
-                setSync(false)
             })
             .catch((err) => {
                 console.log(err.message);
@@ -48,7 +46,7 @@ export default function App() {
     function hasRole(role) {
         let roleFound = false;
         userRoles.forEach(element => {
-            if (element.name == role) {
+            if (element.name === role) {
                 roleFound = true;
             }
         });
@@ -56,7 +54,7 @@ export default function App() {
     }
 
     return (
-        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, userRoles, setUserRoles, setSync, hasRole, loggedInUser, setLoggedInUser, getRoles }}>
+        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, userRoles, setUserRoles, hasRole, loggedInUser, setLoggedInUser, getRoles }}>
             <div className="react-stuff">
                 <Router>
                     <Routes>

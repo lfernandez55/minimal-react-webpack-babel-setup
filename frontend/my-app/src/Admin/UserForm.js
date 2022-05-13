@@ -1,15 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { AppContext } from '../App'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 toast.configure()
-
-// export function Vhelp({message}){
-
-//         return( <p className="help">{message}</p> )
-// }
 
 export function Vhelp({ message, touchedField }) {
     if (touchedField) {
@@ -31,18 +26,18 @@ const validationSchema = yup.object({
 })
 
 export default function UserForm() {
-    let { authenticated, setAuthenticated, users, setUsers, roles } = useContext(AppContext)
+    let { authenticated, users, roles } = useContext(AppContext)
     const navigate = useNavigate()
     let { uid } = useParams()
     let is_new = uid === undefined
 
-    let user = uid ? users.find(u => u._id == uid) : {}
+    let user = uid ? users.find(u => u._id === uid) : {}
     // We set this to "dummy". If the server see's
     // this password, than it doesn't change it
     user.password = "dummy"
 
 
-    let { handleSubmit, handleChange, values, errors, setFieldError, handleBlur, touched, getFieldProps } = useFormik({
+    let { handleSubmit, handleChange, values, errors, setFieldError, touched, getFieldProps } = useFormik({
         initialValues: is_new ? {
             firstName: "",
             lastName: "",
@@ -66,7 +61,7 @@ export default function UserForm() {
                 if (!response.ok) throw Error(response)
                 return response.json()
             }).then((response) => {
-                if (response.errorCode == 11000) {
+                if (response.errorCode === 11000) {
                     toast(response.message, {
                         autoClose: 15000,
                     })
@@ -95,19 +90,10 @@ export default function UserForm() {
     }
     )
 
-
     if (!authenticated) {
         document.location = '/signin'
         return <></>
     }
-
-
-
-
-
-
-
-
 
     let title = ""
     if (is_new) {
@@ -183,7 +169,7 @@ export default function UserForm() {
                     <label ></label>
                     <div className="control">
                         <button className="btn btn-primary" type="submit">Submit</button>
-                        <button className="btn btn-primary" onClick={() => document.location = "/"}>Cancel</button>
+                        <button className="btn btn-primary" onClick={() => navigate("/admin/users")}>Cancel</button>
                     </div>
                 </div>
 

@@ -4,7 +4,7 @@ import { AppContext } from '../App'
 
 
 export default function UsersByRole() {
-  let { authenticated, setAuthenticated, roles, setRoles } = useContext(AppContext)
+  let { authenticated } = useContext(AppContext)
   const [UsersByRole, setUsersByRole] = useState([]);
 
   useEffect(() => {

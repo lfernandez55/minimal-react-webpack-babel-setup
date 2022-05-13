@@ -4,7 +4,7 @@ import { AppContext } from '../App'
 import { Link, useNavigate } from 'react-router-dom'
 
 export default function Users() {
-    let { authenticated, setAuthenticated, users, setUsers, roles, setRoles } = useContext(AppContext)
+    let { authenticated, users, setUsers, roles, setRoles } = useContext(AppContext)
     const navigate = useNavigate()
     const [DBUpdated, setDBUpdated] = useState(false);
 
@@ -22,6 +22,7 @@ export default function Users() {
             .catch((err) => {
                 console.log(err.message);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [DBUpdated])
 
     useEffect(() => {
@@ -38,6 +39,7 @@ export default function Users() {
             .catch((err) => {
                 console.log(err.message);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [DBUpdated])
 
 
@@ -110,17 +112,19 @@ export default function Users() {
                                     <td>
                                         {
                                             roles.map((r, i) => {
-                                                const found = e.roles.find(element => element == r._id);
+                                                const found = e.roles.find(element => element === r._id);
                                                 if (found) {
                                                     return (r.name + ", ")
+                                                } else {
+                                                    return ("")
                                                 }
                                             })
                                         }
 
 
                                     </td>
-                                    <td><a className="link" onClick={() => navigate(`${e._id}/edit`)}>Edit</a></td>
-                                    <td><a className="link" onClick={() => { deleteMe(e._id) }} >Delete</a></td>
+                                    <td><button className="link" onClick={() => navigate(`${e._id}/edit`)}>Edit</button></td>
+                                    <td><button className="link" onClick={() => { deleteMe(e._id) }} >Delete</button></td>
                                 </tr>
 
                             )
