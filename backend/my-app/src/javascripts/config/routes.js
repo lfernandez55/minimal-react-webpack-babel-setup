@@ -55,7 +55,7 @@ function getEmail(req, app) {
 function isSignedIn(req) {
     try {
         jwt.verify(req.cookies.token, APP_SECRET)
-        console.log("the cookie token: ", req.cookies.token)
+        console.log("the cookie token: ", req.cookies.token.substring(req.cookies.token.length - 6))
         return true
     } catch (err) {
         return false
