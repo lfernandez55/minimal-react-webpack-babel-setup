@@ -1,32 +1,32 @@
-import React, { useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import { AppContext } from '../App';
 
 export default function DashCards() {
-    let { hasRole, setUserRoles } = useContext(AppContext)
-    const navigate = useNavigate()
-    useEffect(() => {
-        fetch('/api/users/roles', {
-            method: "GET",
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .then((resp) => {
-                if (resp.success === false) {
-                    navigate("/errorapi")
-                } else {
-                    setUserRoles(resp)
-                }
+    let { hasRole } = useContext(AppContext)
+    // const navigate = useNavigate()
+    // useEffect(() => {
+    //     fetch('/api/users/roles', {
+    //         method: "GET",
+    //     })
+    //         .then((response) => {
+    //             return response.json();
+    //         })
+    //         .then((resp) => {
+    //             if (resp.success === false) {
+    //                 navigate("/errorapi")
+    //             } else {
+    //                 setUserRoles(resp)
+    //             }
 
-            })
-            .catch((err) => {
-                console.log(err.message);
-                navigate("/errorapi")
-            });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    //         })
+    //         .catch((err) => {
+    //             console.log(err.message);
+    //             navigate("/errorapi")
+    //         });
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [])
 
 
     return (

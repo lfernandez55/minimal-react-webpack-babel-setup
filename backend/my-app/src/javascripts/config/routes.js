@@ -12,6 +12,7 @@ import { User } from '../models/user'
 let router = express.Router()
 
 function isAdmin(req, res, next) {
+    console.log("IN ISADMIN")
     if (isSignedIn(req)) {
         try {
             let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
@@ -45,18 +46,33 @@ function isAdmin(req, res, next) {
 
 }
 
-function getEmail(req, app) {
-    try {
-        let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
-        return userDecoded.email
-    } catch (err) {
-        // this executes on log out -- when the cookie disappears
-        return ""
-    }
-}
+
+// function isLoggedIn(req, res, next) {
+//     console.log("IN ISLOGGEDIN")
+//     if (isSignedIn(req)) {
+//         //continue
+//     } else {
+//         // res.redirect('/signin')
+//         res.status(401).json({ success: false, message: "autherror" })
+//     }
+
+
+// }
+
+
+// function getEmail(req, app) {
+//     try {
+//         let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
+//         return userDecoded.email
+//     } catch (err) {
+//         // this executes on log out -- when the cookie disappears
+//         return ""
+//     }
+// }
 
 
 function isSignedIn(req) {
+    console.log("IN ISSIGNEDIN")
     try {
         jwt.verify(req.cookies.token, APP_SECRET)
         console.log("the cookie token: ", req.cookies.token.substring(req.cookies.token.length - 6))
@@ -67,33 +83,33 @@ function isSignedIn(req) {
     // }
 }
 
-function requireSignIn(req, res, next) {
-    if (isSignedIn(req)) {
-        next()
-    } else {
-        res.redirect('/signin')
-        // one could redirect to /notauthorized as below but
-        // since this is really notauthenticated the signin page is
-        // where to direct the user
-        //res.redirect('/notauthorized')
-    }
+// function requireSignIn(req, res, next) {
+//     if (isSignedIn(req)) {
+//         next()
+//     } else {
+//         res.redirect('/signin')
+//         // one could redirect to /notauthorized as below but
+//         // since this is really notauthenticated the signin page is
+//         // where to direct the user
+//         //res.redirect('/notauthorized')
+//     }
 
-}
+// }
 
 
 
 export function configureRoutes(app) {
-    app.all('*', (req, res, next) => {
-        app.locals.signedIn = isSignedIn(req)
-        app.locals.userEmail = getEmail(req)
-        console.log('users signed in status: ', app.locals.signedIn)
-        // if (app.locals.signedIn == false) {
-        //     res.status(400).json({ success: false, message: "autherror" })
-        // } else {
-        //     next()
-        // }
-        next()
-    })
+    // app.all('*', (req, res, next) => {
+    //     app.locals.signedIn = isSignedIn(req)
+    //     // app.locals.userEmail = getEmail(req)
+    //     console.log('users signed in status: ', app.locals.signedIn)
+    //     // if (app.locals.signedIn == false) {
+    //     //     res.status(400).json({ success: false, message: "autherror" })
+    //     // } else {
+    //     //     next()
+    //     // }
+    //     next()
+    // })
 
 
     router.get('/', indexPage)
@@ -102,23 +118,24 @@ export function configureRoutes(app) {
     // Users
     router.post('/api/users/register', createUserAPI)
     router.post('/api/users/signin', signUserInAPI)
-    router.get('/api/users', isAdmin, allUsersAPI)
-    router.post('/api/users', isAdmin, createUserAPI)  //this route requires authorization
-    router.put('/api/users/:id', isAdmin, updateUserAPI)  //this route requires authorization
-    router.delete('/api/users/:id', isAdmin, deleteUserAPI) //this route requires authorization
-    router.get('/api/users/roles', loggedInUserRolesAPI)
+    router.get('/api/users', isAdmin, allUsersAPI) // this route requires admin authorization
+    router.post('/api/users', isAdmin, createUserAPI)  //this route requires admin authorization
+    router.put('/api/users/:id', isAdmin, updateUserAPI)  //this route requires admin authorization
+    router.delete('/api/users/:id', isAdmin, deleteUserAPI) //this route requires admin authorization
+
+    router.get('/api/users/roles', loggedInUserRolesAPI) //this route returns success:false if session is not available which is handled client side
 
     // Roles
-    router.post('/api/roles', isAdmin, createRoleAPI)  //this route requires authorization
-    router.get('/api/roles', allRolesAPI)
-    router.put('/api/roles/:id', isAdmin, updateRoleAPI)  //this route requires authorization
-    router.delete('/api/roles/:id', isAdmin, deleteRoleAPI) //this route requires authorization
+    router.post('/api/roles', isAdmin, createRoleAPI)  //this route requires admin authorization
+    router.get('/api/roles', isAdmin, allRolesAPI) // this route requires admin authorization
+    router.put('/api/roles/:id', isAdmin, updateRoleAPI)  //this route requires admin authorization
+    router.delete('/api/roles/:id', isAdmin, deleteRoleAPI) //this route requires admin authorization
 
     // One time route for creating admin user with username "admin" and password "admin"
     router.get('/createAdmin', createAdmin)
 
     // Misc
-    router.get('/api/roles/users', usersSortedByRole)
+    router.get('/api/roles/users', isAdmin, usersSortedByRole) // this route requires admin authorization
 
     app.use('/', router)
 }

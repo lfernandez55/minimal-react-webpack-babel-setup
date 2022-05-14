@@ -37,6 +37,8 @@ export default function App() {
                 return response.json();
             })
             .then((resp) => {
+                console.log("setuserroles")
+                console.log(resp)
                 setUserRoles(resp)
             })
             .catch((err) => {
