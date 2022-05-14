@@ -12,6 +12,7 @@ import UsersByRole from './Admin/UsersByRole'
 import Teacher from './Teacher'
 import Other from './Other'
 import Nav from './Nav'
+import ErrorAPI from './ErrorAPI'
 
 import SignInForm from './auth/SignInForm'
 import SignUpForm from './auth/SignUpForm'
@@ -21,13 +22,13 @@ export const AppContext = createContext()
 
 export default function App() {
 
-    const [cookies] = useCookies(['token'])
+    const [cookies, setCookie, removeCookie] = useCookies(['token'])
     let [authenticated, setAuthenticated] = useState(cookies.token !== undefined)
     let [users, setUsers] = useState([])
     let [loggedInUser, setLoggedInUser] = useState([])
     let [roles, setRoles] = useState([])
     let [userRoles, setUserRoles] = useState([])
-
+    console.log("dddd", authenticated)
     function getRoles() {
         fetch('/api/users/roles', {
             method: "GET",
@@ -54,7 +55,7 @@ export default function App() {
     }
 
     return (
-        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, userRoles, setUserRoles, hasRole, loggedInUser, setLoggedInUser, getRoles }}>
+        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, userRoles, setUserRoles, hasRole, loggedInUser, setLoggedInUser, getRoles, setCookie, removeCookie }}>
             <div className="react-stuff">
                 <Router>
                     <Routes>
@@ -70,7 +71,7 @@ export default function App() {
                             <Route path="signin" element={<SignInForm />} ></Route>
                             <Route path="signup" element={<SignUpForm />} ></Route>
                             <Route path="signout" element={<SignOut />} ></Route>
-
+                            <Route path="errorapi" element={<ErrorAPI />} ></Route>
                             <Route path="dashboard" element={<DashCards />} ></Route>
                             <Route path="/admin" element={<Admin />}>
                                 <Route path="users" element={<Users />}></Route>

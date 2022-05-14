@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { AppContext } from '../App'
-
+import { useNavigate } from 'react-router-dom'
 
 
 export default function UsersByRole() {
   let { authenticated } = useContext(AppContext)
   const [UsersByRole, setUsersByRole] = useState([]);
-
+  const navigate = useNavigate()
   useEffect(() => {
     fetch('/api/roles/users', {
       method: "GET",
@@ -15,10 +15,15 @@ export default function UsersByRole() {
         return response.json();
       })
       .then((resp) => {
-        setUsersByRole(resp)
+        if (resp.success === false) {
+          navigate("/errorapi")
+        } else {
+          setUsersByRole(resp)
+        }
       })
       .catch((err) => {
         console.log(err.message);
+        navigate("/errorapi")
       });
   }, [])
   console.log(UsersByRole)

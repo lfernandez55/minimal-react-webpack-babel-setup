@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
@@ -21,7 +22,7 @@ const validationSchema = yup.object({
 })
 
 export default function SignUpForm() {
-
+    const navigate = useNavigate();
     let { handleSubmit, handleChange, values, errors, setFieldError } = useFormik({
         initialValues: {
             firstName: "",
@@ -56,14 +57,14 @@ export default function SignUpForm() {
                     toast(response.message, {
                         autoClose: 3000,
                         onClose: () => {
-                            document.location = "/"
+                            navigate("/signin")
                         }
                     })
                 }
             }).catch((error) => {
                 toast("Sign up failed", {
                     onClose: () => {
-                        document.location = "/"
+                        navigate("/errorapi")
                     }
                 })
             })

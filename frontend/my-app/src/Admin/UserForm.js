@@ -76,9 +76,10 @@ export default function UserForm() {
                     })
                 }
             }).catch((error) => {
+                console.log(error)
                 toast("User create/edit failed", {
                     onClose: () => {
-                        navigate("/admin/users")
+                        navigate("/errorapi")
                     }
                 })
             })

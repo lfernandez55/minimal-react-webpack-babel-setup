@@ -37,25 +37,39 @@ export default function SignInForm() {
                 // following line instructs the browser to send the token along with every request:
                 credentials: 'same-origin',
                 body: JSON.stringify(values),
-            }).then((response) => {
-                if (!response.ok) throw Error('Failed to sign in')
-                return response.text()
             })
                 .then((response) => {
-                    toast('Successfully signed in', {
-                        autoClose: 1000,
-                        onClose: () => {
-                            let myRespObj = JSON.parse(response);
-                            setLoggedInUser(myRespObj.user)
-                            getRoles()
-                            setAuthenticated(true)
-                            navigate("/dashboard");
-                        }
-                    })
+                    console.log(response)
+                    // if (!response.ok) throw Error('Failed to sign in')
+                    //return response.text()
+                    return response.json()
+                })
+                .then((response) => {
+
+                    if (response.success === true) {
+                        toast('Successfully signed in', {
+                            autoClose: 1000,
+                            onClose: () => {
+                                // let myRespObj = JSON.parse(response);
+                                setLoggedInUser(response.user)
+                                getRoles()
+                                setAuthenticated(true)
+                                navigate("/dashboard");
+                            }
+                        })
+                    } else if (response.success === false && response.message === 'nouser') {
+                        toast('Unsuccessful sign in.  Most likely your username and password do not match', {
+                            autoClose: 3000
+                        })
+                    } else if (response.success === false) {
+                        navigate("/errorapi")
+                    }
+                    console.log(response)
+
                 }).catch((error) => {
-                    toast('Failed to sign in', {
+                    toast('An unknown error occurred during sign in', {
                         onClose: () => {
-                            document.location = "/"
+                            navigate("/errorapi")
                         }
                     })
                 })

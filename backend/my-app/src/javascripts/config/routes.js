@@ -21,21 +21,25 @@ function isAdmin(req, res, next) {
             }).exec((err, user) => {
                 if (err) {
                     console.log("Unable to process role code")
-                    res.redirect('/notauthorized')
+                    //res.redirect('/notauthorized')
+                    res.status(401).json({ success: false, message: "autherror" })
                 } else {
                     if (user.roles.length == 1) {
                         next()
                     } else {
-                        res.redirect('/notauthorized')
+                        //res.redirect('/notauthorized')
+                        res.status(401).json({ success: false, message: "autherror" })
                     }
                 }
             })
         } catch (err) {
-            console.log(err)
-            res.redirect('/notauthorized')
+            console.log("Hokey pokey", err)
+            //res.redirect('/notauthorized')
+            res.status(401).json({ success: false, message: "autherror" })
         }
     } else {
-        res.redirect('/signin')
+        // res.redirect('/signin')
+        res.status(401).json({ success: false, message: "autherror" })
     }
 
 
@@ -83,6 +87,11 @@ export function configureRoutes(app) {
         app.locals.signedIn = isSignedIn(req)
         app.locals.userEmail = getEmail(req)
         console.log('users signed in status: ', app.locals.signedIn)
+        // if (app.locals.signedIn == false) {
+        //     res.status(400).json({ success: false, message: "autherror" })
+        // } else {
+        //     next()
+        // }
         next()
     })
 
@@ -93,7 +102,7 @@ export function configureRoutes(app) {
     // Users
     router.post('/api/users/register', createUserAPI)
     router.post('/api/users/signin', signUserInAPI)
-    router.get('/api/users', allUsersAPI)
+    router.get('/api/users', isAdmin, allUsersAPI)
     router.post('/api/users', isAdmin, createUserAPI)  //this route requires authorization
     router.put('/api/users/:id', isAdmin, updateUserAPI)  //this route requires authorization
     router.delete('/api/users/:id', isAdmin, deleteUserAPI) //this route requires authorization

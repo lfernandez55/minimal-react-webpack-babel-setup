@@ -15,11 +15,16 @@ export default function Users() {
                 return response.json();
             })
             .then((resp) => {
-                setRoles(resp)
-                setDBUpdated(false)
+                if (resp.success === false) {
+                    navigate("/errorapi")
+                } else {
+                    setRoles(resp)
+                    setDBUpdated(false)
+                }
             })
             .catch((err) => {
                 console.log(err.message);
+                navigate("/errorapi")
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [DBUpdated])

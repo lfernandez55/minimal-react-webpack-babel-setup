@@ -16,11 +16,19 @@ export default function Users() {
                 return response.json();
             })
             .then((resp) => {
-                setUsers(resp)
-                setDBUpdated(false)
+                console.log("Old Mcdonald....", resp.success)
+                if (resp.success === false) {
+                    navigate("/errorapi")
+                } else {
+                    setUsers(resp)
+                    setDBUpdated(false)
+                }
+
             })
             .catch((err) => {
+                console.log("DEBUGXXX")
                 console.log(err.message);
+                navigate("/errorapi")
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [DBUpdated])
@@ -33,11 +41,16 @@ export default function Users() {
                 return response.json();
             })
             .then((resp) => {
-                setRoles(resp)
-                setDBUpdated(false)
+                if (resp.success === false) {
+                    navigate("/errorapi")
+                } else {
+                    setRoles(resp)
+                    setDBUpdated(false)
+                }
             })
             .catch((err) => {
                 console.log(err.message);
+                navigate("/errorapi")
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [DBUpdated])
@@ -52,11 +65,6 @@ export default function Users() {
         return <></>
     }
 
-
-    // the below used to be used.  setting this instead in dashboard and sharing via context
-    //const [users, setUsers] = useState([]);
-
-
     const deleteMe = (param) => {
         let url = "api/users/" + param;
         fetch(url, {
@@ -69,10 +77,16 @@ export default function Users() {
                 // Since the delete was successful on the backend change the DBUpdated var. 
                 // Since SetEffect is watching for a change to this var, the change will
                 // alert SetEffect to run again.
-                setDBUpdated("changed")
+                // setDBUpdated("changed")
+                if (resp.success === false) {
+                    navigate("/errorapi")
+                } else {
+                    setDBUpdated("changed")
+                }
             })
             .catch((err) => {
-                alert("An error occurred while attempting delete. Most likely you are not authorized")
+                console.log(err)
+                navigate("/errorapi")
             });
     }
 

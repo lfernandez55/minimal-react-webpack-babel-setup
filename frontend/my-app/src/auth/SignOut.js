@@ -1,8 +1,10 @@
 import React from 'react'
-import { useCookies } from 'react-cookie'
+import { useContext } from 'react'
+import { AppContext } from '../App';
 
 export default function SignOut() {
-    const [cookies, setCookie, removeCookie] = useCookies(['token'])
+
+    let { removeCookie } = useContext(AppContext)
     removeCookie('token')
     document.location = '/'
     return <></>

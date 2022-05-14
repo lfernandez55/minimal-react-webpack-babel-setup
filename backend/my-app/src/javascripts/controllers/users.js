@@ -34,7 +34,8 @@ export const createUserAPI = (req, res, next) => {
 export const signUserInAPI = (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         if (err) {
-            res.status(404).json(err)
+            // res.status(404).json(err)
+            res.status(404).json({ success: false, message: err })
             res.end()
         } else {
             if (user) {
@@ -45,7 +46,9 @@ export const signUserInAPI = (req, res, next) => {
                 // above cookie expires after 60 minutes
                 res.end()
             } else {
-                res.status(401).json(err)
+                // res.status(401).json(err)
+                console.log("Failed signUserInAPI")
+                res.status(401).json({ success: false, message: "nouser" })
                 res.end()
             }
         }

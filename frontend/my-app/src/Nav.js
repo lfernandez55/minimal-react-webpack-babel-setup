@@ -3,8 +3,14 @@ import { Link, Outlet } from 'react-router-dom'
 import { useContext } from 'react'
 import { AppContext } from './App';
 
+
 export default function Nav() {
-    let { authenticated, loggedInUser } = useContext(AppContext)
+    let { authenticated, loggedInUser, removeCookie } = useContext(AppContext)
+
+    function deleteCookie() {
+        removeCookie('token')
+        alert("Deleting cookie - in Chrome dev tools, right click on cookie and click refresh to see it removed)")
+    }
     return (
         <>
             <header>
@@ -38,6 +44,7 @@ export default function Nav() {
 
             <footer>
                 <h6><a href="/createAdmin">Reseed the DB with an account username: admin, password: admin</a></h6>
+                <h6 className="link" style={{ color: 'blue' }} onClick={deleteCookie}>Delete Session Cookie</h6>
             </footer>
         </>
     )

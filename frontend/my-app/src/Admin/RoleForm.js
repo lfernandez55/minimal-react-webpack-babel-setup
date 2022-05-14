@@ -42,17 +42,22 @@ export default function RoleForm() {
                 credentials: 'same-origin',
                 body: JSON.stringify(values)
             }).then((response) => {
-                toast('Successfully submitted', {
-                    autoClose: 500,
-                    onClose: () => {
-                        navigate("/admin/roles")
-                    }
-                })
+                if (response.success === false) {
+                    navigate("/errorapi")
+                } else {
+                    toast('Successfully submitted', {
+                        autoClose: 500,
+                        onClose: () => {
+                            navigate("/admin/roles")
+                        }
+                    })
+                }
+
             }).catch((error) => {
                 toast('Failed to submit', {
                     autoClose: 500,
                     onClose: () => {
-                        navigate("/admin/roles")
+                        navigate("/errorapi")
                     }
                 })
             })
