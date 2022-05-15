@@ -27,28 +27,30 @@ export default function App() {
     let [users, setUsers] = useState([])
     let [loggedInUser, setLoggedInUser] = useState([])
     let [roles, setRoles] = useState([])
-    let [userRoles, setUserRoles] = useState([])
+    // let [userRoles, setUserRoles] = useState([])
     console.log("dddd", authenticated)
-    function getRoles() {
-        fetch('/api/users/roles', {
-            method: "GET",
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .then((resp) => {
-                console.log("setuserroles")
-                console.log(resp)
-                setUserRoles(resp)
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-    }
+    // function getRoles() {
+    //     fetch('/api/users/roles', {
+    //         method: "GET",
+    //     })
+    //         .then((response) => {
+    //             return response.json();
+    //         })
+    //         .then((resp) => {
+    //             console.log("setuserroles")
+    //             console.log(resp)
+    //             setUserRoles(resp)
+    //         })
+    //         .catch((err) => {
+    //             console.log(err.message);
+    //         });
+    // }
 
     function hasRole(role) {
         let roleFound = false;
-        userRoles.forEach(element => {
+        console.log("in has role")
+        console.log(loggedInUser)
+        loggedInUser.roles.forEach(element => {
             if (element.name === role) {
                 roleFound = true;
             }
@@ -57,7 +59,7 @@ export default function App() {
     }
 
     return (
-        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, userRoles, setUserRoles, hasRole, loggedInUser, setLoggedInUser, getRoles, setCookie, removeCookie }}>
+        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, hasRole, loggedInUser, setLoggedInUser, setCookie, removeCookie }}>
             <div className="react-stuff">
                 <Router>
                     <Routes>

@@ -45,14 +45,15 @@ export default function SignInForm() {
                     return response.json()
                 })
                 .then((response) => {
-
+                    console.log("In signinform")
+                    console.log(response.user.roles[0].name)
                     if (response.success === true) {
                         toast('Successfully signed in', {
                             autoClose: 1000,
                             onClose: () => {
                                 // let myRespObj = JSON.parse(response);
                                 setLoggedInUser(response.user)
-                                getRoles()
+                                //getRoles()
                                 setAuthenticated(true)
                                 navigate("/dashboard");
                             }

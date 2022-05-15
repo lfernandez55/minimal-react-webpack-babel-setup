@@ -42,18 +42,32 @@ export const signUserInAPI = (req, res, next) => {
                 let token = user.generateJWT()
                 console.log("User authenticated. . . .")
                 res.cookie("token", token, { maxAge: 1000 * 60 * 60 })
-                res.json({ success: true, user: user })
-                // above cookie expires after 60 minutes
-                res.end()
+                // adding full role objects to the user because passport only includes the roleid
+                User.findById({ _id: user._id })
+                    .populate("roles")
+                    .exec((err, userDB) => {
+                        if (err) {
+                            console.log("Error occurred:", err)
+                            res.json({ success: false, message: user })
+                            res.end()
+                        } else {
+                            user.roles = userDB.roles
+                            res.json({ success: true, user: user })
+                            res.end()
+                        }
+                    })
+
             } else {
                 // res.status(401).json(err)
                 console.log("Failed signUserInAPI")
-                res.status(401).json({ success: false, message: "nouser" })
+                res.status(401).json({ success: false, message: "nomatch" })
                 res.end()
             }
         }
     })(req, res, next)  //passport.authenticate returns a function which we are calling here, hence no commas
 }
+
+
 
 /////////// Standard CRUD Methods Below
 
@@ -123,20 +137,39 @@ export const deleteUserAPI = (req, res, next) => {
 
 
 //GET /api/users
-export const loggedInUserRolesAPI = (req, res, next) => {
-    try {
-        let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
-        User.findById({ _id: userDecoded._id }).populate({
-            path: 'roles'
-        }).exec((err, user) => {
-            if (err) {
-                res.status(400).json({ success: false, message: err })
-            } else {
-                res.status(200).json(user.roles)
-            }
-        })
-    } catch (err) {
-        res.status(400).json({ success: false, message: err })
-    }
-}
+// export const loggedInUserRolesAPI = (req, res, next) => {
+//     try {
+//         let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
+//         User.findById({ _id: userDecoded._id }).populate({
+//             path: 'roles'
+//         }).exec((err, user) => {
+//             if (err) {
+//                 res.status(400).json({ success: false, message: err })
+//             } else {
+//                 res.status(200).json(user.roles)
+//             }
+//         })
+//     } catch (err) {
+//         res.status(400).json({ success: false, message: err })
+//     }
+// }
 
+// export const loggedInUserRolesAPI = (req, res, next) => {
+//     console.log("IN oggedInUserRolesAPI")
+//     try {
+//         let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
+//         User.findById({ _id: userDecoded._id })
+//             .populate("roles")
+//             .exec((err, user) => {
+//                 if (err) {
+//                     res.status(400).json({ success: false, message: err })
+//                 } else {
+//                     console.log(user.roles)
+//                     res.status(200).json(user)
+//                 }
+//             })
+
+//     } catch (err) {
+//         res.status(400).json({ success: false, message: err })
+//     }
+// }

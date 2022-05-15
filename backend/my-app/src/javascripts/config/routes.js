@@ -1,6 +1,6 @@
 import express from 'express'
 import { indexPage, notAuthorizedPage } from '../controllers/index'
-import { signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI, loggedInUserRolesAPI } from '../controllers/users'
+import { signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI } from '../controllers/users'
 import { createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI } from '../controllers/roles'
 import { createAdmin } from '../controllers/createAdmin'
 import { usersSortedByRole } from '../controllers/misc'
@@ -123,7 +123,7 @@ export function configureRoutes(app) {
     router.put('/api/users/:id', isAdmin, updateUserAPI)  //this route requires admin authorization
     router.delete('/api/users/:id', isAdmin, deleteUserAPI) //this route requires admin authorization
 
-    router.get('/api/users/roles', loggedInUserRolesAPI) //this route returns success:false if session is not available which is handled client side
+    // router.get('/api/users/roles', loggedInUserRolesAPI) //this route returns success:false if session is not available which is handled client side
 
     // Roles
     router.post('/api/roles', isAdmin, createRoleAPI)  //this route requires admin authorization
