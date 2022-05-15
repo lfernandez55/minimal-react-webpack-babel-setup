@@ -3,7 +3,6 @@ import { indexPage } from '../controllers/index'
 import { signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI } from '../controllers/users'
 import { createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI } from '../controllers/roles'
 import { createAdmin } from '../controllers/createAdmin'
-// import { usersSortedByRole } from '../controllers/misc'
 
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from './vars'
@@ -55,7 +54,11 @@ function isSignedIn(req) {
 
 
 export function configureRoutes(app) {
-
+    app.all('*', (req, res, next) => {
+        app.locals.signedIn = isSignedIn(req)
+        console.log('users signed in status: ', app.locals.signedIn)
+        next()
+    })
     router.get('/', indexPage)
 
     // Users
@@ -74,9 +77,6 @@ export function configureRoutes(app) {
 
     // One time route for creating admin user with username "admin" and password "admin"
     router.get('/api/createAdmin', createAdmin)
-
-    // Misc
-    // router.get('/api/roles/users', isAdmin, usersSortedByRole) // this route requires admin authorization
 
     app.use('/', router)
 }
