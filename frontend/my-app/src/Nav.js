@@ -7,6 +7,27 @@ import { AppContext } from './App';
 export default function Nav() {
     let { authenticated, loggedInUser, removeCookie } = useContext(AppContext)
 
+    function seedDB() {
+        fetch('/api/createAdmin', {
+            method: "GET",
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((resp) => {
+                console.log("Old Mcdonald....", resp.success)
+                if (resp.success === false) {
+                    alert("An error occurred")
+                } else {
+                    alert("DB Seeded!")
+                }
+
+            })
+            .catch((err) => {
+                alert("An error occurred", err)
+            });
+    }
+
     function deleteCookie() {
         removeCookie('token')
         alert("Deleting cookie - in Chrome dev tools, right click on cookie and click refresh to see it removed)")
@@ -43,7 +64,7 @@ export default function Nav() {
             <Outlet />
 
             <footer>
-                <h6><a href="/createAdmin">Reseed the DB with an account username: admin, password: admin</a></h6>
+                <h6 className="link" style={{ color: 'blue' }} onClick={seedDB}>Reseed the DB with an account username: admin, password: admin</h6>
                 <h6 className="link" style={{ color: 'blue' }} onClick={deleteCookie}>Delete Session Cookie</h6>
             </footer>
         </>

@@ -132,7 +132,7 @@ export function configureRoutes(app) {
     router.delete('/api/roles/:id', isAdmin, deleteRoleAPI) //this route requires admin authorization
 
     // One time route for creating admin user with username "admin" and password "admin"
-    router.get('/createAdmin', createAdmin)
+    router.get('/api/createAdmin', createAdmin)
 
     // Misc
     router.get('/api/roles/users', isAdmin, usersSortedByRole) // this route requires admin authorization
