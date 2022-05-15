@@ -22,7 +22,7 @@ const validationSchema = yup.object({
 
 export default function SignInForm() {
     const navigate = useNavigate();
-    let { getRoles, setAuthenticated, setLoggedInUser } = useContext(AppContext)
+    let { setAuthenticated, setLoggedInUser } = useContext(AppContext)
     let { handleSubmit, handleChange, values, errors } = useFormik({
         initialValues: {
             username: "",

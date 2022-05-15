@@ -23,9 +23,13 @@ export const AppContext = createContext()
 export default function App() {
 
     const [cookies, setCookie, removeCookie] = useCookies(['token'])
+    // authenticated helps to determine what elements like "Log Out" or "Dashboard" to show in Nav.js
     let [authenticated, setAuthenticated] = useState(cookies.token !== undefined)
-    let [users, setUsers] = useState([])
+    // this contains the logged in user's profile info (like firstname, lastname and their roles/role names)
     let [loggedInUser, setLoggedInUser] = useState([])
+    // users is the list of all users in the DB
+    let [users, setUsers] = useState([])
+    // roles is the list of all available roles in the DB (not the logged in user's roles which are in loggedInUser)
     let [roles, setRoles] = useState([])
     // let [userRoles, setUserRoles] = useState([])
     console.log("dddd", authenticated)

@@ -25,6 +25,7 @@ export default function UsersByRole() {
         console.log(err.message);
         navigate("/errorapi")
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   console.log(UsersByRole)
 
