@@ -39,21 +39,16 @@ export default function SignInForm() {
                 body: JSON.stringify(values),
             })
                 .then((response) => {
-                    console.log(response)
                     // if (!response.ok) throw Error('Failed to sign in')
-                    //return response.text()
                     return response.json()
                 })
                 .then((response) => {
-                    console.log("In signinform")
-                    console.log(response.user.roles[0].name)
                     if (response.success === true) {
                         toast('Successfully signed in', {
                             autoClose: 1000,
                             onClose: () => {
-                                // let myRespObj = JSON.parse(response);
                                 setLoggedInUser(response.user)
-                                //getRoles()
+                                // without setAuthenticated("true") "Login" link wouldn't disappear from nav
                                 setAuthenticated(true)
                                 navigate("/dashboard");
                             }

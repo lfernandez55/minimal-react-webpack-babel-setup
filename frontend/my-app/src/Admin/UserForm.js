@@ -56,7 +56,7 @@ export default function UserForm() {
                 body: JSON.stringify(values)
             }).then((response) => {
                 // response.ok checks to see if the response is in the 200 to 300 range
-                // Duplicate account violations are NOT returning 200 range errors by design.
+                // Duplicate account violations by design return response.ok. 
                 // Instead the dupe problem is sent in the response.message and displayed in the toast 
                 if (!response.ok) throw Error(response)
                 return response.json()

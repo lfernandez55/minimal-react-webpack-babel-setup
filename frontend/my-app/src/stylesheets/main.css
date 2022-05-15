@@ -34,7 +34,7 @@ body{
 header, footer{
     background: lightgray;
     padding: 10px;
-    /* margin: 10px; */
+
 }
 header{
     display: flex;
@@ -61,16 +61,11 @@ h6{
 }
 
 .link{
-    /* color: blue !important;
-    cursor: pointer;
-    text-decoration: none; */
 
     background: none !important;
     border: none;
     padding: 0 !important;
-    /*optional*/
     font-family: arial, sans-serif;
-    /*input has OS specific font-family*/
     color: #069;
     text-decoration: none;
     cursor: pointer;
@@ -95,7 +90,6 @@ a{
 }
 
 .custom-card{
-    /* width: 30%; */
     flex: 1;
     margin: 5px;
 }
@@ -107,7 +101,6 @@ a{
 .dashboard-cards{
     display: flex;
     flex-direction: row;
-    /* justify-content: space-around; */
     align-items: flex-start;
     
 }

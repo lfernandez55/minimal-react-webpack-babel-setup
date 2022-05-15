@@ -5,13 +5,8 @@ import { Link, Outlet } from 'react-router-dom'
 const highLight = (param) => {
     document.getElementById('usersTab').classList.remove("active")
     document.getElementById('rolesTab').classList.remove("active")
-    // document.getElementById('usersbyroleTab').classList.remove("active")
     document.getElementById(param).classList.add("active")
-    // if (param == "rolesTab"){
-    //     document.getElementById('usersTab').classList.remove("active")
-    // }else if{
-    //     document.getElementById('rolesTab').classList.remove("active")
-    // }
+
 }
 
 export default function Admin() {
@@ -24,25 +19,9 @@ export default function Admin() {
 
                 </li>
                 <li className="nav-item">
-                    {/* <a className="nav-link" href="#">Link</a> */}
                     <Link className="nav-link " id="rolesTab" aria-current="page" to="/admin/roles" onClick={() => highLight('rolesTab')}>Roles</Link>
                 </li>
-                {/* <li className="nav-item">
-                    
-                <Link className="nav-link " id="usersbyroleTab" aria-current="page" to="/admin/usersbyrole" onClick={() => highLight('usersbyroleTab')}>Users By Role</Link>
-            </li> */}
             </ul>
-            {/* <Router> */}
-            {/* <Routes>
-                <Route exact path="/admin/users" element={<Users />}></Route>
-                <Route exact path="/admin/users/new" element={<UserForm />}></Route>
-                <Route exact path="/admin/users/:uid/edit" element={<UserForm />}></Route>
-                <Route exact path="/admin/roles" element={<Roles />}></Route>
-                <Route exact path="/admin/roles/new" element={<RoleForm />}></Route>
-                <Route exact path="/admin/roles/:rid/edit" element={<RoleForm />}></Route>
-                <Route exact path="/admin/usersbyrole" element={<UsersByRole />}></Route>
-            </Routes> */}
-            {/* </Router> */}
             <Outlet />
         </div >
     )

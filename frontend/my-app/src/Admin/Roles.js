@@ -29,10 +29,7 @@ export default function Users() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [DBUpdated])
 
-    // The following test isn't strictly needed since authentication is already checked when the user
-    // requests the dashboard prior to getting here.
-    // But it doesn't hurt to have the extra test in case the authentication test on the dashboard is
-    // compromised.
+    // The following test isn't strictly needed since the apis protect things
     if (!authenticated) {
         document.location = '/signin'
         return <></>

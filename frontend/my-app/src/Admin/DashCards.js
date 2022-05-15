@@ -5,29 +5,6 @@ import { AppContext } from '../App';
 
 export default function DashCards() {
     let { hasRole } = useContext(AppContext)
-    // const navigate = useNavigate()
-    // useEffect(() => {
-    //     fetch('/api/users/roles', {
-    //         method: "GET",
-    //     })
-    //         .then((response) => {
-    //             return response.json();
-    //         })
-    //         .then((resp) => {
-    //             if (resp.success === false) {
-    //                 navigate("/errorapi")
-    //             } else {
-    //                 setUserRoles(resp)
-    //             }
-
-    //         })
-    //         .catch((err) => {
-    //             console.log(err.message);
-    //             navigate("/errorapi")
-    //         });
-    //     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [])
-
 
     return (
         <>
@@ -36,7 +13,6 @@ export default function DashCards() {
             <div className="dashboard-cards">
                 {hasRole('admin') ? (
                     <Link to="/admin/users">
-                        {/* <button className="btn btn-primary"  >Use Admin Tools</button>  */}
                         <div className="card custom-card" >
                             <div className="card-body">
                                 <h5 className="card-title">Admin Tools</h5>
@@ -49,7 +25,6 @@ export default function DashCards() {
 
                 {hasRole('teacher') ? (
                     <Link to="/teacher">
-                        {/* <button className="btn btn-primary"  >Use Admin Tools</button>  */}
                         <div className="card custom-card" >
                             <div className="card-body">
                                 <h5 className="card-title">Teacher Tools</h5>
@@ -63,7 +38,6 @@ export default function DashCards() {
 
 
                 <Link to="/other">
-                    {/* <button className="btn btn-primary"  >Use Other Tools</button>  */}
                     <div className="card custom-card" >
                         <div className="card-body">
                             <h5 className="card-title">Other Tools</h5>

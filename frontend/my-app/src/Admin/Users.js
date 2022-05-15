@@ -16,7 +16,6 @@ export default function Users() {
                 return response.json();
             })
             .then((resp) => {
-                console.log("Old Mcdonald....", resp.success)
                 if (resp.success === false) {
                     navigate("/errorapi")
                 } else {
@@ -26,7 +25,6 @@ export default function Users() {
 
             })
             .catch((err) => {
-                console.log("DEBUGXXX")
                 console.log(err.message);
                 navigate("/errorapi")
             });
@@ -56,10 +54,7 @@ export default function Users() {
     }, [DBUpdated])
 
 
-    // The following test isn't strictly needed since authentication is already checked when the user
-    // requests the dashboard prior to getting here.
-    // But it doesn't hurt to have the extra test in case the authentication test on the dashboard is
-    // compromised.
+    // The following test isn't strictly needed since the API is protected.
     if (!authenticated) {
         document.location = '/signin'
         return <></>
@@ -77,7 +72,6 @@ export default function Users() {
                 // Since the delete was successful on the backend change the DBUpdated var. 
                 // Since SetEffect is watching for a change to this var, the change will
                 // alert SetEffect to run again.
-                // setDBUpdated("changed")
                 if (resp.success === false) {
                     navigate("/errorapi")
                 } else {
