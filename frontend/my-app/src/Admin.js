@@ -5,7 +5,7 @@ import { Link, Outlet } from 'react-router-dom'
 const highLight = (param) => {
     document.getElementById('usersTab').classList.remove("active")
     document.getElementById('rolesTab').classList.remove("active")
-    document.getElementById('usersbyroleTab').classList.remove("active")
+    // document.getElementById('usersbyroleTab').classList.remove("active")
     document.getElementById(param).classList.add("active")
     // if (param == "rolesTab"){
     //     document.getElementById('usersTab').classList.remove("active")
@@ -27,10 +27,10 @@ export default function Admin() {
                     {/* <a className="nav-link" href="#">Link</a> */}
                     <Link className="nav-link " id="rolesTab" aria-current="page" to="/admin/roles" onClick={() => highLight('rolesTab')}>Roles</Link>
                 </li>
-                <li className="nav-item">
-                    {/* <a className="nav-link" href="#">Link</a> */}
-                    <Link className="nav-link " id="usersbyroleTab" aria-current="page" to="/admin/usersbyrole" onClick={() => highLight('usersbyroleTab')}>Users By Role</Link>
-                </li>
+                {/* <li className="nav-item">
+                    
+                <Link className="nav-link " id="usersbyroleTab" aria-current="page" to="/admin/usersbyrole" onClick={() => highLight('usersbyroleTab')}>Users By Role</Link>
+            </li> */}
             </ul>
             {/* <Router> */}
             {/* <Routes>
@@ -44,6 +44,6 @@ export default function Admin() {
             </Routes> */}
             {/* </Router> */}
             <Outlet />
-        </div>
+        </div >
     )
 }

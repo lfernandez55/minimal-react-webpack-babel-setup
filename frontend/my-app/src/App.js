@@ -8,7 +8,7 @@ import Users from './Admin/Users'
 import UserForm from './Admin/UserForm'
 import Roles from './Admin/Roles'
 import RoleForm from './Admin/RoleForm'
-import UsersByRole from './Admin/UsersByRole'
+// import UsersByRole from './Admin/UsersByRole'
 import Teacher from './Teacher'
 import Other from './Other'
 import Nav from './Nav'
@@ -90,7 +90,7 @@ export default function App() {
                                 <Route path="roles" element={<Roles />}></Route>
                                 <Route path="roles/new" element={<RoleForm />}></Route>
                                 <Route path="roles/:rid/edit" element={<RoleForm />}></Route>
-                                <Route path="usersbyrole" element={<UsersByRole />}></Route>
+                                {/* <Route path="usersbyrole" element={<UsersByRole />}></Route> */}
                             </Route>
                             <Route path="/teacher" element={<Teacher />}></Route>
                             <Route path="/other" element={<Other />}></Route>
