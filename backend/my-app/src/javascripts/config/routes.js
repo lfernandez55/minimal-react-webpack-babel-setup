@@ -41,7 +41,6 @@ function isAdmin(req, res, next) {
 
 
 function isSignedIn(req) {
-    console.log("IN ISSIGNEDIN")
     try {
         jwt.verify(req.cookies.token, APP_SECRET)
         console.log("the cookie token: ", req.cookies.token.substring(req.cookies.token.length - 6))
@@ -54,11 +53,12 @@ function isSignedIn(req) {
 
 
 export function configureRoutes(app) {
-    app.all('*', (req, res, next) => {
-        app.locals.signedIn = isSignedIn(req)
-        console.log('users signed in status: ', app.locals.signedIn)
-        next()
-    })
+    // The below isn't needed since apis are protected with isAdmin below
+    // But it could be used in other use cases so I include it commented out.
+    // app.all('*', (req, res, next) => {
+    //     app.locals.signedIn = isSignedIn(req)
+    //     next()
+    // })
     router.get('/', indexPage)
 
     // Users
