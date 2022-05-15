@@ -33,7 +33,6 @@ export default function App() {
 
     function hasRole(role) {
         let roleFound = false;
-        console.log("in has role")
         console.log(loggedInUser)
         loggedInUser.roles.forEach(element => {
             if (element.name === role) {
