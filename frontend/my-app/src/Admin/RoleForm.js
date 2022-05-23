@@ -31,7 +31,7 @@ export default function RoleForm() {
 
     let { handleSubmit, handleChange, values, errors } = useFormik({
         initialValues: is_new ? {
-            firstname: "",
+            name: "",
         } : { ...role },
         validationSchema,
 
