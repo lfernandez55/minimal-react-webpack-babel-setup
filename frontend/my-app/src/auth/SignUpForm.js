@@ -41,6 +41,7 @@ export default function SignUpForm() {
                 credentials: 'same-origin',
                 body: JSON.stringify(values),
             }).then((response) => {
+                console.log("Response status code", response.status)
                 return response.json()
             }).then((response) => {
                 if (response.errorCode === 11000) {
