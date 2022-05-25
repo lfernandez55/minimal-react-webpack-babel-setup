@@ -15,7 +15,8 @@ export const createUserAPI = (req, res, next) => {
         if (err) {
             // err.code indicates that a duplicate key violation occurred
             if (err.code == 11000) {
-                res.status(200).json({ success: false, errorCode: err.code, message: "Most likely you are trying to create an account with a username or email that already exists. Try a different email and/or username." })
+                // 403 Forbidden ("The server understood the request, but is refusing to fulfill it")
+                res.status(403).json({ success: false, errorCode: err.code, message: "Most likely you are trying to create an account with a username or email that already exists. Try a different email and/or username." })
             } else {
                 res.status(400).json({ success: false, message: err })
             }
@@ -36,12 +37,9 @@ export const signUserInAPI = (req, res) => {
     //
     User.findOne({ username: req.body.username }).populate("roles").exec((err, user) => {
         if (err) {
-            res.json({ success: false, message: "nouser" })
+            res.status(500).json({ success: false, message: err })
             res.end()
         } else {
-            console.log("DEBUGzzzzzzzz:")
-            console.log(req.body.password)
-            // console.log(user.isValidPassword(req.body.password))
             if (user){
                 if(user.isValidPassword(req.body.password)){
                     let token = user.generateJWT()
@@ -50,14 +48,14 @@ export const signUserInAPI = (req, res) => {
                     //although the token is called a jwt, we're still storing the info in a cookie
                     //the roles in the json are used by the client for authorization
                     res.cookie("token", token, { maxAge: 1000 * 60 * 60 })
-                    res.json({ success: true, user: user })
+                    res.status(200).json({ success: true, user: user })
                     res.end()
                 }else{
-                    res.json({ success: false, message: "nouser" })
+                    res.status(401).json({ success: false, message: "An account with that username was found but the password did not match" })
                     res.end()
                 }
             }else{
-                res.json({ success: false, message: "nouser" })
+                res.status(401).json({ success: false, message: "No account matching that username was found" })
                 res.end()
             }
 

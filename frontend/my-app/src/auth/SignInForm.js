@@ -53,15 +53,11 @@ export default function SignInForm() {
                                 navigate("/dashboard");
                             }
                         })
-                    } else if (response.success === false && response.message === 'nouser') {
-                        toast('Unsuccessful sign in.  Most likely your username and password do not match', {
+                    } else {
+                        toast(response.message, {
                             autoClose: 3000
                         })
-                    } else if (response.success === false) {
-                        navigate("/errorapi")
-                    }
-                    console.log(response)
-
+                    } 
                 }).catch((error) => {
                     toast('An unknown error occurred during sign in', {
                         onClose: () => {
