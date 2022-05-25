@@ -38,11 +38,11 @@ app.use(express.urlencoded({extended: false}))
 // set up a place for static files 7:07
 app.use(express.static(path.join(__dirname, 'public')))
 
-// authentication
-import passport from 'passport'
-import {strategy} from './src/javascripts/config/passport'
-passport.use(strategy)
-app.use(passport.initialize())
+// authenticationx
+// import passport from 'passport'
+// import {strategy} from './src/javascripts/config/passport'
+// passport.use(strategy)
+// app.use(passport.initialize())
 
 
 // Routing

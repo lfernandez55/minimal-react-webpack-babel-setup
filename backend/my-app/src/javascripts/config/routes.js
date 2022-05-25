@@ -14,6 +14,15 @@ function isAdmin(req, res, next) {
     if (isSignedIn(req)) {
         try {
             let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
+            // The token actually contains the role info in userDecoded.roles.
+            // I specified that roles should be in the token in users.js/userSchema.methods.generateJWT. 
+            // If not a lot of security is needed we could just see whether the admin role is in the token
+            // by accessing userDecoded.roles.
+            // However, below  we add another level of protection by checking to see
+            // whether the token is matched to a user in the db that has the admin role.
+            // If a hacker got ahold of the token and we
+            // wanted to deny them access, we could simply dissassociate the admin role with
+            // their account in the db
             User.findById({ _id: userDecoded._id }).populate({
                 path: 'roles',
                 match: { name: 'admin' }

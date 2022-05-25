@@ -1,4 +1,3 @@
-import passport from 'passport'
 import { Role } from '../models/role'
 
 export const createRoleAPI = (req, res, next) => {

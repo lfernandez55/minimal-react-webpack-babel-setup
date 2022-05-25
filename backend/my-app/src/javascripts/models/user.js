@@ -64,6 +64,8 @@ userSchema.methods.generateJWT = function () {
         email: this.email,
         firstName: this.firstName,
         lastName: this.lastName,
+        foo: 'baz',
+        roles: this.roles,
         exp: parseInt(expireOn.getTime() / 1000)
     }, APP_SECRET)
 

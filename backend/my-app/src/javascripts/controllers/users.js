@@ -1,4 +1,3 @@
-import passport from 'passport'
 import { User } from '../models/user'
 
 
@@ -29,40 +28,43 @@ export const createUserAPI = (req, res, next) => {
 
 }
 
-export const signUserInAPI = (req, res, next) => {
-    passport.authenticate('local', (err, user, info) => {
+
+export const signUserInAPI = (req, res) => {
+    //the below query assumes usernames are unique. this uniqueness is enforced in createUserAPI
+    //roles is populated in the below query so that the React client has access to it
+    //the React client displays different GUI depending on role
+    //
+    User.findOne({ username: req.body.username }).populate("roles").exec((err, user) => {
         if (err) {
-            res.status(404).json({ success: false, message: err })
+            res.json({ success: false, message: "nouser" })
             res.end()
         } else {
-            if (user) {
-                let token = user.generateJWT()
-                console.log("User authenticated. . . .")
-                res.cookie("token", token, { maxAge: 1000 * 60 * 60 })
-                // adding full role objects to the user because passport only includes the roleid
-                User.findById({ _id: user._id })
-                    .populate("roles")
-                    .exec((err, userDB) => {
-                        if (err) {
-                            console.log("Error occurred:", err)
-                            res.json({ success: false, message: user })
-                            res.end()
-                        } else {
-                            user.roles = userDB.roles
-                            res.json({ success: true, user: user })
-                            res.end()
-                        }
-                    })
-
-            } else {
-                console.log("Failed signUserInAPI")
-                res.status(401).json({ success: false, message: "nomatch" })
+            console.log("DEBUGzzzzzzzz:")
+            console.log(req.body.password)
+            // console.log(user.isValidPassword(req.body.password))
+            if (user){
+                if(user.isValidPassword(req.body.password)){
+                    let token = user.generateJWT()
+                    console.log("User authenticated. . . .")
+                    //the cookie stores the token and is used by the server for authentication and authorization
+                    //although the token is called a jwt, we're still storing the info in a cookie
+                    //the roles in the json are used by the client for authorization
+                    res.cookie("token", token, { maxAge: 1000 * 60 * 60 })
+                    res.json({ success: true, user: user })
+                    res.end()
+                }else{
+                    res.json({ success: false, message: "nouser" })
+                    res.end()
+                }
+            }else{
+                res.json({ success: false, message: "nouser" })
                 res.end()
             }
-        }
-    })(req, res, next)  //passport.authenticate returns a function which we are calling here, hence no commas
-}
 
+        }
+    })
+
+}
 
 
 /////////// Standard CRUD Methods Below
