@@ -1,7 +1,7 @@
 import express from 'express'
 import { indexPage } from '../controllers/index'
 import { signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI } from '../controllers/users'
-import { createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI } from '../controllers/roles'
+import { createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI, dashInfo } from '../controllers/roles'
 import { createAdmin } from '../controllers/createAdmin'
 
 import jwt from 'jsonwebtoken'
@@ -48,6 +48,15 @@ function isAdmin(req, res, next) {
 
 }
 
+function isLoggedIn(req, res, next) {
+    if (isSignedIn(req)) {
+        next()
+    } else {
+        res.status(401).json({ success: false, message: "autherror" })
+    }
+
+
+}
 
 function isSignedIn(req) {
     try {
@@ -57,7 +66,7 @@ function isSignedIn(req) {
     } catch (err) {
         return false
     }
-    // }
+    
 }
 
 
@@ -84,6 +93,8 @@ export function configureRoutes(app) {
     router.put('/api/roles/:id', isAdmin, updateRoleAPI)  //this route requires admin authorization
     router.delete('/api/roles/:id', isAdmin, deleteRoleAPI) //this route requires admin authorization
 
+    // dashinfo
+    router.get('/api/dashinfo', isLoggedIn, dashInfo)
     // One time route for creating admin user with username "admin" and password "admin"
     router.get('/api/createAdmin', createAdmin)
 

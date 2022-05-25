@@ -60,3 +60,8 @@ export const deleteRoleAPI = (req, res, next) => {
 
 }
 
+export const dashInfo = (req, res, next) => {
+    res.json({ success: true, message: "Example info only available to logged in user" })
+    res.end()
+
+}

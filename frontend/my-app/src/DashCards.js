@@ -1,10 +1,33 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
-import { AppContext } from '../App';
+import { AppContext } from './App';
+import { useNavigate } from 'react-router-dom'
 
 export default function DashCards() {
     let { hasRole } = useContext(AppContext)
+    const navigate = useNavigate()
+    useEffect(() => {
+        fetch('api/dashinfo', {
+            method: "GET",
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((resp) => {
+                if (resp.success === false) {
+                    navigate("/errorapi")
+                } else {
+                    // info from json not currently used (the query is simply being used to illustrate how the backend gatekeeps logged in users)
+                }
+
+            })
+            .catch((err) => {
+                console.log(err.message);
+                navigate("/errorapi")
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <>
