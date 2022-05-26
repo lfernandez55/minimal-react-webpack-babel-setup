@@ -1,4 +1,4 @@
-import React, { useState, createContext } from 'react'
+import React, { useState, createContext, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
 import Admin from './Admin'
@@ -25,20 +25,30 @@ export default function App() {
     // authenticated helps to determine what elements like "Log Out" or "Dashboard" to show in Nav.js
     let [authenticated, setAuthenticated] = useState(cookies.token !== undefined)
     // this contains the logged in user's profile info (like firstname, lastname and their roles/role names)
-    let [loggedInUser, setLoggedInUser] = useState([])
+    let [loggedInUser, setLoggedInUser] = useState(typeof localStorage.loggedInUser === "undefined" ? [] : JSON.parse(localStorage.getItem('loggedInUser')) )
     // users is the list of all users in the DB
     let [users, setUsers] = useState([])
     // roles is the list of all available roles in the DB (not the logged in user's roles which are in loggedInUser)
     let [roles, setRoles] = useState([])
 
+
+    useEffect(() => {
+        localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser))
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loggedInUser])
+
+
     function hasRole(role) {
         let roleFound = false;
         console.log(loggedInUser)
-        loggedInUser.roles.forEach(element => {
-            if (element.name === role) {
-                roleFound = true;
-            }
-        });
+        if (loggedInUser.roles){
+            loggedInUser.roles.forEach(element => {
+                if (element.name === role) {
+                    roleFound = true;
+                }
+            });
+        }
+
         return roleFound;
     }
 
