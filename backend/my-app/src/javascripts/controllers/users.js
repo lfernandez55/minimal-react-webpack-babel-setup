@@ -16,7 +16,7 @@ export const createUserAPI = (req, res, next) => {
             // err.code indicates that a duplicate key violation occurred
             if (err.code == 11000) {
                 // 403 Forbidden ("The server understood the request, but is refusing to fulfill it")
-                res.status(403).json({ success: false, errorCode: err.code, message: "Most likely you are trying to create an account with a username or email that already exists. Try a different email and/or username." })
+                res.status(403).json({ success: false, errorCode: err.code, message: "Most likely you are trying to create an account with a username that already exists. Try a different username." })
             } else {
                 res.status(400).json({ success: false, message: err })
             }
@@ -48,7 +48,7 @@ export const signUserInAPI = (req, res) => {
                     //although the token is called a jwt, we're still storing the info in a cookie
                     //the roles in the json are used by the client for authorization
                     res.cookie("token", token, { maxAge: 1000 * 60 * 60 })
-                    res.status(200).json({ success: true, user: user })
+                    res.status(200).json({ success: true, user: user, message:"Successfully signed in." })
                     res.end()
                 }else{
                     res.status(401).json({ success: false, message: "An account with that username was found but the password did not match" })

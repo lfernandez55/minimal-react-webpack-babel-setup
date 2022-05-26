@@ -18,7 +18,7 @@ let userSchema = new Schema({
     },
     email: {
         type: String,
-        unique: true,
+        unique: false,
         required: true,
         trim: true
     },

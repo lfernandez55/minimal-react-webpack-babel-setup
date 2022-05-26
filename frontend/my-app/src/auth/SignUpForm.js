@@ -49,7 +49,6 @@ export default function SignUpForm() {
                         autoClose: 4000,
                     })
                     setFieldError('username', 'Username is already used');
-                    setFieldError('email', 'Email is already used');
                 } else {
                     toast(response.message, {
                         autoClose: 3000,

@@ -44,7 +44,7 @@ export default function SignInForm() {
                 })
                 .then((response) => {
                     if (response.success === true) {
-                        toast('Successfully signed in', {
+                        toast(response.message, {
                             autoClose: 1000,
                             onClose: () => {
                                 setLoggedInUser(response.user)
