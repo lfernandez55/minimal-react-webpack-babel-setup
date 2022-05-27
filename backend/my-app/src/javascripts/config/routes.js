@@ -28,21 +28,30 @@ function isAdmin(req, res, next) {
                 match: { name: 'admin' }
             }).exec((err, user) => {
                 if (err) {
-                    console.log("Unable to process role code")
-                    res.status(401).json({ success: false, message: "autherror" })
+                    // 500 is a generic error response. It means that the server encountered an unexpected condition that prevented it from fulfilling the request.
+                    res.status(500).json({ success: false, message: "Autherror: the server encountered an unexpected condition that prevented it from fulfilling the request." })
                 } else {
-                    if (user.roles.length == 1) {
+                    let roleFound = false
+                    user.roles.forEach(element => {
+                        if (element.name === 'admin' || element.name === 'Admin') {
+                            roleFound = true;
+                        }
+                    });
+                    if (roleFound == true) {
                         next()
                     } else {
-                        res.status(401).json({ success: false, message: "autherror" })
+                        // 403 Forbidden – client authenticated but does not have permission to access the requested resource
+                        res.status(403).json({ success: false, message: "Aautherror: client authenticated but does not have permission to access the requested resource" })
                     }
                 }
             })
         } catch (err) {
-            res.status(401).json({ success: false, message: "autherror" })
+            // 500 is a generic error response. It means that the server encountered an unexpected condition that prevented it from fulfilling the request.
+            res.status(500).json({ success: false, message: "Autherror: the server encountered an unexpected condition that prevented it from fulfilling the request." })
         }
     } else {
-        res.status(401).json({ success: false, message: "autherror" })
+        // 401 Unauthorized – client failed to authenticate with the server.
+        res.status(401).json({ success: false, message: "Autherror: client failed to authenticate with the server." })
     }
 
 

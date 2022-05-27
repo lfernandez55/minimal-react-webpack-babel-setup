@@ -7,11 +7,12 @@ export const createRoleAPI = (req, res, next) => {
 
     role.save(err => {
         if (err) {
-            res.json({ success: false, message: "Undable to create role" })
+            res.status(500).json({ success: false, message: "Unable to create role" })
             console.log(err)
             res.end()
         } else {
             console.log("Role saved")
+            res.status(200).json({ success: true, message: "Role saved" })
             res.end()
         }
     })
@@ -22,7 +23,7 @@ export const createRoleAPI = (req, res, next) => {
 export const allRolesAPI = (req, res, next) => {
     Role.find().exec((err, roles) => {
         if (err) {
-            res.json({ success: false, message: "Query failed" })
+            res.status(500).json({ success: false, message: "Query failed" })
             res.end()
         } else {
             res.send(JSON.stringify(roles))
@@ -36,11 +37,11 @@ export const updateRoleAPI = (req, res, next) => {
 
     Role.updateOne({ _id: req.params.id }, { name: req.body.name }, (err, doc) => {
         if (err) {
-            res.json({ success: false, message: "PUT Query failed" })
+            res.status(500).json({ success: false, message: "Update failed" })
             res.end()
         } else {
-            res.json({ success: true, message: "PUT Query succeeded", _id: req.params.id })
-            res.end()
+            res.status(200).json({ success: true, message: "Update succeeded", _id: req.params.id })
+            //res.end()
         }
     });
 
@@ -50,10 +51,10 @@ export const updateRoleAPI = (req, res, next) => {
 export const deleteRoleAPI = (req, res, next) => {
     Role.deleteOne({ _id: req.params.id }).exec((err, roles) => {
         if (err) {
-            res.json({ success: false, message: "Delete Query failed" })
+            res.status(500).json({ success: false, message: "Delete Query failed" })
             res.end()
         } else {
-            res.json({ success: true, message: "Delete Query succeeded" })
+            res.status(200).json({ success: true, message: "Delete Query succeeded" })
             res.end()
         }
     })
@@ -61,7 +62,7 @@ export const deleteRoleAPI = (req, res, next) => {
 }
 
 export const dashInfo = (req, res, next) => {
-    res.json({ success: true, message: "Example info only available to logged in user" })
+    res.status(200).json({ success: true, message: "Example info only available to logged in user" })
     res.end()
 
 }

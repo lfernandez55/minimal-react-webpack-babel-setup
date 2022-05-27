@@ -15,8 +15,8 @@ export const createUserAPI = (req, res, next) => {
         if (err) {
             // err.code indicates that a duplicate key violation occurred
             if (err.code == 11000) {
-                // 403 Forbidden ("The server understood the request, but is refusing to fulfill it")
-                res.status(403).json({ success: false, errorCode: err.code, message: "Most likely you are trying to create an account with a username that already exists. Try a different username." })
+                // 409 ("The request could not be completed due to a conflict with the current state of the resource)
+                res.status(409).json({ success: false, errorCode: err.code, message: "Most likely you are trying to create an account with a username that already exists. Try a different username." })
             } else {
                 res.status(400).json({ success: false, message: err })
             }
@@ -71,7 +71,7 @@ export const signUserInAPI = (req, res) => {
 export const allUsersAPI = (req, res, next) => {
     User.find().exec((err, users) => {
         if (err) {
-            res.json({ success: false, message: "Query failed" })
+            res.status(500).json({ success: false, message: "Query failed" })
             res.end()
         } else {
             res.send(JSON.stringify(users))
@@ -85,19 +85,20 @@ export const allUsersAPI = (req, res, next) => {
 export const updateUserAPI = (req, res, next) => {
     User.findOne({ _id: req.params.id }).exec((err, user) => {
         if (err) {
-            res.json({ success: false, message: "Unable to update" })
+            res.status(500).json({ success: false, message: "Unable to update" })
             res.end()
         } else {
             Object.assign(user, req.body)
             if (req.body.password != "dummy") {
                 user.setPassword(req.body.password)
             }
-            // user.synchWithChild()
+            console.log('line 95')
             user.save((err) => {
                 if (err) {
                     // err.code 11000 indicates that a duplicate key violation occurred
+                    console.log("err.code", err.code)
                     if (err.code == 11000) {
-                        res.status(200).json({ success: false, errorCode: err.code, message: "Most likely you are trying to create an account with a username or email that already exists. Try a different email and/or username." })
+                        res.status(409).json({ success: false, errorCode: err.code, message: "Most likely you are trying to create an account with a username that already exists. Try a different username." })
                     } else {
                         res.status(400).json({ success: false, message: err })
                     }
@@ -119,10 +120,10 @@ export const updateUserAPI = (req, res, next) => {
 export const deleteUserAPI = (req, res, next) => {
     User.deleteOne({ _id: req.params.id }).exec((err, user) => {
         if (err) {
-            res.json({ success: false, message: "Delete Query failed" })
+            res.status(500).json({ success: false, message: "Delete Query failed" })
             res.end()
         } else {
-            res.json({ success: true, message: "Delete Query succeeded" })
+            res.status(200).json({ success: true, message: "Delete Query succeeded" })
             res.end()
         }
     })

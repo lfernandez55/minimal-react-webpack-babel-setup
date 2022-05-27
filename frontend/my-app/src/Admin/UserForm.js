@@ -58,16 +58,23 @@ export default function UserForm() {
                 // response.ok checks to see if the response is in the 200 to 300 range
                 // Duplicate account violations by design return response.ok. 
                 // Instead the dupe problem is sent in the response.message and displayed in the toast 
-                if (!response.ok) throw Error(response)
+                // if (!response.ok) throw Error(response)
                 return response.json()
             }).then((response) => {
-                if (response.errorCode === 11000) {
+                if (response.success === false && response.errorCode === 11000) {
                     toast(response.message, {
-                        autoClose: 15000,
+                        autoClose: 5000,
                     })
                     setFieldError('username', 'Username is already used');
-                    setFieldError('email', 'Email is already used');
-                } else {
+                } else if (response.success === false){
+                    toast(response.message, {
+                        autoClose: 5000,
+                        onClose: () => {
+                            navigate("/errorapi")
+                        }
+                    })
+                }
+                else{
                     toast(response.message, {
                         autoClose: 1000,
                         onClose: () => {
