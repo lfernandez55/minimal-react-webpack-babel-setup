@@ -61,7 +61,7 @@ function isLoggedIn(req, res, next) {
     if (isSignedIn(req)) {
         next()
     } else {
-        res.status(401).json({ success: false, message: "autherror" })
+        res.status(401).json({ success: false, message: "Autherror: You are not signed in." })
     }
 
 
