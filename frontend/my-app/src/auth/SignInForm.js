@@ -38,6 +38,10 @@ export default function SignInForm() {
             })
             .then((response) => {
                 if (response.success === true) {
+                    // this toast generates the following warning in the browser console:
+                    // "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead."
+                    // This is probably because Toastify is still using ReactDOM.render. So it's the dependency
+                    // generating the warning. 
                     toast(response.message, {
                         autoClose: 1000,
                         onClose: () => {
