@@ -71,27 +71,5 @@ userSchema.methods.generateJWT = function () {
 
 }
 
-userSchema.methods.synchWithChild = function () {
-    // this should eventually be turned into a universal function so that it could be called:
-    // synchWithChild(<parentArg>,<childArg>)
-    // but that would involve building the queries dynamically which I'd need to research how
-    // to do.  So this is a demo of what to do going forward.
-    this.roles.forEach(roleId => {
-        console.log("DDDDDDDDDDEBUG:")
-        // console.log(role)
-        // console.log(role.users)
-        Role.findOne({ _id: roleId }).exec((err, role) => {
-            if (err) {
-                console.log("EEEEERRRRROR", err)
-            } else {
-                if (role.users.includes(this._id) === false) role.users.push(this._id)
-                role.save();
-            }
-        })
-
-
-
-    });
-}
 
 export let User = mongoose.model("User", userSchema)

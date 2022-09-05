@@ -11,7 +11,7 @@ import { User } from '../models/user'
 let router = express.Router()
 
 function isAdmin(req, res, next) {
-    if (isSignedIn(req)) {
+    if (verifyJWTToken(req)) {
         try {
             let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
             // The token actually contains the role info in userDecoded.roles.
@@ -58,7 +58,7 @@ function isAdmin(req, res, next) {
 }
 
 function isLoggedIn(req, res, next) {
-    if (isSignedIn(req)) {
+    if (verifyJWTToken(req)) {
         next()
     } else {
         res.status(401).json({ success: false, message: "Autherror: You are not signed in." })
@@ -67,7 +67,7 @@ function isLoggedIn(req, res, next) {
 
 }
 
-function isSignedIn(req) {
+function verifyJWTToken(req) {
     try {
         jwt.verify(req.cookies.token, APP_SECRET)
         console.log("the cookie token: ", req.cookies.token.substring(req.cookies.token.length - 6))
@@ -83,7 +83,7 @@ export function configureRoutes(app) {
     // The below isn't needed since apis are protected with isAdmin below
     // But it could be used in other use cases so I include it commented out.
     // app.all('*', (req, res, next) => {
-    //     app.locals.signedIn = isSignedIn(req)
+    //     app.locals.signedIn = verifyJWTToken(req)
     //     next()
     // })
     router.get('/', indexPage)

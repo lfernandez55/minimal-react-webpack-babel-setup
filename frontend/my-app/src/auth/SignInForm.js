@@ -43,9 +43,9 @@ export default function SignInForm() {
                     // This is probably because Toastify is still using ReactDOM.render. So it's the dependency
                     // generating the warning. 
                     toast(response.message, {
-                        autoClose: 1000,
+                        autoClose: 3000,
                         onClose: () => {
-                            setLoggedInUser(response.user)
+                                setLoggedInUser(response.user)
                             // without setAuthenticated("true") "Login" link wouldn't disappear from nav
                             setAuthenticated(true)
                             navigate("/dashboard");

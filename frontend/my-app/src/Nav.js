@@ -15,7 +15,6 @@ export default function Nav() {
                 return response.json();
             })
             .then((resp) => {
-                console.log("Old Mcdonald....", resp.success)
                 if (resp.success === false) {
                     alert("An error occurred")
                 } else {

@@ -92,7 +92,6 @@ export const updateUserAPI = (req, res, next) => {
             if (req.body.password != "dummy") {
                 user.setPassword(req.body.password)
             }
-            console.log('line 95')
             user.save((err) => {
                 if (err) {
                     // err.code 11000 indicates that a duplicate key violation occurred
