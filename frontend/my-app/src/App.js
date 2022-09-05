@@ -13,9 +13,9 @@ import Other from './Other'
 import Nav from './Nav'
 import ErrorAPI from './ErrorAPI'
 
-import SignInForm from './auth/SignInForm'
-import SignUpForm from './auth/SignUpForm'
-import SignOut from './auth/SignOut'
+import SignInForm from './Auth/SignInForm'
+import SignUpForm from './Auth/SignUpForm'
+import SignOut from './Auth/SignOut'
 
 export const AppContext = createContext()
 
