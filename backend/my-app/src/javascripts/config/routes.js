@@ -1,6 +1,6 @@
 import express from 'express'
 import { indexPage } from '../controllers/index'
-import { signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI } from '../controllers/users'
+import { signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI, allUsersWhoAreStudentsAPI } from '../controllers/users'
 import {  allTeachersCoursesAPI, updateCourseAPI, deleteCourseAPI, createCourseAPI } from '../controllers/courses'
 import { createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI, dashInfo } from '../controllers/roles'
 import { createAdmin } from '../controllers/createAdmin'
@@ -97,6 +97,8 @@ export function configureRoutes(app) {
     router.post('/api/users/register', createUserAPI)
     router.post('/api/users/signin', signUserInAPI)
     router.get('/api/users', isAdmin, allUsersAPI) // this route requires admin authorization
+    router.get('/api/students', allUsersWhoAreStudentsAPI) // this route requires admin authorization
+    
     router.post('/api/users', isAdmin, createUserAPI)  //this route requires admin authorization
     router.put('/api/users/:id', isAdmin, updateUserAPI)  //this route requires admin authorization
     router.delete('/api/users/:id', isAdmin, deleteUserAPI) //this route requires admin authorization

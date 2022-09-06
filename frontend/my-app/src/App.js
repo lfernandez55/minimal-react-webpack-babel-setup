@@ -36,6 +36,8 @@ export default function App() {
     let [roles, setRoles] = useState([])
     // courses is the list of courses that belong to the logged in teacher
     let [courses, setCourses] = useState([])
+    // users who have the role student 
+    let [students, setStudents] = useState([])
 
 
     useEffect(() => {
@@ -59,7 +61,7 @@ export default function App() {
     }
 
     return (
-        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, hasRole, loggedInUser, setLoggedInUser, setCookie, removeCookie, courses, setCourses }}>
+        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, hasRole, loggedInUser, setLoggedInUser, setCookie, removeCookie, courses, setCourses, students, setStudents }}>
             <div className="react-stuff">
                 <Router>
                     <Routes>

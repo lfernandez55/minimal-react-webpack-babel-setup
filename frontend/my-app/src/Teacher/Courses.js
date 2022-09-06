@@ -4,9 +4,34 @@ import { AppContext } from '../App'
 import { Link, useNavigate } from 'react-router-dom'
 
 export default function Users() {
-    let { authenticated, courses, setCourses } = useContext(AppContext)
+    let { authenticated, courses, setCourses} = useContext(AppContext)
     const navigate = useNavigate()
     const [DBUpdated, setDBUpdated] = useState(false);
+
+    
+    // useEffect(() => {
+    //     fetch('/api/students', {
+    //         method: "GET",
+    //     })
+    //         .then((response) => {
+    //             return response.json();
+    //         })
+    //         .then((resp) => {
+    //             if (resp.success === false) {
+    //                 navigate("/errorapi")
+    //             } else {
+    //                 setStudents(resp)
+    //                 setDBUpdated(false)
+    //             }
+
+    //         })
+    //         .catch((err) => {
+    //             console.log(err.message);
+    //             navigate("/errorapi")
+    //         });
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [DBUpdated])
+
 
     useEffect(() => {
         fetch('api/courses', {

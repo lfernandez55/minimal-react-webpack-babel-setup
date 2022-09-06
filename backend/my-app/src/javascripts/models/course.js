@@ -8,7 +8,7 @@ let CourseSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     },
-    students: [{
+    enrolledStudents: [{
             type: Schema.Types.ObjectId,
             ref: "User"
         }]

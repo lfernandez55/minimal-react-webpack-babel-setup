@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { AppContext } from '../App'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useFormik } from 'formik'
@@ -19,7 +19,33 @@ export function Vhelp({ message, touchedField }) {
 
 
 export default function CourseForm() {
-    let { authenticated, courses, users, roles } = useContext(AppContext)
+    let { authenticated, courses, students, setStudents } = useContext(AppContext)
+
+
+    useEffect(() => {
+        fetch('/api/students', {
+            method: "GET",
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((resp) => {
+                if (resp.success === false) {
+                    navigate("/errorapi")
+                } else {
+                    setStudents(resp)
+                    
+                }
+
+            })
+            .catch((err) => {
+                console.log(err.message);
+                navigate("/errorapi")
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+
     const navigate = useNavigate()
     let { courseid } = useParams()
     let is_new = courseid === undefined
@@ -86,7 +112,7 @@ export default function CourseForm() {
     } else {
         title = "Edit Course"
     }
-    console.log("DEBUG formik.getFieldProps.", formik.getFieldProps('students').value)
+    console.log("DEBUG formik.getFieldProps.", formik.getFieldProps('enrolledStudents').value)
     return (
         <div className="react-stuff form">
 
@@ -101,13 +127,13 @@ export default function CourseForm() {
                 </div>
 
                 <div className="field">
-                    <label htmlFor="roles">Students</label>
+                    <label htmlFor="roles">Enrolled Students</label>
                     <div className="control">
-                        {/* <select className="form-select form-select-sm" name="students" multiple value={[ "6313c7fd057564570c9aaad1", "6317873d3d4e21413465a276" ]} onChange={formik.handleChange} > */}
-                        <select className="form-select form-select-sm" name="students" multiple value={formik.getFieldProps('students').value} onChange={formik.handleChange} >
+                        {/* <select className="form-select form-select-sm" name="enrolledStudents" multiple value={[ "6313c7fd057564570c9aaad1", "6317873d3d4e21413465a276" ]} onChange={formik.handleChange} > */}
+                        <select className="form-select form-select-sm" name="enrolledStudents" multiple value={formik.getFieldProps('enrolledStudents').value} onChange={formik.handleChange} >
                             
                             {
-                                users.map((e, i) => {
+                                students.map((e, i) => {
                                     return (<option key={i} value={e._id} >{e.firstName} {e.lastName}</option>)
                                 })
                             }

@@ -1,4 +1,5 @@
 import { User } from '../models/user'
+import { Role } from '../models/role'
 
 
 // used for registration. and for creating new users in admin tools
@@ -130,6 +131,31 @@ export const deleteUserAPI = (req, res, next) => {
 }
 
 
+export const allUsersWhoAreStudentsAPI = (req, res, next) => {
+    Role.findOne({ name: "student" }).exec((err, role) => {
+        if (err) {
+            res.status(500).json({ success: false, message: "Query failed", err: err })
+            res.end()
+        } else {
+            User.find({ roles: role._id }).exec((err, students) => {
+                if (err) {
+                    res.status(500).json({ success: false, message: "Query failed", err: err })
+                    res.end()
+                } else {
+                    res.send(JSON.stringify(students))
+                }
+            })
+        }
+    })
 
+    // User.find({ roles: "6313c812057564570c9aaaf1" }).exec((err, students) => {
+    //     if (err) {
+    //         res.status(500).json({ success: false, message: "Query failed", err: err })
+    //         res.end()
+    //     } else {
+    //         res.send(JSON.stringify(students))
+    //     }
+    // })
+}
 
 

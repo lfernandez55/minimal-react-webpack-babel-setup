@@ -8,7 +8,7 @@ import { APP_SECRET } from '../config/vars'
 export const createCourseAPI = (req, res, next) => {
     let course = new Course
     course.name = req.body.name
-    course.students = req.body.students
+    course.enrolledStudents = req.body.enrolledStudents
 
     let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
     course.teacher = userDecoded._id
@@ -35,7 +35,8 @@ export const createCourseAPI = (req, res, next) => {
 
 //GET /api/users
 export const allTeachersCoursesAPI = (req, res, next) => {
-    Course.find().exec((err, courses) => {
+    let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
+    Course.find({teacher: userDecoded._id}).exec((err, courses) => {
         if (err) {
             res.status(500).json({ success: false, message: "Query failed" })
             res.end()
