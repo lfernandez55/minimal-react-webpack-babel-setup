@@ -47,7 +47,7 @@ export default function DashCards() {
                 }
 
                 {hasRole('teacher') ? (
-                    <Link to="/teacher">
+                    <Link to="/teacher/courses">
                         <div className="card custom-card" >
                             <div className="card-body">
                                 <h5 className="card-title">Teacher Tools</h5>

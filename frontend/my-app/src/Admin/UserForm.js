@@ -93,7 +93,7 @@ export default function UserForm() {
     } else {
         title = "Edit User"
     }
-
+    console.log("DEBUG", formik.values.roles)
     return (
         <div className="react-stuff form">
 
@@ -152,7 +152,9 @@ export default function UserForm() {
                 <div className="field">
                     <label htmlFor="roles">Roles</label>
                     <div className="control">
-                        <select className="form-select form-select-sm" name="roles" multiple value={formik.values.roles} onChange={formik.handleChange} >
+                        <select className="form-select form-select-sm" name="roles" multiple value={formik.values.roles} onChange={formik.handleChange} > 
+                             
+                        {/* <select className="form-select form-select-sm" name="roles" multiple  onChange={formik.handleChange} > */}
                             {
                                 roles.map((e, i) => {
                                     return (<option key={i} value={e._id} >{e.name}</option>)

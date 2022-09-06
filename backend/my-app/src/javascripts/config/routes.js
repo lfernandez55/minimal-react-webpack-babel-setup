@@ -1,6 +1,7 @@
 import express from 'express'
 import { indexPage } from '../controllers/index'
 import { signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI } from '../controllers/users'
+import {  allTeachersCoursesAPI, updateCourseAPI, deleteCourseAPI, createCourseAPI } from '../controllers/courses'
 import { createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI, dashInfo } from '../controllers/roles'
 import { createAdmin } from '../controllers/createAdmin'
 
@@ -9,6 +10,10 @@ import { APP_SECRET } from './vars'
 import { User } from '../models/user'
 
 let router = express.Router()
+
+function isTeacher(req, res, next) {
+    next()
+}
 
 function isAdmin(req, res, next) {
     if (verifyJWTToken(req)) {
@@ -95,6 +100,12 @@ export function configureRoutes(app) {
     router.post('/api/users', isAdmin, createUserAPI)  //this route requires admin authorization
     router.put('/api/users/:id', isAdmin, updateUserAPI)  //this route requires admin authorization
     router.delete('/api/users/:id', isAdmin, deleteUserAPI) //this route requires admin authorization
+
+    // Courses
+    router.get('/api/courses', isTeacher, allTeachersCoursesAPI) // this route requires teacher authorization
+    router.post('/api/courses', isTeacher, createCourseAPI)  
+    router.put('/api/courses/:id', isTeacher, updateCourseAPI)
+    router.delete('/api/courses/:id', isTeacher, deleteCourseAPI)
 
     // Roles
     router.post('/api/roles', isAdmin, createRoleAPI)  //this route requires admin authorization

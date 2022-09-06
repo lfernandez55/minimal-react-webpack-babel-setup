@@ -9,6 +9,8 @@ import UserForm from './Admin/UserForm'
 import Roles from './Admin/Roles'
 import RoleForm from './Admin/RoleForm'
 import Teacher from './Teacher'
+import Courses from './Teacher/Courses'
+import CourseForm from './Teacher/CourseForm'
 import Other from './Other'
 import Nav from './Nav'
 import ErrorAPI from './ErrorAPI'
@@ -32,6 +34,8 @@ export default function App() {
     let [users, setUsers] = useState([])
     // roles is the list of all available roles in the DB (not the logged in user's roles which are in loggedInUser)
     let [roles, setRoles] = useState([])
+    // courses is the list of courses that belong to the logged in teacher
+    let [courses, setCourses] = useState([])
 
 
     useEffect(() => {
@@ -55,7 +59,7 @@ export default function App() {
     }
 
     return (
-        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, hasRole, loggedInUser, setLoggedInUser, setCookie, removeCookie }}>
+        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, hasRole, loggedInUser, setLoggedInUser, setCookie, removeCookie, courses, setCourses }}>
             <div className="react-stuff">
                 <Router>
                     <Routes>
@@ -83,7 +87,13 @@ export default function App() {
                                 <Route path="roles/new" element={<RoleForm />}></Route>
                                 <Route path="roles/:rid/edit" element={<RoleForm />}></Route>
                             </Route>
-                            <Route path="/teacher" element={<Teacher />}></Route>
+                         
+                            <Route path="/teacher" element={<Teacher />}>
+                                <Route path="courses" element={<Courses />}></Route>
+                                <Route path="courses/new" element={<CourseForm />}></Route>
+                                <Route path="courses/:courseid/edit" element={<CourseForm />}></Route>
+                            </Route>
+
                             <Route path="/other" element={<Other />}></Route>
                         </Route>
                     </Routes>
