@@ -93,7 +93,7 @@ export default function UserForm() {
     } else {
         title = "Edit User"
     }
-    console.log("DEBUG", formik.values.roles)
+
     return (
         <div className="react-stuff form">
 

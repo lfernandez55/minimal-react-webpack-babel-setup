@@ -47,6 +47,7 @@ export default function CourseForm() {
 
 
     const navigate = useNavigate()
+    // courseid, uid and rid are defined in router, see App.js
     let { courseid } = useParams()
     let is_new = courseid === undefined
 
@@ -112,7 +113,7 @@ export default function CourseForm() {
     } else {
         title = "Edit Course"
     }
-    console.log("DEBUG formik.getFieldProps.", formik.getFieldProps('enrolledStudents').value)
+
     return (
         <div className="react-stuff form">
 

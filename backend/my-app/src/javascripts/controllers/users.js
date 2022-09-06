@@ -148,14 +148,6 @@ export const allUsersWhoAreStudentsAPI = (req, res, next) => {
         }
     })
 
-    // User.find({ roles: "6313c812057564570c9aaaf1" }).exec((err, students) => {
-    //     if (err) {
-    //         res.status(500).json({ success: false, message: "Query failed", err: err })
-    //         res.end()
-    //     } else {
-    //         res.send(JSON.stringify(students))
-    //     }
-    // })
 }
 
 

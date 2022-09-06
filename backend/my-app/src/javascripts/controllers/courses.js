@@ -58,8 +58,6 @@ export const updateCourseAPI = (req, res, next) => {
             res.end()
         } else {
             Object.assign(course, req.body)
-            console.log("DEBUG body",req.body)
-            console.log("DEBUG",course)
             course.save((err) => {
                 if (err) {
                     // err.code 11000 indicates that a duplicate key violation occurred
