@@ -12,7 +12,25 @@ import { User } from '../models/user'
 let router = express.Router()
 
 function isTeacher(req, res, next) {
-    next()
+    if (verifyJWTToken(req)) {
+        try {
+            let userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
+            // Since the routes this access control is protecting are less high stakes we're only going to look at the jwt
+            // Compare to isAdmin
+            if( userDecoded.roles.find(role => role.name === "teacher") ){
+                next()
+            }else{
+                // 403 Forbidden – client authenticated but does not have permission to access the requested resource
+                res.status(403).json({ success: false, message: "Aautherror: client authenticated but does not have permission to access the requested resource" })
+            }
+        } catch (err) {
+            // 500 is a generic error response. It means that the server encountered an unexpected condition that prevented it from fulfilling the request.
+            res.status(500).json({ success: false, message: "Autherror: the server encountered an unexpected condition that prevented it from fulfilling the request." })
+        }
+    } else {
+        // 401 Unauthorized – client failed to authenticate with the server.
+        res.status(401).json({ success: false, message: "Autherror: client failed to authenticate with the server." })
+    }
 }
 
 function isAdmin(req, res, next) {
@@ -28,6 +46,7 @@ function isAdmin(req, res, next) {
             // If a hacker got ahold of the token and we
             // wanted to deny them access, we could simply dissassociate the admin role with
             // their account in the db
+            console.log('debuguserdecoded.roles:', userDecoded.roles)
             User.findById({ _id: userDecoded._id }).populate({
                 path: 'roles',
                 match: { name: 'admin' }
@@ -61,6 +80,12 @@ function isAdmin(req, res, next) {
 
 
 }
+
+
+
+
+
+
 
 function isLoggedIn(req, res, next) {
     if (verifyJWTToken(req)) {
