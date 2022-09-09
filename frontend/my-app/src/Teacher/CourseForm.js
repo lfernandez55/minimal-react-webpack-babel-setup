@@ -128,7 +128,7 @@ export default function CourseForm() {
                 </div>
 
                 <div className="field">
-                    <label htmlFor="roles">Enrolled Students</label>
+                    <label htmlFor="roles">Enrolled Students (selected)</label>
                     <div className="control">
                         {/* <select className="form-select form-select-sm" name="enrolledStudents" multiple value={[ "6313c7fd057564570c9aaad1", "6317873d3d4e21413465a276" ]} onChange={formik.handleChange} > */}
                         <select className="form-select form-select-sm" name="enrolledStudents" multiple value={formik.getFieldProps('enrolledStudents').value} onChange={formik.handleChange} >

@@ -137,14 +137,19 @@ export const allUsersWhoAreStudentsAPI = (req, res, next) => {
             res.status(500).json({ success: false, message: "Query failed", err: err })
             res.end()
         } else {
-            User.find({ roles: role._id }).exec((err, students) => {
-                if (err) {
-                    res.status(500).json({ success: false, message: "Query failed", err: err })
-                    res.end()
-                } else {
-                    res.send(JSON.stringify(students))
-                }
-            })
+            if (role){
+                User.find({ roles: role._id }).exec((err, students) => {
+                    if (err) {
+                        res.status(500).json({ success: false, message: "Query failed", err: err })
+                        res.end()
+                    } else {
+                        res.send(JSON.stringify(students))
+                    }
+                })
+            } else{
+                res.send(JSON.stringify([]))
+            }
+
         }
     })
 
