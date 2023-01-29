@@ -28,7 +28,7 @@ export default function SignInForm() {
         fetch('api/users/signin', {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
-            // following line instructs the browser to send the token along with every request:
+            // following line instructs browser to send the token along with every request:
             credentials: 'same-origin',
             body: JSON.stringify(values),
         })
