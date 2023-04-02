@@ -107,5 +107,10 @@ export function configureRoutes(app) {
     // One time route for creating admin user with username "admin" and password "admin"
     router.get('/api/createAdmin', createAdmin)
 
+    // *** Add course apis here. (there are four endpoints)
+    //   Also include a api/students endpoint to get all students (this
+    // is needed to add enrollments to a course)
+    // Make sure these routes are protected so only a teacher can access them
+
     app.use('/', router)
 }
