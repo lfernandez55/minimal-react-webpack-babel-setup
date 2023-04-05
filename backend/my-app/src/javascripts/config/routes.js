@@ -4,6 +4,14 @@ import { signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI
 import {  allTeachersCoursesAPI, updateCourseAPI, deleteCourseAPI, createCourseAPI } from '../controllers/courses'
 import { createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI, dashInfo } from '../controllers/roles'
 import { createAdmin } from '../controllers/createAdmin'
+import {
+    createOrganization,
+    getOrganizations,
+    getOrganizationById,
+    updateOrganization,
+    deleteOrganization
+  } from '../controllers/organizations';
+// import {createOrganization  } from '../controllers/organizations';
 
 import jwt from 'jsonwebtoken'
 import { APP_SECRET } from './vars'
@@ -139,6 +147,14 @@ export function configureRoutes(app) {
     router.get('/api/roles', isAdmin, allRolesAPI) // this route requires admin authorization
     router.put('/api/roles/:id', isAdmin, updateRoleAPI)  //this route requires admin authorization
     router.delete('/api/roles/:id', isAdmin, deleteRoleAPI) //this route requires admin authorization
+
+    // Orgs
+    router.post('/api/orgs', createOrganization);
+    router.get('/api/orgs', getOrganizations);
+    router.get('/api/orgs/:id', getOrganizationById);
+    router.put('/api/orgs/:id', updateOrganization);
+    router.delete('/api/orgs/:id', deleteOrganization);
+
 
     // dashinfo
     router.get('/api/dashinfo', isLoggedIn, dashInfo)

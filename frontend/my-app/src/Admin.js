@@ -21,6 +21,9 @@ export default function Admin() {
                 <li className="nav-item">
                     <Link className="nav-link " id="rolesTab" aria-current="page" to="/admin/roles" onClick={() => highLight('rolesTab')}>Roles</Link>
                 </li>
+                <li className="nav-item">
+                    <Link className="nav-link " id="rolesTab" aria-current="page" to="/admin/orgs" onClick={() => highLight('orgsTab')}>Orgs</Link>
+                </li>
             </ul>
             <Outlet />
         </div >

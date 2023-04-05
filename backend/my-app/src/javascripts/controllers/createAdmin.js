@@ -1,5 +1,6 @@
 import { Role } from '../models/role'
 import { User } from '../models/user'
+import { Organization } from '../models/organization'
 
 export const createAdmin = (req, res, next) => {
 
@@ -9,8 +10,24 @@ export const createAdmin = (req, res, next) => {
             // start fresh by removing all documents in the collections
             await User.remove({});
             await Role.remove({});
-
+            await Organization.remove({});
             
+            let org1 = new Organization
+            org1.name = "Weber State U"
+
+            let org2 = new Organization
+            org2.name = "EAST"
+            await org2.save()
+
+            let org3 = new Organization
+            org3.name = "College of Social Science"
+            await org3.save()
+            
+            org1.children.push(org2)
+            org1.children.push(org3)    
+            await org1.save()
+
+
             let role1 = new Role
             role1.name = "admin"
             await role1.save()
