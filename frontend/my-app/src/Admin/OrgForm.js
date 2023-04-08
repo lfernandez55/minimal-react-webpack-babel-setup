@@ -1,106 +1,115 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { AppContext } from '../App'
 
 const OrganizationForm = () => {
     const navigate = useNavigate()
-
-    const [organizations, setOrganizations] = useState([]);
+    let { orgs, setOrgs } = useContext(AppContext)
 
     let { oid } = useParams()
-    let is_new = oid === undefined
-    let orgToEdit = oid ? organizations.find(o => o._id === oid) : {
+    // let is_new = oid === undefined
+    let orgToEdit = oid ? orgs.find(o => o._id === oid) : {
         name: '',
         parent: '',
         children: []
     }
+    
 
-
-    const [organization, setOrganization] = useState(orgToEdit);
-
-    const fetchOrganizations = async () => {
+    const [org, setOrg] = useState(orgToEdit);
+    console.log("org", org);
+    const fetchOrgs = async () => {
         const response = await axios.get('/api/orgs');
-        setOrganizations(response.data);
+        setOrgs(response.data);
     };
 
-    useEffect(() => {
-        fetchOrganizations();
-    }, []);
+    // useEffect(() => {
+    //     fetchOrganizations();
+    // }, []);
 
     const handleChange = (e) => {
-        setOrganization({
-            ...organization,
+        setOrg({
+            ...org,
             [e.target.name]: e.target.value
         });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // if (organization._id) {
-        //     // Edit organization
-        //     await axios.put(`/api/orgs/${organization._id}`, organization);
+        // if (org._id) {
+        //     // Edit org
+        //     await axios.put(`/api/orgs/${org._id}`, org);
         // } else {
-        //     // Create organization
-        //     await axios.post('/api/orgs', organization);
+        //     // Create org
+        //     await axios.post('/api/orgs', org);
         // }
         // setOrganization({ name: '', parent: '', children: [] });
         // fetchOrganizations();
 
-        if (organization._id) {
-            // Edit organization
-            fetch(`/api/orgs/${organization._id}`, {
+        if (org._id) {
+            // Edit org
+            fetch(`/api/orgs/${org._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(organization)
+                body: JSON.stringify(org)
             })
                 .then(response => {
                     if (response.ok) {
-                        toast.success('Organization updated successfully.');
-                        setOrganization({ name: '', parent: '', children: [] });
-                        fetchOrganizations();
+                        toast.success('Org updated successfully.');
+                        // setOrgs({ name: '', parent: '', children: [] });
+                        fetchOrgs();
                         navigate('/admin/orgs'); // navigate to admin/orgs
                     } else {
-                        toast.error('Failed to update organization.');
+                        toast.error('Failed to update org.');
                     }
                 })
                 .catch(error => {
-                    toast.error('Failed to update organization.');
+                    toast.error('Failed to update org.');
                 });
         } else {
-            // Create organization
+            // Create org
             fetch('/api/orgs', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(organization)
+                body: JSON.stringify(org)
             })
                 .then(response => {
                     if (response.ok) {
-                        toast.success('Organization created successfully.');
-                        setOrganization({ name: '', parent: '', children: [] });
-                        fetchOrganizations();
+                        toast.success('Org created successfully.');
+                        // setOrg({ name: '', parent: '', children: [] });
+                        fetchOrgs();
                         navigate('/admin/orgs'); // navigate to admin/orgs
                     } else {
-                        toast.error('Failed to create organization.');
+                        toast.error('Failed to create org.');
                     }
                 })
                 .catch(error => {
-                    toast.error('Failed to create organization.');
+                    toast.error('Failed to create org.');
                 });
         }
 
     };
 
     const renderParentOptions = () => {
-        return organizations.map((org) => (
-            <option key={org._id} value={org._id}>
-                {org.name}
-            </option>
-        ));
+        return orgs.map((o) => (
+
+            o._id == org.parent._id ? (
+                <option key={o._id} value={o._id} >
+                    {o.name}xxx
+                </option>
+            ) : (
+                <option key={o._id} value={o._id}>
+                    {o.name}
+                </option>
+            )
+
+
+        ))
     };
 
     return (
@@ -109,10 +118,11 @@ const OrganizationForm = () => {
                 <div className="field">
                     <label>Name:</label>
                     <div className="control">
+                        <div>{org.parent._id}</div>
                         <input
                             type="text"
                             name="name"
-                            value={organization.name}
+                            value={org.name}
                             onChange={handleChange}
                         />
                     </div>
@@ -122,7 +132,7 @@ const OrganizationForm = () => {
                     <div className="control">
                         <select
                             name="parent"
-                            value={organization.parent}
+                            value={org.parent._id}
                             onChange={handleChange}
                         >
                             <option value="">Select a parent organization</option>
@@ -133,7 +143,7 @@ const OrganizationForm = () => {
                 <div className="field">
                     <label ></label>
                     <div className="control">
-                        <button type="submit">{organization._id ? 'Edit' : 'Create'}</button>
+                        <button type="submit">{org._id ? 'Edit' : 'Create'}</button>
                     </div>
                 </div>
             </form>

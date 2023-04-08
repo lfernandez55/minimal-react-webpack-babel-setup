@@ -5,7 +5,7 @@ const createOrganization = async (req, res) => {
   try {
     const organization = new Organization({
       name: req.body.name,
-      children: req.body.children
+      parent: req.body.parent
     });
     await organization.save();
     res.status(201).json(organization);
@@ -15,14 +15,30 @@ const createOrganization = async (req, res) => {
 };
 
 // Get all organizations
+// const getOrganizations = async (req, res) => {
+//   try {
+//     const organizations = await Organization.find();
+//     res.json(organizations);
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// };
 const getOrganizations = async (req, res) => {
   try {
-    const organizations = await Organization.find();
+    const organizations = await Organization.find().populate({
+      path: 'parent',
+      populate: {
+        path: 'parent',
+        populate: {
+          path: 'parent'
+        }
+      }
+    });
     res.json(organizations);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
-};
+}; 
 
 // Get an organization by ID
 const getOrganizationById = async (req, res) => {
@@ -45,7 +61,7 @@ const updateOrganization = async (req, res) => {
       return res.status(404).json({ message: 'Organization not found' });
     }
     organization.name = req.body.name;
-    organization.children = req.body.children;
+    organization.parent = req.body.parent;
     await organization.save();
     res.json(organization);
   } catch (err) {

@@ -14,19 +14,18 @@ export const createAdmin = (req, res, next) => {
             
             let org1 = new Organization
             org1.name = "Weber State U"
+            // ort1.parent = null
+            await org1.save()
 
             let org2 = new Organization
             org2.name = "EAST"
+            org2.parent= org1
             await org2.save()
 
             let org3 = new Organization
             org3.name = "College of Social Science"
+            org3.parent = org1    
             await org3.save()
-            
-            org1.children.push(org2)
-            org1.children.push(org3)    
-            await org1.save()
-
 
             let role1 = new Role
             role1.name = "admin"

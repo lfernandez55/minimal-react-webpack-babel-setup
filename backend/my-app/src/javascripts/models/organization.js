@@ -4,10 +4,10 @@ const Schema = mongoose.Schema
 
 let OrganizationSchema = new Schema({
     name: String,
-    children: [{
+    parent: {
             type: Schema.Types.ObjectId,
             ref: "Organization"
-        }]
+        }
     
 })
 
