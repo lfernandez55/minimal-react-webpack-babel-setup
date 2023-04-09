@@ -14,16 +14,8 @@ const createOrganization = async (req, res) => {
   }
 };
 
-// Get all organizations
-// const getOrganizations = async (req, res) => {
-//   try {
-//     const organizations = await Organization.find();
-//     res.json(organizations);
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// };
-const getOrganizations = async (req, res) => {
+// Get all organizations, sorted from top to bottom
+const getOrganizations = (req, res) => {
   Organization.find({})
     .populate({
       path: 'parent',
@@ -43,14 +35,74 @@ const getOrganizations = async (req, res) => {
     .sort({ 'parent': 1 })
     .exec((err, organizations) => {
       if (err) {
-        console.log(err);
         res.status(500).json({ message: err.message });
       } else {
-        console.log(organizations);
         res.json(organizations);
       }
     });
 };
+
+// get an organization and its children
+const getOrgAndChildren = (req, res) => {
+  const parentObjectId = req.params.parentId; // or wherever you get the parent object ID from
+  Organization.find({ $or: [{ parent: parentObjectId }, { _id: parentObjectId }] })
+    .populate('parent')
+    .limit(10)
+    .sort({ parent: 1 })
+    .exec((err, organizations) => {
+      if (err) {
+        res.status(500).json({ message: err.message });
+      } else {
+        res.json(organizations);
+      }
+    });
+};
+
+// get an org and its parents and children
+const getOrgHierarchy = async (req, res) => {
+  try {
+    const orgId = req.params.id
+    const org = await Organization.findById(orgId).populate('parent')
+    const hierarchy = [org]
+
+    let currentOrg = org
+    while (currentOrg.parent) {
+      const parentOrg = await Organization.findById(currentOrg.parent).populate('parent')
+      hierarchy.unshift(parentOrg)
+      currentOrg = parentOrg
+    }
+
+    const children = await Organization.find({ parent: orgId }).sort({ name: 1 })
+
+    const updatedChildren = children.map(child => {
+      child.name = "--" + child.name
+      return child;
+    });
+
+    res.json([...hierarchy, ...updatedChildren ])
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal Server Error' })
+  }
+}
+
+// Get the root organization
+const getRootOrganization = (req, res) => {
+  console.log("getRootOrganization");
+  Organization.findOne({ parent: null })
+    .exec((err, organization) => {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ messagexx: err.message });
+      } else if (!organization) {
+        res.status(404).json({ message: 'Root organization not found' });
+      } else {
+        console.log("Successful")
+        res.json([organization]);
+      }
+    });
+};
+
 
 // Get an organization by ID
 const getOrganizationById = async (req, res) => {
@@ -100,7 +152,9 @@ module.exports = {
   getOrganizations,
   getOrganizationById,
   updateOrganization,
-  deleteOrganization
+  deleteOrganization,
+  getOrgHierarchy,
+  getRootOrganization
 };
 
 // module.exports = {createOrganization};

@@ -9,8 +9,8 @@ import {
     getOrganizations,
     getOrganizationById,
     updateOrganization,
-    deleteOrganization
-  } from '../controllers/organizations';
+    deleteOrganization,
+    getOrgHierarchy,getRootOrganization  } from '../controllers/organizations';
 // import {createOrganization  } from '../controllers/organizations';
 
 import jwt from 'jsonwebtoken'
@@ -154,7 +154,8 @@ export function configureRoutes(app) {
     router.get('/api/orgs/:id', getOrganizationById);
     router.put('/api/orgs/:id', updateOrganization);
     router.delete('/api/orgs/:id', deleteOrganization);
-
+    router.get('/api/orgshierarchy/:id', getOrgHierarchy)
+    router.get('/api/orgsroot', getRootOrganization)
 
     // dashinfo
     router.get('/api/dashinfo', isLoggedIn, dashInfo)

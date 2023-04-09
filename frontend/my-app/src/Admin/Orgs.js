@@ -8,7 +8,7 @@ export default function Orgs() {
     const [DBUpdated, setDBUpdated] = useState(false);
     let { authenticated, orgs, setOrgs } = useContext(AppContext)
     useEffect(() => {
-        fetch('api/orgs', {
+        fetch('api/orgsroot', {
             method: "GET",
         })
             .then((response) => {
@@ -35,6 +35,27 @@ export default function Orgs() {
         return <></>
     }
 
+    const showMore = (param) => {
+        let url = 'api/orgshierarchy/' + param;
+        fetch(url, {
+            method: "GET",
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((resp) => {
+                if (resp.success === false) {
+                    navigate("/errorapi")
+                } else {
+                    setOrgs(resp)
+                    setDBUpdated(false)
+                }
+            })
+            .catch((err) => {
+                console.log(err.message);
+                navigate("/errorapi")
+            });
+    }
 
     const deleteMe = (param) => {
         let url = "api/orgs/" + param;
@@ -81,7 +102,7 @@ export default function Orgs() {
                             return (
                                 <tr key={i}>
                                     <td>{e._id}</td>
-                                    <td>{e.name}</td>
+                                    <td><button className="link" onClick={() => { showMore(e._id) }} >{e.name}</button></td>
                                     <td><button className="link" onClick={() => navigate(`${e._id}/edit`)}>Edit</button></td>
                                     <td><button className="link" onClick={() => { deleteMe(e._id) }} >Delete</button></td>
                                 </tr>
