@@ -24,21 +24,33 @@ const createOrganization = async (req, res) => {
 //   }
 // };
 const getOrganizations = async (req, res) => {
-  try {
-    const organizations = await Organization.find().populate({
+  Organization.find({})
+    .populate({
       path: 'parent',
       populate: {
         path: 'parent',
         populate: {
-          path: 'parent'
+          path: 'parent',
+          populate: {
+            path: 'parent',
+            populate: {
+              path: 'parent'
+            }
+          }
         }
       }
+    })
+    .sort({ 'parent': 1 })
+    .exec((err, organizations) => {
+      if (err) {
+        console.log(err);
+        res.status(500).json({ message: err.message });
+      } else {
+        console.log(organizations);
+        res.json(organizations);
+      }
     });
-    res.json(organizations);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-}; 
+};
 
 // Get an organization by ID
 const getOrganizationById = async (req, res) => {

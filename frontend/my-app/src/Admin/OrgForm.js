@@ -98,16 +98,9 @@ const OrganizationForm = () => {
     const renderParentOptions = () => {
         return orgs.map((o) => (
 
-            o._id == org.parent._id ? (
-                <option key={o._id} value={o._id} >
-                    {o.name}xxx
-                </option>
-            ) : (
                 <option key={o._id} value={o._id}>
                     {o.name}
                 </option>
-            )
-
 
         ))
     };
@@ -118,7 +111,6 @@ const OrganizationForm = () => {
                 <div className="field">
                     <label>Name:</label>
                     <div className="control">
-                        <div>{org.parent._id}</div>
                         <input
                             type="text"
                             name="name"
