@@ -61,7 +61,7 @@ const OrganizationForm = () => {
                         toast.success('Org updated successfully.');
                         // setOrgs({ name: '', parent: '', children: [] });
                         fetchOrgs();
-                        navigate('/admin/orgs'); // navigate to admin/orgs
+                        navigate('/admin/orgs', { state: { oid: org._id } }); // navigate to admin/orgs
                     } else {
                         toast.error('Failed to update org.');
                     }
@@ -135,7 +135,7 @@ const OrganizationForm = () => {
                 <div className="field">
                     <label ></label>
                     <div className="control">
-                        <button type="submit">{org._id ? 'Edit' : 'Create'}</button>
+                        <button type="submit">{org._id ? 'Update' : 'Create'}</button>
                     </div>
                 </div>
             </form>

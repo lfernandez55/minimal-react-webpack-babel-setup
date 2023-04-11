@@ -14,7 +14,7 @@ export const createAdmin = (req, res, next) => {
             
             let org1 = new Organization
             org1.name = "Weber State U"
-            // ort1.parent = null
+            org1.parent = null
             await org1.save()
 
             let org2 = new Organization
@@ -26,6 +26,16 @@ export const createAdmin = (req, res, next) => {
             org3.name = "College of Social Science"
             org3.parent = org1    
             await org3.save()
+
+            let org4 = new Organization
+            org4.name = "History"
+            org4.parent = org3    
+            await org4.save()
+
+            let org5 = new Organization
+            org5.name = "Political Science"
+            org5.parent = org3    
+            await org5.save()
 
             let role1 = new Role
             role1.name = "admin"

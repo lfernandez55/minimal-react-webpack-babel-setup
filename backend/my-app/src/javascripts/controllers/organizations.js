@@ -59,32 +59,97 @@ const getOrgAndChildren = (req, res) => {
 };
 
 // get an org and its parents and children
+// const getOrgHierarchy = async (req, res) => {
+//   try {
+//     const orgId = req.params.id
+//     const org = await Organization.findById(orgId).populate('parent')
+//     const hierarchy = [org]
+
+//     let currentOrg = org
+//     while (currentOrg.parent) {
+//       const parentOrg = await Organization.findById(currentOrg.parent).populate('parent')
+//       hierarchy.unshift(parentOrg)
+//       currentOrg = parentOrg
+//     }
+
+//     const children = await Organization.find({ parent: orgId }).sort({ name: 1 })
+
+//     // const updatedChildren = children.map(child => {
+//     //   let cloneChild = {...child}
+//     //   cloneChild.name = "--" + cloneChild.name
+//     //   return cloneChild;
+//     // });
+
+//     res.json([...hierarchy, ...children ])
+//   } catch (error) {
+//     console.error(error)
+//     res.status(500).json({ error: 'Internal Server Error' })
+//   }
+// }
+
+// returns orgs where their parent property is just a string
 const getOrgHierarchy = async (req, res) => {
   try {
     const orgId = req.params.id
     const org = await Organization.findById(orgId).populate('parent')
-    const hierarchy = [org]
+    const hierarchy = [];  
+    if(org.parent == null){
+      hierarchy.push({ _id: org._id, name: org.name, parent: null }) 
+    }else{
+      hierarchy.push({ _id: org._id, name: org.name, parent: org.parent }) 
+    }
+   
 
     let currentOrg = org
     while (currentOrg.parent) {
       const parentOrg = await Organization.findById(currentOrg.parent).populate('parent')
-      hierarchy.unshift(parentOrg)
+      if (parentOrg.parent == null) {
+        hierarchy.unshift({ _id: parentOrg._id, name: parentOrg.name, parent: null })
+      } else {
+        hierarchy.unshift({ _id: parentOrg._id, name: parentOrg.name, parent: parentOrg.parent })
+      }
       currentOrg = parentOrg
     }
 
     const children = await Organization.find({ parent: orgId }).sort({ name: 1 })
-
-    const updatedChildren = children.map(child => {
-      child.name = "--" + child.name
-      return child;
-    });
-
-    res.json([...hierarchy, ...updatedChildren ])
+    console.log("children", children);
+    res.json([...hierarchy, ...children ])
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: 'Internal Server Error' })
   }
 }
+
+// returns an array of orgs with their parents and children
+// the orgs parents property value is the parent org object
+
+// const getOrgHierarchy = async (req, res) => {
+//   try {
+//     const orgId = req.params.id
+//     const org = await Organization.findById(orgId).populate('parent')
+//     const hierarchy = [{ _id: org._id, name: org.name, parent: org.parent }]
+
+//     let currentOrg = org
+//     while (currentOrg.parent) {
+//       const parentOrg = await Organization.findById(currentOrg.parent).populate('parent')
+//       hierarchy.unshift({ _id: parentOrg._id, name: parentOrg.name, parent: parentOrg.parent })
+//       currentOrg = parentOrg
+//     }
+
+//     const children = await Organization.find({ parent: orgId }).populate('parent').sort({ name: 1 })
+//     const childrenWithParentObjects = children.map(child => ({
+//       _id: child._id,
+//       name: child.name,
+//       parent: child.parent
+//     }))
+
+//     res.json([...hierarchy, ...childrenWithParentObjects ])
+//   } catch (error) {
+//     console.error(error)
+//     res.status(500).json({ error: 'Internal Server Error' })
+//   }
+// }
+
 
 // Get the root organization
 const getRootOrganization = (req, res) => {
