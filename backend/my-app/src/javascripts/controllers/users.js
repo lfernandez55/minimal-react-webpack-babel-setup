@@ -36,6 +36,7 @@ export const signUserInAPI = (req, res) => {
     //roles is populated in the below query so that the React client has access to it
     //the React client displays different GUI depending on role
     //
+    console.log("debug.....")
     User.findOne({ username: req.body.username }).populate("roles").exec((err, user) => {
         if (err) {
             res.status(500).json({ success: false, message: err })
