@@ -9,21 +9,25 @@ const OrganizationForm = () => {
     let { orgs, setOrgs } = useContext(AppContext)
 
     let { oid } = useParams()
-    // let is_new = oid === undefined
+    console.log("org")
     let orgToEdit = oid ? orgs.find(o => o._id === oid) : {
         name: '',
-        parent: '',
-        children: []
+        parent: {}
     }
-    
+    console.log("orgToEdit", orgToEdit)
+    console.log("oid", oid)
+    console.log("orgToEdit.parent", orgToEdit.parent)
+    console.log("orgToEdit.parent._id", orgToEdit.parent._id)
 
     const [org, setOrg] = useState(orgToEdit);
-    console.log("org", org);
+    console.log("orgs", orgs);
     const fetchOrgs = async () => {
         const response = await axios.get('/api/orgs');
         setOrgs(response.data);
     };
 
+    console.log("org.parent", org.parent)
+    console.log("org.parent._id", org.parent._id)
     // useEffect(() => {
     //     fetchOrganizations();
     // }, []);
@@ -120,11 +124,12 @@ const OrganizationForm = () => {
                     </div>
                 </div>
                 <div className="field">
+                    <div>{org.parent?._id | org.parent }</div>
                     <label>Parent:</label>
                     <div className="control">
                         <select
                             name="parent"
-                            value={org.parent._id}
+                            value={org.parent}
                             onChange={handleChange}
                         >
                             <option value="">Select a parent organization</option>
