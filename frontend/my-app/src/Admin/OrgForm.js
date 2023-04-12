@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext} from 'react';
+import Select from 'react-select';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -7,6 +8,15 @@ import { AppContext } from '../App'
 const OrganizationForm = () => {
     const navigate = useNavigate()
     let { orgs, setOrgs } = useContext(AppContext)
+
+
+    const options = orgs.map(element => {
+        let newObj = {}
+        newObj.value = element._id
+        newObj.label = element.name
+        return newObj
+        
+    });
 
     let { oid } = useParams()
     console.log("org")
@@ -18,6 +28,16 @@ const OrganizationForm = () => {
     console.log("oid", oid)
     console.log("orgToEdit.parent", orgToEdit.parent)
     console.log("orgToEdit.parent._id", orgToEdit.parent._id)
+
+    let selectedOption;
+    if(orgToEdit.parent._id == undefined){
+        selectedOption = oid ? options.find(option => option.value === orgToEdit.parent) : options[0]
+    }else{
+        selectedOption = oid ? options.find(option => option.value === orgToEdit.parent._id) : options[0]
+    }
+    
+
+    console.log("SELECTED OPTION", selectedOption)
 
     const [org, setOrg] = useState(orgToEdit);
     console.log("orgs", orgs);
@@ -127,14 +147,21 @@ const OrganizationForm = () => {
                     <div>{org.parent?._id | org.parent }</div>
                     <label>Parent:</label>
                     <div className="control">
-                        <select
+                        {/* <select
                             name="parent"
                             value={org.parent}
                             onChange={handleChange}
                         >
                             <option value="">Select a parent organization</option>
                             {renderParentOptions()}
-                        </select>
+                        </select> */}
+                        <Select
+                            options={options}
+                            isSearchable={true}
+                            isClearable={false}
+                            onChange={handleChange}
+                            defaultValue={selectedOption}
+                        />
                     </div>
                 </div>
                 <div className="field">
