@@ -105,14 +105,15 @@ const OrganizationForm = () => {
 
     const renderParentOptions = () => {
         return orgs.map((o) => (
-
+            // don't display the org that is being edited
+            // otherwise you'd get a parent of itself
+            o._id !== orgToEdit._id  ? (
                 <option key={o._id} value={o._id}>
                     {o.name}
                 </option>
-
+            ) : null
         ))
     };
-
 
 
     return (
