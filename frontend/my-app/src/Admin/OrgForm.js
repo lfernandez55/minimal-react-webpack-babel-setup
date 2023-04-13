@@ -14,6 +14,11 @@ const OrganizationForm = () => {
         name: '',
         parent: {}
     }
+    if(orgToEdit.parent._id !== undefined){
+        orgToEdit.parent = orgToEdit.parent._id
+    }
+
+
     console.log("orgToEdit", orgToEdit)
     console.log("oid", oid)
     console.log("orgToEdit.parent", orgToEdit.parent)
