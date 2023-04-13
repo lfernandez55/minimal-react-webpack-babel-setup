@@ -1,4 +1,4 @@
-import React, { useState, useContext} from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -7,6 +7,28 @@ import { AppContext } from '../App'
 const OrganizationForm = () => {
     const navigate = useNavigate()
     let { orgs, setOrgs } = useContext(AppContext)
+
+    useEffect(() => {
+        let url = 'api/orgs'
+        fetch(url, {
+            method: "GET",
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((resp) => {
+                if (resp.success === false) {
+                    navigate("/errorapi")
+                } else {
+                    setOrgs(resp)
+                    // setUpdateDB(false)
+                }
+            })
+            .catch((err) => {
+                console.log(err.message);
+                navigate("/errorapi")
+            });
+    },[])
 
     let { oid } = useParams()
 
@@ -90,6 +112,8 @@ const OrganizationForm = () => {
 
         ))
     };
+
+
 
     return (
         <div className="react-stuff form">
