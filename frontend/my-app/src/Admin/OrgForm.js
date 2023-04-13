@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext} from 'react';
+import React, { useState, useContext} from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -33,9 +33,6 @@ const OrganizationForm = () => {
 
     console.log("org.parent", org.parent)
     console.log("org.parent._id", org.parent._id)
-    // useEffect(() => {
-    //     fetchOrganizations();
-    // }, []);
 
     const handleChange = (e) => {
         setOrg({
@@ -46,15 +43,6 @@ const OrganizationForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // if (org._id) {
-        //     // Edit org
-        //     await axios.put(`/api/orgs/${org._id}`, org);
-        // } else {
-        //     // Create org
-        //     await axios.post('/api/orgs', org);
-        // }
-        // setOrganization({ name: '', parent: '', children: [] });
-        // fetchOrganizations();
 
         if (org._id) {
             // Edit org
@@ -68,7 +56,6 @@ const OrganizationForm = () => {
                 .then(response => {
                     if (response.ok) {
                         toast.success('Org updated successfully.');
-                        // setOrgs({ name: '', parent: '', children: [] });
                         fetchOrgs();
                         navigate('/admin/orgs', { state: { oid: org._id } }); // navigate to admin/orgs
                     } else {
@@ -90,7 +77,6 @@ const OrganizationForm = () => {
                 .then(response => {
                     if (response.ok) {
                         toast.success('Org created successfully.');
-                        // setOrg({ name: '', parent: '', children: [] });
                         fetchOrgs();
                         navigate('/admin/orgs'); // navigate to admin/orgs
                     } else {
