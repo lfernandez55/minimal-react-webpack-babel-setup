@@ -9,7 +9,7 @@ const OrganizationForm = () => {
     let { orgs, setOrgs } = useContext(AppContext)
 
     let { oid } = useParams()
-    console.log("org")
+
     let orgToEdit = oid ? orgs.find(o => o._id === oid) : {
         name: '',
         parent: {}
@@ -19,20 +19,11 @@ const OrganizationForm = () => {
     }
 
 
-    console.log("orgToEdit", orgToEdit)
-    console.log("oid", oid)
-    console.log("orgToEdit.parent", orgToEdit.parent)
-    console.log("orgToEdit.parent._id", orgToEdit.parent._id)
-
     const [org, setOrg] = useState(orgToEdit);
-    console.log("orgs", orgs);
     const fetchOrgs = async () => {
         const response = await axios.get('/api/orgs');
         setOrgs(response.data);
     };
-
-    console.log("org.parent", org.parent)
-    console.log("org.parent._id", org.parent._id)
 
     const handleChange = (e) => {
         setOrg({
