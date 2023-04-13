@@ -19,15 +19,11 @@ const OrganizationForm = () => {
     });
 
     let { oid } = useParams()
-    console.log("org")
+
     let orgToEdit = oid ? orgs.find(o => o._id === oid) : {
         name: '',
         parent: {}
     }
-    console.log("orgToEdit", orgToEdit)
-    console.log("oid", oid)
-    console.log("orgToEdit.parent", orgToEdit.parent)
-    console.log("orgToEdit.parent._id", orgToEdit.parent._id)
 
     let selectedOption;
     if(orgToEdit.parent._id == undefined){
@@ -37,39 +33,35 @@ const OrganizationForm = () => {
     }
     
 
-    console.log("SELECTED OPTION", selectedOption)
-
     const [org, setOrg] = useState(orgToEdit);
-    console.log("orgs", orgs);
+
     const fetchOrgs = async () => {
         const response = await axios.get('/api/orgs');
         setOrgs(response.data);
     };
 
-    console.log("org.parent", org.parent)
-    console.log("org.parent._id", org.parent._id)
-    // useEffect(() => {
-    //     fetchOrganizations();
-    // }, []);
 
     const handleChange = (e) => {
+        console.log(e.target)
         setOrg({
             ...org,
             [e.target.name]: e.target.value
         });
     };
 
+    const handleChange2 = (selectedOption) => {
+        console.log(selectedOption)
+        let cloneOrg = {org}
+        // console.log("cloneOrg1",cloneOrg)
+        cloneOrg.parent = selectedOption.value
+        // console.log("cloneOrg2", cloneOrg)
+        console.log("debug1",org)
+        setOrg(cloneOrg)
+        console.log("debug2",org)
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // if (org._id) {
-        //     // Edit org
-        //     await axios.put(`/api/orgs/${org._id}`, org);
-        // } else {
-        //     // Create org
-        //     await axios.post('/api/orgs', org);
-        // }
-        // setOrganization({ name: '', parent: '', children: [] });
-        // fetchOrganizations();
 
         if (org._id) {
             // Edit org
@@ -83,7 +75,6 @@ const OrganizationForm = () => {
                 .then(response => {
                     if (response.ok) {
                         toast.success('Org updated successfully.');
-                        // setOrgs({ name: '', parent: '', children: [] });
                         fetchOrgs();
                         navigate('/admin/orgs', { state: { oid: org._id } }); // navigate to admin/orgs
                     } else {
@@ -105,7 +96,6 @@ const OrganizationForm = () => {
                 .then(response => {
                     if (response.ok) {
                         toast.success('Org created successfully.');
-                        // setOrg({ name: '', parent: '', children: [] });
                         fetchOrgs();
                         navigate('/admin/orgs'); // navigate to admin/orgs
                     } else {
@@ -117,16 +107,6 @@ const OrganizationForm = () => {
                 });
         }
 
-    };
-
-    const renderParentOptions = () => {
-        return orgs.map((o) => (
-
-                <option key={o._id} value={o._id}>
-                    {o.name}
-                </option>
-
-        ))
     };
 
     return (
@@ -147,19 +127,11 @@ const OrganizationForm = () => {
                     <div>{org.parent?._id | org.parent }</div>
                     <label>Parent:</label>
                     <div className="control">
-                        {/* <select
-                            name="parent"
-                            value={org.parent}
-                            onChange={handleChange}
-                        >
-                            <option value="">Select a parent organization</option>
-                            {renderParentOptions()}
-                        </select> */}
-                        <Select
+                         <Select
                             options={options}
                             isSearchable={true}
                             isClearable={false}
-                            onChange={handleChange}
+                            onChange={handleChange2}
                             defaultValue={selectedOption}
                         />
                     </div>
