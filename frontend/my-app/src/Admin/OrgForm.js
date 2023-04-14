@@ -3,10 +3,12 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { AppContext } from '../App'
+import Select from 'react-select';
 
 const OrganizationForm = () => {
     const navigate = useNavigate()
     let { orgs, setOrgs } = useContext(AppContext)
+    const [selectedOption, setSelectedOption] = useState(null);
 
     useEffect(() => {
         let url = 'api/orgs'
@@ -56,6 +58,7 @@ const OrganizationForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
 
         if (org._id) {
             // Edit org
@@ -108,13 +111,20 @@ const OrganizationForm = () => {
             // don't display the org that is being edited
             // otherwise you'd get a parent of itself
             o._id !== orgToEdit._id  ? (
-                <option key={o._id} value={o._id}>
-                    {o.name}
-                </option>
+                { value: o._id, label: o.name }
             ) : null
         ))
     };
+    const handleChange2 = (selectedOption) => {
+        console.log("selectedOption:", selectedOption)
+        // orgToEdit = oid ? orgs.find(o => o._id === oid) : {
+        //     name: '',
+        //     parent: {}
+        // }
 
+        // setSelectedOption(selectedOption);
+
+    }
 
     return (
         <div className="react-stuff form">
@@ -131,6 +141,17 @@ const OrganizationForm = () => {
                     </div>
                 </div>
                 <div className="field">
+                    <label>Parent:</label>
+                    <div className="control">
+                        <Select
+                            name="parent"
+                            value={selectedOption}
+                            onChange={handleChange2}
+                            options={renderParentOptions()}
+                        />
+                    </div>
+                </div>
+                {/* <div className="field">
                     <div>{org.parent?._id | org.parent }</div>
                     <label>Parent:</label>
                     <div className="control">
@@ -143,7 +164,7 @@ const OrganizationForm = () => {
                             {renderParentOptions()}
                         </select>
                     </div>
-                </div>
+                </div> */}
                 <div className="field">
                     <label ></label>
                     <div className="control">
