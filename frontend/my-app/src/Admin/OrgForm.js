@@ -8,7 +8,7 @@ import Select from 'react-select';
 const OrganizationForm = () => {
     const navigate = useNavigate()
     let { orgs, setOrgs } = useContext(AppContext)
-    const [selectedOption, setSelectedOption] = useState(null);
+    // const [selectedOption, setSelectedOption] = useState(null);
 
     useEffect(() => {
         let url = 'api/orgs'
@@ -42,6 +42,13 @@ const OrganizationForm = () => {
         orgToEdit.parent = orgToEdit.parent._id
     }
 
+    //set initial select value
+    //first find the parent so u can get the name
+    let parent = orgs.find(o => o._id === orgToEdit.parent)
+    let selectedOptionCopy = { value: orgToEdit.parent, label: parent.name }
+
+    // setSelectedOption(selectedOptionCopy);
+    const [selectedOption, setSelectedOption] = useState(selectedOptionCopy);
 
     const [org, setOrg] = useState(orgToEdit);
     const fetchOrgs = async () => {
@@ -108,21 +115,19 @@ const OrganizationForm = () => {
 
     const renderParentOptions = () => {
         return orgs.map((o) => (
+            
             // don't display the org that is being edited
             // otherwise you'd get a parent of itself
             o._id !== orgToEdit._id  ? (
                 { value: o._id, label: o.name }
-            ) : null
+            ) : { value: null, label: null }
         ))
     };
     const handleChange2 = (selectedOption) => {
         console.log("selectedOption:", selectedOption)
-        // orgToEdit = oid ? orgs.find(o => o._id === oid) : {
-        //     name: '',
-        //     parent: {}
-        // }
-
-        // setSelectedOption(selectedOption);
+        let orgFound = orgs.find(o => o._id === selectedOption.value) 
+        setOrg(orgFound)
+        setSelectedOption(selectedOption);
 
     }
 
@@ -151,20 +156,7 @@ const OrganizationForm = () => {
                         />
                     </div>
                 </div>
-                {/* <div className="field">
-                    <div>{org.parent?._id | org.parent }</div>
-                    <label>Parent:</label>
-                    <div className="control">
-                        <select
-                            name="parent"
-                            value={org.parent}
-                            onChange={handleChange}
-                        >
-                            <option value="">Select a parent organization</option>
-                            {renderParentOptions()}
-                        </select>
-                    </div>
-                </div> */}
+
                 <div className="field">
                     <label ></label>
                     <div className="control">
