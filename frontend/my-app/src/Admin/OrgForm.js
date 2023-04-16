@@ -34,21 +34,33 @@ const OrganizationForm = () => {
 
     let { oid } = useParams()
 
-    let orgToEdit = oid ? orgs.find(o => o._id === oid) : {
-        name: '',
-        parent: {}
-    }
-    if(orgToEdit.parent._id !== undefined){
-        orgToEdit.parent = orgToEdit.parent._id
+    let orgToEdit;
+    let initialSelectedOption;
+    if (oid){
+        orgToEdit = orgs.find(o => o._id === oid)
+        if(orgToEdit.parent !== null){
+            // some org in the orgs have parent = {parrentObj}, others have parent = objectReferenceId
+            // set them all to parent = objectReferenceId
+            if( orgToEdit.parent._id !== undefined){
+                orgToEdit.parent = orgToEdit.parent._id
+            }
+            let orgtoeditParent = orgs.find(o => o._id === orgToEdit.parent)
+            initialSelectedOption    = { value: orgToEdit.parent, label: orgtoeditParent.name }
+        }else{
+            //editing the root element so set initialSelectedOption to null (TODO: Validation)
+            initialSelectedOption = { value: null, label: 'Null (Root element)' }
+        }
+
+    }else{
+        //creating a new element so set initialSelectedOption to root element
+        orgToEdit = { name: '', parent: orgs[0] }
+        initialSelectedOption = { value: orgs[0]._id, label: orgs[0].name }
     }
 
-    //set initial select value
-    //first find the parent so u can get the name
-    let parent = orgs.find(o => o._id === orgToEdit.parent)
-    let selectedOptionCopy = { value: orgToEdit.parent, label: parent.name }
 
-    // setSelectedOption(selectedOptionCopy);
-    const [selectedOption, setSelectedOption] = useState(selectedOptionCopy);
+
+    // setSelectedOption(initialSelectedOption);
+    const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
 
     const [org, setOrg] = useState(orgToEdit);
     const fetchOrgs = async () => {
@@ -125,8 +137,10 @@ const OrganizationForm = () => {
     };
     const handleChange2 = (selectedOption) => {
         console.log("selectedOption:", selectedOption)
-        let orgFound = orgs.find(o => o._id === selectedOption.value) 
-        setOrg(orgFound)
+        // let parentItem = orgs.find(o => o._id === selectedOption.value) 
+        // let cloneOrg = {...org}
+        // cloneOrg.parent = parentItem
+        setOrg({...org, parent: selectedOption.value})
         setSelectedOption(selectedOption);
 
     }
