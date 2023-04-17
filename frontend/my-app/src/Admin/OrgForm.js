@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { AppContext } from '../App'
 import Select from 'react-select';
+import OrgFormModals from './OrgFormModals'
 
 const OrganizationForm = () => {
     const navigate = useNavigate()
@@ -77,7 +78,7 @@ const OrganizationForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        console.log("in handleSubmit. . .", e)
 
         if (org._id) {
             // Edit org
@@ -160,7 +161,7 @@ const OrganizationForm = () => {
                     </div>
                 </div>
                 <div className="field">
-                    <label>Parent:</label>
+                    <label>Parentx:</label>
                     <div className="control">
                         <Select
                             name="parent"
@@ -170,7 +171,9 @@ const OrganizationForm = () => {
                         />
                     </div>
                 </div>
-
+                <div>empieza</div>
+                <OrgFormModals/>
+                <div>termina</div>
                 <div className="field">
                     <label ></label>
                     <div className="control">
