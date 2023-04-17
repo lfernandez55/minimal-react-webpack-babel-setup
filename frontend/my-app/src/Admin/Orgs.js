@@ -21,8 +21,7 @@ export default function Orgs() {
         if(oid !== null){
             url = 'api/orgshierarchy/' + oid;
         }
-        // DEBUG LINE BELOW - REMOVE:
-        // url = 'api/orgs'
+
         fetch(url, {
             method: "GET",
         })
@@ -93,12 +92,9 @@ export default function Orgs() {
 
     let prevOid = null
     let jsx = ''
-    console.log("prevOid", prevOid)
-    console.log("jsx", jsx  )
+
     const renderIndents = (oid, parent) => {
-        // if (prevOid === null) {
-        //     prevOid = oid
-        // } else {
+
         if (parent === null){
             console.log("parent is null")
             jsx = ''
@@ -107,25 +103,11 @@ export default function Orgs() {
                 jsx = '--' + jsx
             }
         }
-        // }
-        
-        console.log("----------------------------")
-        console.log("oid", oid)
-        console.log("prevOid", prevOid  )
-        console.log("parent", parent  )
-        console.log( "jsx", jsx  )
-        console.log("----------------------------")
+      
+
         prevOid = oid
         return (jsx)
 
-        // if (prevOid === null) {
-        //     prevOid = oid
-        // } else if (parent === prevOid ) {
-        //     jsx = '--' + jsx
-        // }
-        // console.log("prevOid", prevOid, "oid", oid, "parent", parent, "jsx", jsx  )
-        // return (jsx)
-        // return  ('--')
     };
 
 
