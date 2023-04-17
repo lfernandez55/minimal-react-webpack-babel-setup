@@ -5,10 +5,10 @@ export const createAdmin = (req, res, next) => {
 
     const seedDB = async () => {
         try {
-
             // start fresh by removing all documents in the collections
             await User.remove({});
             await Role.remove({});
+
             let role = new Role
             role.name = "admin"
             await role.save()
@@ -18,9 +18,8 @@ export const createAdmin = (req, res, next) => {
             user.lastName = "admin"
             user.email = "admin@aa.edu"
             user.username = "admin"
-            user.setPassword("admin")
+            user.setPassword("asdf")
             user.roles.push(role)
-            user.synchWithChild()
             await user.save()
 
             res.status(200).json({ success: true, message: "Admin account creation successful" })
