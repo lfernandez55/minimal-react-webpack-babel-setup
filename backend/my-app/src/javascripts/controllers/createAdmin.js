@@ -14,26 +14,31 @@ export const createAdmin = (req, res, next) => {
             
             let org1 = new Organization
             org1.name = "Weber State U"
+            org1.users = []
             org1.parent = null
             await org1.save()
 
             let org2 = new Organization
             org2.name = "EAST"
+            org2.users = []
             org2.parent= org1
             await org2.save()
 
             let org3 = new Organization
             org3.name = "College of Social Science"
+            org3.users = []
             org3.parent = org1    
             await org3.save()
 
             let org4 = new Organization
             org4.name = "History"
+            org4.users = []
             org4.parent = org3    
             await org4.save()
 
             let org5 = new Organization
             org5.name = "Political Science"
+            org5.users = []
             org5.parent = org3    
             await org5.save()
 

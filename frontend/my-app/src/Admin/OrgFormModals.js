@@ -5,9 +5,9 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-const OrgFormModals = () => {
+const OrgFormModals = (prop) => {
     let { users, roles } = useContext(AppContext)
-
+    console.log("prop in OrgFormModals", prop)
     const [isOpen, setIsOpen] = useState(false);
 
     const handleOpenModal = (e) => {
@@ -17,6 +17,14 @@ const OrgFormModals = () => {
     };
 
     const handleCloseModal = () => {
+        let userRole = {}
+
+        let userToEdit = users.find(u => u.username === document.getElementById("userName").value)
+        console.log(userToEdit._id, userToEdit.username)
+        userRole.user = userToEdit._id
+        userRole.role = document.getElementById('roles').selectedOptions[0].value;
+        alert(userRole.role)
+        prop.org.users.push(userRole)
         setIsOpen(false);
     };
 
@@ -27,6 +35,7 @@ const OrgFormModals = () => {
       setSearchTerm(event.target.value);
     };
   
+    //shows only 10 users
     const filteredUsers = users.filter(user =>
       user.username.toLowerCase().includes(searchTerm.toLowerCase())
     ).slice(0, 10);
@@ -35,16 +44,16 @@ const OrgFormModals = () => {
 
     return (
         <div>
-            <div>Begin....</div>
-            <button onClick={handleOpenModal}>Add Users</button>
+            <button className="btn btn-secondary btn-sm" onClick={handleOpenModal}>Add Users</button>
             <Modal isOpen={isOpen} onRequestClose={handleCloseModal}>
-                <h2>Example Modal</h2>
-                <p>This is an example modal using react-modal!</p>
+                <h2>User</h2>
+                <p>Add user and specify their role in the organization  </p>
                 <div className="field">
                     <label htmlFor="roles">Roles</label>
                     <div className="control">
+                    <div className="col-sm-1">
                         {/* todo: add formik stuff below: value={formik.values.roles} onChange={formik.handleChange} */}
-                        <select className="form-select form-select-sm" name="roles" multiple  >
+                        <select className="form-select form-select-sm" name="roles" id="roles" multiple >
 
                             {/* <select className="form-select form-select-sm" name="roles" multiple  onChange={formik.handleChange} > */}
                             {
@@ -53,14 +62,14 @@ const OrgFormModals = () => {
                                 })
                             }
                         </select>
-
+                        </div>
                     </div>
                 </div>
 
                 <div className="field">
                     <label htmlFor="roles">User</label>
                     <div className="control">
-                        <input type="text" onChange={handleInputChange} value={searchTerm} />
+                        <input type="text" id="userName" onChange={handleInputChange} value={searchTerm} />
                         <ul>
                             {filteredUsers.map(user => (
                                 <li key={user.id}>{user.username}</li>
@@ -76,7 +85,6 @@ const OrgFormModals = () => {
 
                 <button onClick={handleCloseModal}>Close Modal</button>
             </Modal>
-            <div>...End</div>
         </div>
     );
 };

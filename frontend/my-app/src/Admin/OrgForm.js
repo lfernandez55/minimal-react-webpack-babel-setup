@@ -63,6 +63,7 @@ const OrganizationForm = () => {
     // setSelectedOption(initialSelectedOption);
     const [selectedOption, setSelectedOption] = useState(initialSelectedOption);
 
+
     const [org, setOrg] = useState(orgToEdit);
     const fetchOrgs = async () => {
         const response = await axios.get('/api/orgs');
@@ -171,9 +172,12 @@ const OrganizationForm = () => {
                         />
                     </div>
                 </div>
-                <div>empieza</div>
-                <OrgFormModals/>
-                <div>termina</div>
+                <div className="field">
+                    <div>&nbsp;</div>
+                    <div className="control">
+                        <OrgFormModals org={org} />
+                    </div>
+                </div>
                 <div className="field">
                     <label ></label>
                     <div className="control">

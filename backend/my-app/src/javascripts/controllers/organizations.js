@@ -5,7 +5,8 @@ const createOrganization = async (req, res) => {
   try {
     const organization = new Organization({
       name: req.body.name,
-      parent: req.body.parent
+      parent: req.body.parent,
+      users: req.body.users
     });
     await organization.save();
     res.status(201).json(organization);
@@ -191,6 +192,7 @@ const updateOrganization = async (req, res) => {
     }
     organization.name = req.body.name;
     organization.parent = req.body.parent;
+    organization.users = req.body.users;
     await organization.save();
     res.json(organization);
   } catch (err) {
