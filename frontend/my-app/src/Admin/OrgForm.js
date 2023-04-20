@@ -8,7 +8,7 @@ import OrgFormModals from './OrgFormModals'
 
 const OrganizationForm = () => {
     const navigate = useNavigate()
-    let { orgs, setOrgs } = useContext(AppContext)
+    let { users, roles, orgs, setOrgs } = useContext(AppContext)
     // const [selectedOption, setSelectedOption] = useState(null);
 
     useEffect(() => {
@@ -65,6 +65,7 @@ const OrganizationForm = () => {
 
 
     const [org, setOrg] = useState(orgToEdit);
+    console.log("org:", org)
     const fetchOrgs = async () => {
         const response = await axios.get('/api/orgs');
         setOrgs(response.data);
@@ -92,7 +93,8 @@ const OrganizationForm = () => {
             })
                 .then(response => {
                     if (response.ok) {
-                        toast.success('Org updated successfully.');
+                        toast.success('Org updated successfully.', {
+                            autoClose: 1000});
                         fetchOrgs();
                         navigate('/admin/orgs', { state: { oid: org._id } }); // navigate to admin/orgs
                     } else {
@@ -147,11 +149,26 @@ const OrganizationForm = () => {
 
     }
 
+    const renderUserRoles = () =>{
+
+        return org.users.map(userRole => (
+            <div key={userRole.user}>{renderUsername(userRole.user)} | {renderUserrole(userRole.role)}</div>
+        ))
+    }
+    const renderUsername = (uid) =>{
+        const user = users.find(u => u._id === uid )
+        return user.username
+    }
+    const renderUserrole = (rid) =>{
+        const role = roles.find(r => r._id === rid )
+        return role.name
+    }
+
     return (
         <div className="react-stuff form">
             <form onSubmit={handleSubmit}>
                 <div className="field">
-                    <label>Name:</label>
+                    <label>Name: {org.name}</label>
                     <div className="control">
                         <input
                             type="text"
@@ -173,9 +190,13 @@ const OrganizationForm = () => {
                     </div>
                 </div>
                 <div className="field">
+                    <div>Users:</div>
+                    {renderUserRoles()}
+                </div>
+                <div className="field">
                     <div>&nbsp;</div>
                     <div className="control">
-                        <OrgFormModals org={org} />
+                        <OrgFormModals org={org} setOrg={setOrg} />
                     </div>
                 </div>
                 <div className="field">

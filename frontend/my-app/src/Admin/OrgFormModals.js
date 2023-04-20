@@ -5,9 +5,9 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-const OrgFormModals = (prop) => {
+const OrgFormModals = ({org, setOrg}) => {
     let { users, roles } = useContext(AppContext)
-    console.log("prop in OrgFormModals", prop)
+    //console.log("props in OrgFormModals", props)
     const [isOpen, setIsOpen] = useState(false);
 
     const handleOpenModal = (e) => {
@@ -20,11 +20,11 @@ const OrgFormModals = (prop) => {
         let userRole = {}
 
         let userToEdit = users.find(u => u.username === document.getElementById("userName").value)
-        console.log(userToEdit._id, userToEdit.username)
         userRole.user = userToEdit._id
         userRole.role = document.getElementById('roles').selectedOptions[0].value;
-        alert(userRole.role)
-        prop.org.users.push(userRole)
+        let orgClone = {...org}
+        orgClone.users.push(userRole)
+        setOrg(orgClone)
         setIsOpen(false);
     };
 
@@ -51,7 +51,7 @@ const OrgFormModals = (prop) => {
                 <div className="field">
                     <label htmlFor="roles">Roles</label>
                     <div className="control">
-                    <div className="col-sm-1">
+                    <div className="col-sm-2">
                         {/* todo: add formik stuff below: value={formik.values.roles} onChange={formik.handleChange} */}
                         <select className="form-select form-select-sm" name="roles" id="roles" multiple >
 
