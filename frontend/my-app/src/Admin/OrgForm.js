@@ -67,6 +67,7 @@ const OrganizationForm = () => {
     const [org, setOrg] = useState(orgToEdit);
     console.log("org:", org)
     const fetchOrgs = async () => {
+        console.log("in fetch orgs")
         const response = await axios.get('/api/orgs');
         setOrgs(response.data);
     };
@@ -156,10 +157,21 @@ const OrganizationForm = () => {
         ))
     }
     const renderUsername = (uid) =>{
+        
+        // kludge (sometimes the uid is the user {} and sometimes just the user._id so kludge needed here)
+        // till I figure out why its not always just one
+        if(uid._id !== undefined){
+            uid = uid._id
+        }
         const user = users.find(u => u._id === uid )
         return user.username
     }
     const renderUserrole = (rid) =>{
+
+        //kludge (see above)
+        if(rid._id !== undefined){
+            rid = rid._id
+        }
         const role = roles.find(r => r._id === rid )
         return role.name
     }
