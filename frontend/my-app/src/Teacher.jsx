@@ -1,11 +1,12 @@
+// *** This component needs to be built out
+
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+
 export default function Teacher() {
 
     return (
         <>
-            <h1>Teacher Tools</h1>
-            <Outlet />
+            <h1>Teacher Component (under construction)</h1>
         </>
     )
 }

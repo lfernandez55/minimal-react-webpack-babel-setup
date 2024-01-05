@@ -131,28 +131,7 @@ export const deleteUserAPI = (req, res, next) => {
 }
 
 
-export const allUsersWhoAreStudentsAPI = (req, res, next) => {
-    Role.findOne({ name: "student" }).exec((err, role) => {
-        if (err) {
-            res.status(500).json({ success: false, message: "Query failed", err: err })
-            res.end()
-        } else {
-            if (role){
-                User.find({ roles: role._id }).exec((err, students) => {
-                    if (err) {
-                        res.status(500).json({ success: false, message: "Query failed", err: err })
-                        res.end()
-                    } else {
-                        res.send(JSON.stringify(students))
-                    }
-                })
-            } else{
-                res.send(JSON.stringify([]))
-            }
+// *** Add a controller here that will service your new api/students route
 
-        }
-    })
-
-}
 
 

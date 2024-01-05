@@ -35,9 +35,7 @@ export default function App() {
     // roles is the list of all available roles in the DB (not the logged in user's roles which are in loggedInUser)
     let [roles, setRoles] = useState([])
     // courses is the list of courses that belong to the logged in teacher
-    let [courses, setCourses] = useState([])
-    // users who have the role student 
-    let [students, setStudents] = useState([])
+    // *** Add globals for students and courses modeled on users and roles above
 
 
     useEffect(() => {
@@ -90,11 +88,7 @@ export default function App() {
                                 <Route path="roles/:rid/edit" element={<RoleForm />}></Route>
                             </Route>
                          
-                            <Route path="/teacher" element={<Teacher />}>
-                                <Route path="courses" element={<Courses />}></Route>
-                                <Route path="courses/new" element={<CourseForm />}></Route>
-                                <Route path="courses/:courseid/edit" element={<CourseForm />}></Route>
-                            </Route>
+                            {/* *** Add routes to new teacher components here */}
 
                             <Route path="/other" element={<Other />}></Route>
                         </Route>
