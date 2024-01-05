@@ -8,9 +8,6 @@ import Users from './Admin/Users.jsx'
 import UserForm from './Admin/UserForm.jsx'
 import Roles from './Admin/Roles.jsx'
 import RoleForm from './Admin/RoleForm.jsx'
-import Teacher from './Teacher.jsx'
-import Courses from './Teacher/Courses.jsx'
-import CourseForm from './Teacher/CourseForm.jsx'
 import Other from './Other.jsx'
 import Nav from './Nav.jsx'
 import ErrorAPI from './ErrorAPI.jsx'
@@ -59,7 +56,7 @@ export default function App() {
     }
 
     return (
-        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, hasRole, loggedInUser, setLoggedInUser, setCookie, removeCookie, courses, setCourses, students, setStudents }}>
+        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, hasRole, loggedInUser, setLoggedInUser, setCookie, removeCookie }}>
             <div className="react-stuff">
                 <Router>
                     <Routes>
