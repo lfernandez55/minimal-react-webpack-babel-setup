@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { AppContext } from '../App'
+import { AppContext } from '../App.jsx'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { toast } from 'react-toastify'

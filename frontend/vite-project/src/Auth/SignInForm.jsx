@@ -3,7 +3,7 @@ import { useFormik } from 'formik'
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
-import { AppContext } from '../App';
+import { AppContext } from '../App.jsx';
 import { useContext } from 'react'
 toast.configure()
 

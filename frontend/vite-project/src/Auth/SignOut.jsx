@@ -1,6 +1,6 @@
 import React from 'react'
 import { useContext } from 'react'
-import { AppContext } from '../App';
+import { AppContext } from '../App.jsx';
 
 export default function SignOut() {
 
