@@ -1,5 +1,6 @@
 import React from 'react'
-import { useFormik } from 'formik'
+import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
@@ -16,21 +17,19 @@ export function Vhelp({ message }) {
 
 
 export default function SignInForm() {
+    const [data, setData] = useState("");
+    const {register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
     let { setAuthenticated, setLoggedInUser } = useContext(AppContext)
 
-    let initialValues = {username: "", password: ""}
-    const validationSchema = yup.object({
-        username: yup.string().required(),
-        password: yup.string().required(),
-    })
-    const onSubmit = (values) =>{
+    const onSubmit = (data) =>{
+        setData(data);
         fetch('api/users/signin', {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             // following line instructs browser to send the token along with every request:
             credentials: 'same-origin',
-            body: JSON.stringify(values),
+            body: JSON.stringify(data),
         })
             .then((response) => {
                 // if (!response.ok) throw Error('Failed to sign in')
@@ -65,33 +64,30 @@ export default function SignInForm() {
             })
 
     }
-    let formik = useFormik({
-        initialValues,
-        validationSchema,
-        onSubmit
-        
-    })
 
     return (
         <div className="react-stuff form">
-            <form onSubmit={formik.handleSubmit}>
+            {/* Uncomment this line to see how React Hook Form Tracks Form State */}
+            {/* <p>Data: {JSON.stringify(data)}</p>{" "} */}
+
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <h1>Sign In</h1>
 
                 <div className="field">
                     <label htmlFor="username">Username</label>
                     <div className="control">
-                        <input type="text" name="username" value={formik.values.username} onChange={formik.handleChange} />
-                        <Vhelp message={formik.errors.username} />
+                        <input type="text" name="username" {...register("username", { required: "Username is required" })}/>
+                        {errors.username && <Vhelp message={errors.username.message}/>}
                     </div>
                 </div>
 
-                <div className="field">
-                    <label htmlFor="password">Password</label>
-                    <div className="control">
-                        <input type="password" name="password" value={formik.values.password} onChange={formik.handleChange} />
-                        <Vhelp message={formik.errors.password} />
-                    </div>
-                </div>
+                 <div className="field">
+                     <label htmlFor="password">Password</label>
+                     <div className="control">
+                         <input type="password" name="password" {...register("password", { required: "Password is required" })}/>
+                         {errors.password && <Vhelp message={errors.password.message}/>}
+                     </div>
+                 </div>
 
                 <div className="field">
                     <label ></label>
