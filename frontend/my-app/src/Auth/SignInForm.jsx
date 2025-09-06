@@ -44,7 +44,7 @@ export default function SignInForm() {
                     toast(response.message, {
                         autoClose: 3000,
                         onClose: () => {
-                                setLoggedInUser(response.user)
+                            setLoggedInUser(response.user)
                             // without setAuthenticated("true") "Login" link wouldn't disappear from nav
                             setAuthenticated(true)
                             navigate("/dashboard");

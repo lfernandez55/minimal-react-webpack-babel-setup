@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
 import { AppContext } from '../App.jsx'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useFormik } from 'formik'
+import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { toast } from 'react-toastify'
-import * as yup from 'yup'
 toast.configure()
 
 
@@ -16,23 +16,45 @@ export function Vhelp({ message }) {
 }
 
 export default function RoleForm() {
+    const [data, setData] = useState("");
+
+    
     const navigate = useNavigate()
 
     let { rid } = useParams()
     let is_new = rid === undefined
-    let { authenticated, roles } = useContext(AppContext)
-    let role = rid ? roles.find(r => r._id === rid) : {}
 
-    const initialValues = is_new ? {name: ""} : { ...role }
-    const validationSchema = yup.object({
-        name: yup.string().required('You must enter a role'),
-    })
-    const onSubmit = (values) =>{
+    let { authenticated, roles } = useContext(AppContext)
+    
+    let role = rid ? roles.find(r => r._id === rid) : {name:""}
+    const {register, handleSubmit, formState: { errors } } = useForm({
+    defaultValues: {
+      name: role.name
+    }
+    });
+
+    // let { rid } = useParams()
+    // let is_new = rid === undefined
+    // let { authenticated, roles } = useContext(AppContext)
+    // let role = rid ? roles.find(r => r._id === rid) : {}
+    // console.log("xxxx", role)
+    // let initialValue;
+    // is_new ? initialValue= "" : initialValue = {...role}.name
+    // const {register, handleSubmit, formState: { errors } } = useForm({
+    // defaultValues: {
+    //   name: initialValue
+    // }
+    // });
+
+
+
+    const onSubmit = (data) =>{
+        setData(data)
         fetch(`api/roles${is_new ? '' : '/' + role._id}`, {
             method: is_new ? 'POST' : "PUT",
             headers: { 'Content-Type': 'application/json' },
             credentials: 'same-origin',
-            body: JSON.stringify(values)
+            body: JSON.stringify(data)
         }).then((response) => {
             return response.json()
         }).then((response) => {
@@ -56,23 +78,11 @@ export default function RoleForm() {
             })
         })
     }
-    let formik = useFormik({
-        initialValues,
-        validationSchema,
-        onSubmit
-    }
-    )
 
     if (!authenticated) {
         document.location = '/signin'
         return <></>
     }
-
-
-
-
-
-
 
     let title = ""
     if (is_new) {
@@ -86,13 +96,15 @@ export default function RoleForm() {
     return (
         <div className="react-stuff form">
 
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <h1>{title}</h1>
                 <div className="field">
                     <label htmlFor="name">Name</label>
                     <div className="control">
-                        <input type="text" name="name" value={formik.values.name} onChange={formik.handleChange} />
-                        <Vhelp message={formik.errors.name} />
+                        {/* <input type="text" name="name" value={formik.values.name} onChange={formik.handleChange} />
+                        <Vhelp message={formik.errors.name} /> */}
+                        <input type="text" name="name" {...register("name", { required: "Role name is required" })} />
+                        {errors.name && <Vhelp message={errors.name.message}/>}
                     </div>
                 </div>
 
