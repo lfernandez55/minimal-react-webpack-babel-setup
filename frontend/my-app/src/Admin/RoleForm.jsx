@@ -33,21 +33,6 @@ export default function RoleForm() {
     }
     });
 
-    // let { rid } = useParams()
-    // let is_new = rid === undefined
-    // let { authenticated, roles } = useContext(AppContext)
-    // let role = rid ? roles.find(r => r._id === rid) : {}
-    // console.log("xxxx", role)
-    // let initialValue;
-    // is_new ? initialValue= "" : initialValue = {...role}.name
-    // const {register, handleSubmit, formState: { errors } } = useForm({
-    // defaultValues: {
-    //   name: initialValue
-    // }
-    // });
-
-
-
     const onSubmit = (data) =>{
         setData(data)
         fetch(`api/roles${is_new ? '' : '/' + role._id}`, {
