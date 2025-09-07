@@ -8,12 +8,11 @@ export const createAdmin = (req, res, next) => {
         try {
 
             // start fresh by removing all documents in the collections
-            await User.remove({});
-            await Role.remove({});
-            await Course.remove({})
-
-   
-            
+            // when upgrading Mongoose from 5 to 8 this code needed updating.
+            // in 5 one could use await Course.remove({})
+            await User.deleteMany({});
+            await Role.deleteMany({});
+            await Course.deleteMany({})
 
             let role1 = new Role
             role1.name = "admin"
@@ -63,10 +62,10 @@ export const createAdmin = (req, res, next) => {
             user4.roles.push(role3)
             await user4.save()
 
-            // let course1 = new Course
-            // course1.name = "WEB 3430"
-            // course1.teacher = user2
-            // await course1.save()
+            let course1 = new Course
+            course1.name = "WEB 3430"
+            course1.teacher = user2
+            await course1.save()
 
             res.status(200).json({ success: true, message: "DB Seeded...." })
 

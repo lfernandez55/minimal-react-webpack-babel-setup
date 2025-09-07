@@ -5,12 +5,14 @@ var cookieParser = require('cookie-parser');
 import { APP_TITLE } from './src/javascripts/config/vars'
 
 // the name of the db can be changed. it will be created automatically on startup
-mongoose.connect("mongodb://localhost:27017/authdb",{
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-},()=>{
-  console.log("Connected")
+mongoose.connect("mongodb://localhost:27017/authdbxx", {
 })
+.then(() => {
+  console.log("Connected");
+})
+.catch((err) => {
+  console.error("Error connecting:", err);
+});
 
 //create the web server
 export let app = express()

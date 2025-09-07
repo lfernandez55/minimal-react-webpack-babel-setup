@@ -1,158 +1,133 @@
-import { User } from '../models/user'
-import { Role } from '../models/role'
+import { User } from '../models/user';
+import { Role } from '../models/role';
 
+// used for registration and for creating new users in admin tools
+export const createUserAPI = async (req, res, next) => {
+  try {
+    const user = new User();
+    user.firstName = req.body.firstName;
+    user.lastName = req.body.lastName;
+    user.email = req.body.email;
+    user.username = req.body.username;
+    user.setPassword(req.body.password);
+    user.roles = req.body.roles;
 
-// used for registration. and for creating new users in admin tools
-export const createUserAPI = (req, res, next) => {
-    let user = new User
-    user.firstName = req.body.firstName
-    user.lastName = req.body.lastName
-    user.email = req.body.email
-    user.username = req.body.username
-    user.setPassword(req.body.password)
-    user.roles = req.body.roles
-    // user.synchWithChild()
-    user.save(err => {
-        if (err) {
-            // err.code indicates that a duplicate key violation occurred
-            if (err.code == 11000) {
-                // 409 ("The request could not be completed due to a conflict with the current state of the resource)
-                res.status(409).json({ success: false, errorCode: err.code, message: "Most likely you are trying to create an account with a username that already exists. Try a different username." })
-            } else {
-                res.status(400).json({ success: false, message: err })
-            }
-            res.end()
-        } else {
-            res.status(200).json({ success: true, message: "Account creation successful" })
-            res.end()
-        }
-    })
+    await user.save();
 
-}
+    res.status(200).json({ success: true, message: 'Account creation successful' });
+  } catch (err) {
+    if (err?.code === 11000) {
+      // duplicate key (e.g., username or email already exists)
+      res.status(409).json({
+        success: false,
+        errorCode: err.code,
+        message:
+          'Most likely you are trying to create an account with a username that already exists. Try a different username.',
+      });
+    } else {
+      res.status(400).json({ success: false, message: err?.message || err });
+    }
+  }
+};
 
+export const signUserInAPI = async (req, res) => {
+  try {
+    // NOTE: don't use .lean() here because we need instance methods (isValidPassword, generateJWT)
+    const user = await User.findOne({ username: req.body.username }).populate('roles');
 
-export const signUserInAPI = (req, res) => {
-    //the below query assumes usernames are unique. this uniqueness is enforced in createUserAPI
-    //roles is populated in the below query so that the React client has access to it
-    //the React client displays different GUI depending on role
-    //
-    User.findOne({ username: req.body.username }).populate("roles").exec((err, user) => {
-        if (err) {
-            res.status(500).json({ success: false, message: err })
-            res.end()
-        } else {
-            if (user){
-                if(user.isValidPassword(req.body.password)){
-                    let token = user.generateJWT()
-                    console.log("User authenticated. . . .")
-                    //the cookie stores the token and is used by the server for authentication and authorization
-                    //although the token is called a jwt, we're still storing the info in a cookie
-                    //the roles in the json are used by the client for authorization
-                    res.cookie("token", token, { maxAge: 1000 * 60 * 60 })
-                    res.status(200).json({ success: true, user: user, message:"Successfully signed in." })
-                    res.end()
-                }else{
-                    res.status(401).json({ success: false, message: "An account with that username was found but the password did not match" })
-                    res.end()
-                }
-            }else{
-                res.status(401).json({ success: false, message: "No account matching that username was found" })
-                res.end()
-            }
+    if (!user) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'No account matching that username was found' });
+    }
 
-        }
-    })
+    if (!user.isValidPassword(req.body.password)) {
+      return res.status(401).json({
+        success: false,
+        message: 'An account with that username was found but the password did not match',
+      });
+    }
 
-}
+    const token = user.generateJWT();
+    console.log('User authenticated. . . .');
 
+    res.cookie('token', token, { maxAge: 1000 * 60 * 60 });
+    return res.status(200).json({ success: true, user, message: 'Successfully signed in.' });
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err?.message || err });
+  }
+};
 
 /////////// Standard CRUD Methods Below
 
-//GET /api/users
-export const allUsersAPI = (req, res, next) => {
-    User.find().exec((err, users) => {
-        if (err) {
-            res.status(500).json({ success: false, message: "Query failed" })
-            res.end()
-        } else {
-            res.send(JSON.stringify(users))
-        }
-    })
-}
-
-
+// GET /api/users
+export const allUsersAPI = async (req, res, next) => {
+  try {
+    // lean() returns plain objects (faster when you don't need methods/getters)
+    const users = await User.find().lean();
+    res.send(JSON.stringify(users));
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Query failed' });
+  }
+};
 
 // PUT /api/users/:id  (update user)
-export const updateUserAPI = (req, res, next) => {
-    User.findOne({ _id: req.params.id }).exec((err, user) => {
-        if (err) {
-            res.status(500).json({ success: false, message: "Unable to update" })
-            res.end()
-        } else {
-            Object.assign(user, req.body)
-            if (req.body.password != "dummy") {
-                user.setPassword(req.body.password)
-            }
-            user.save((err) => {
-                if (err) {
-                    // err.code 11000 indicates that a duplicate key violation occurred
-                    console.log("err.code", err.code)
-                    if (err.code == 11000) {
-                        res.status(409).json({ success: false, errorCode: err.code, message: "Most likely you are trying to create an account with a username that already exists. Try a different username." })
-                    } else {
-                        res.status(400).json({ success: false, message: err })
-                    }
-                    res.end()
-                } else {
-                    res.status(200).json({ success: true, message: "Account update successful" })
-                    res.end()
-                }
-            })
-        }
-    })
-}
+export const updateUserAPI = async (req, res, next) => {
+  try {
+    const user = await User.findOne({ _id: req.params.id });
 
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
 
+    Object.assign(user, req.body);
 
+    if (req.body.password !== 'dummy') {
+      user.setPassword(req.body.password);
+    }
 
+    await user.save();
 
-//DELETE /api/users/:id
-export const deleteUserAPI = (req, res, next) => {
-    User.deleteOne({ _id: req.params.id }).exec((err, user) => {
-        if (err) {
-            res.status(500).json({ success: false, message: "Delete Query failed" })
-            res.end()
-        } else {
-            res.status(200).json({ success: true, message: "Delete Query succeeded" })
-            res.end()
-        }
-    })
+    res.status(200).json({ success: true, message: 'Account update successful' });
+  } catch (err) {
+    if (err?.code === 11000) {
+      res.status(409).json({
+        success: false,
+        errorCode: err.code,
+        message:
+          'Most likely you are trying to create an account with a username that already exists. Try a different username.',
+      });
+    } else {
+      res.status(400).json({ success: false, message: err?.message || err });
+    }
+  }
+};
 
-}
+// DELETE /api/users/:id
+export const deleteUserAPI = async (req, res, next) => {
+  try {
+    const result = await User.deleteOne({ _id: req.params.id });
+    // result: { acknowledged: true, deletedCount: N }
+    if (result?.deletedCount === 0) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    res.status(200).json({ success: true, message: 'Delete Query succeeded' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Delete Query failed' });
+  }
+};
 
+export const allUsersWhoAreStudentsAPI = async (req, res, next) => {
+  try {
+    const role = await Role.findOne({ name: 'student' }).lean();
+    if (!role) {
+      return res.send(JSON.stringify([]));
+    }
 
-export const allUsersWhoAreStudentsAPI = (req, res, next) => {
-    Role.findOne({ name: "student" }).exec((err, role) => {
-        if (err) {
-            res.status(500).json({ success: false, message: "Query failed", err: err })
-            res.end()
-        } else {
-            if (role){
-                User.find({ roles: role._id }).exec((err, students) => {
-                    if (err) {
-                        res.status(500).json({ success: false, message: "Query failed", err: err })
-                        res.end()
-                    } else {
-                        res.send(JSON.stringify(students))
-                    }
-                })
-            } else{
-                res.send(JSON.stringify([]))
-            }
-
-        }
-    })
-
-}
-
+    const students = await User.find({ roles: role._id }).lean();
+    res.send(JSON.stringify(students));
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Query failed', err });
+  }
+};
 
