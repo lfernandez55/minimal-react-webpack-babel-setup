@@ -86,8 +86,6 @@ export default function RoleForm() {
                 <div className="field">
                     <label htmlFor="name">Name</label>
                     <div className="control">
-                        {/* <input type="text" name="name" value={formik.values.name} onChange={formik.handleChange} />
-                        <Vhelp message={formik.errors.name} /> */}
                         <input type="text" name="name" {...register("name", { required: "Role name is required" })} />
                         {errors.name && <Vhelp message={errors.name.message}/>}
                     </div>
