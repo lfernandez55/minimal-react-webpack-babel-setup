@@ -1,19 +1,14 @@
 import React, { useContext, useEffect } from 'react'
 import { AppContext } from '../App.jsx'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useFormik } from 'formik'
+import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
 toast.configure()
 
 export function Vhelp({ message, touchedField }) {
-    if (touchedField) {
-        return (<p className="help">{message}</p>)
-    } else {
-        return (<p className="help"></p>)
-    }
-
-
+    return (<p className="help">{message}</p>)
 }
 
 
@@ -51,12 +46,14 @@ export default function CourseForm() {
     let { courseid } = useParams()
     let is_new = courseid === undefined
 
-    let course = courseid ? courses.find(c => c._id === courseid) : {}
+    let course = courseid ? courses.find(c => c._id === courseid) : {name:"",students:[]}
+    const {register, handleSubmit, setError, formState: { errors } } = useForm({
+    defaultValues: {
+      name: course.name,
+      enrolledStudents: course.enrolledStudents
+    }
+    });
 
-    const initialValues = is_new ? {courseName: "",users: [] } : { ...course }
-    const validationSchema = yup.object({
-        name: yup.string().required()
-    })
     const onSubmit = (values) =>{
         fetch(`api/courses${is_new ? '' : '/' + course._id}`, {
             method: is_new ? 'POST' : "PUT",
@@ -70,7 +67,11 @@ export default function CourseForm() {
                 toast(response.message, {
                     autoClose: 5000,
                 })
-                formik.setFieldError('coursename', 'Coursename is already used');
+                //formik.setFieldError('coursename', 'Coursename is already used');
+                setError("name", {
+                    type: "manual", // important for custom errors
+                    message: "Course name is already used"
+                });
             } else if (response.success === false){
                 toast(response.message, {
                     autoClose: 5000,
@@ -96,11 +97,7 @@ export default function CourseForm() {
             })
         })
     }
-    let formik = useFormik({
-        initialValues,
-        validationSchema,
-        onSubmit
-    })
+
 
     if (!authenticated) {
         document.location = '/signin'
@@ -117,21 +114,21 @@ export default function CourseForm() {
     return (
         <div className="react-stuff form">
 
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <h1>{title}</h1>
                 <div className="field">
                     <label htmlFor="name">Course Name</label>
                     <div className="control">
-                        <input type="text" {...formik.getFieldProps('name')} />
-                        <Vhelp message={formik.errors.name} touchedField={formik.touched.name} />
+                        <input type="text" name="name" {...register("name", { required: "Course name is required" })} />
+                        {errors.name && <Vhelp message={errors.name.message}/>}
                     </div>
                 </div>
 
                 <div className="field">
                     <label htmlFor="roles">Enrolled Students (selected)</label>
                     <div className="control">
-                        {/* <select className="form-select form-select-sm" name="enrolledStudents" multiple value={[ "6313c7fd057564570c9aaad1", "6317873d3d4e21413465a276" ]} onChange={formik.handleChange} > */}
-                        <select className="form-select form-select-sm" name="enrolledStudents" multiple value={formik.getFieldProps('enrolledStudents').value} onChange={formik.handleChange} >
+                       
+                        <select className="form-select form-select-sm" name="enrolledStudents" multiple {...register("enrolledStudents")} >
                             
                             {
                                 students.map((e, i) => {

@@ -1,5 +1,6 @@
 import { Role } from '../models/role'
 import { User } from '../models/user'
+import {Course} from '../models/course'
 
 export const createAdmin = (req, res, next) => {
 
@@ -9,8 +10,11 @@ export const createAdmin = (req, res, next) => {
             // start fresh by removing all documents in the collections
             await User.remove({});
             await Role.remove({});
+            await Course.remove({})
 
+   
             
+
             let role1 = new Role
             role1.name = "admin"
             await role1.save()
@@ -58,6 +62,11 @@ export const createAdmin = (req, res, next) => {
             user4.setPassword("asdf")
             user4.roles.push(role3)
             await user4.save()
+
+            // let course1 = new Course
+            // course1.name = "WEB 3430"
+            // course1.teacher = user2
+            // await course1.save()
 
             res.status(200).json({ success: true, message: "DB Seeded...." })
 
