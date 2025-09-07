@@ -46,7 +46,6 @@ export default function UserForm() {
                 toast(response.message, {
                     autoClose: 5000,
                 })
-                // formik.setFieldError('username', 'Username is already used');
                 setError("username", {
                     type: "manual", // important for custom errors
                     message: "Username is already used"
