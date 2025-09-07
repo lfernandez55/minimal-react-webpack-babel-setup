@@ -1,111 +1,118 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useFormik } from 'formik'
+import React, { useContext } from 'react'
+import { AppContext } from '../App.jsx'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { toast } from 'react-toastify'
-import * as yup from 'yup'
 toast.configure()
 
 export function Vhelp({ message, touchedField }) {
-    if (touchedField) {
-        return (<p className="help">{message}</p>)
-    } else {
-        return (<p className="help"></p>)
-    }
+    return (<p className="help">{message}</p>)
 }
 
 
-export default function SignUpForm() {
-    const navigate = useNavigate();
+export default function UserForm() {
+    let { authenticated, users, roles } = useContext(AppContext)
+    const navigate = useNavigate()
+ 
 
-    let initialValues = {firstName: "",lastName: "",email: "", username: "", password: ""}
-    const validationSchema = yup.object({
-    firstName: yup.string().required("First name is required!!"),
-    lastName: yup.string().required(),
-    email: yup.string().email().required(),
-    username: yup.string().required(),
-    password: yup.string().required(),
-    })
-    const onSubmit = (values) =>{
+    const {register, handleSubmit, setError, formState: { errors } } = useForm({
+    });
+
+    const onSubmit = (data) =>{
         fetch('api/users/register', {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
-            // following line instructs the browser to send the token along with every request:
             credentials: 'same-origin',
-            body: JSON.stringify(values),
+            body: JSON.stringify(data)
         }).then((response) => {
-            console.log("Response status code", response.status)
             return response.json()
         }).then((response) => {
-            if (response.errorCode === 11000) {
+            if (response.success === false && response.errorCode === 11000) {
                 toast(response.message, {
-                    autoClose: 4000,
+                    autoClose: 5000,
                 })
-                formik.setFieldError('username', 'Username is already used');
-            } else {
+                setError("username", {
+                    type: "manual", // important for custom errors
+                    message: "Username is already used"
+                });
+            } else if (response.success === false){
                 toast(response.message, {
-                    autoClose: 3000,
+                    autoClose: 5000,
                     onClose: () => {
-                        navigate("/signin")
+                        navigate("/errorapi")
+                    }
+                })
+            }
+            else{
+                toast(response.message, {
+                    autoClose: 1000,
+                    onClose: () => {
+                        navigate("/admin/users")
                     }
                 })
             }
         }).catch((error) => {
-            toast("Sign up failed", {
+            console.log(error)
+            toast("User create/edit failed", {
                 onClose: () => {
                     navigate("/errorapi")
                 }
             })
         })
+    }
 
-    }
-    let formik = useFormik({
-        initialValues,
-        validationSchema,
-        onSubmit
-        
-    }
-    )
+
+
     return (
         <div className="react-stuff form">
-            <form onSubmit={formik.handleSubmit}>
+
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <h1>Sign Up</h1>
                 <div className="field">
                     <label htmlFor="firstName">First Name</label>
                     <div className="control">
-                        <input type="text" name="firstName" value={formik.values.firstName} onChange={formik.handleChange} />
-                        <Vhelp message={formik.errors.firstName} touchedField={formik.touched.firstName} />
+                        <input type="text" name="firstName" {...register("firstName", { required: "First name is required" })} />
+                        {errors.firstName && <Vhelp message={errors.firstName.message}/>}
                     </div>
                 </div>
 
                 <div className="field">
                     <label htmlFor="lastName">Last Name</label>
                     <div className="control">
-                        <input type="text" name="lastName" value={formik.values.lastName} onChange={formik.handleChange} />
-                        <Vhelp message={formik.errors.lastName} touchedField={formik.touched.lastName} />
+                        <input type="text" name="lastName" {...register("lastName", { required: "Last name is required" })} />
+                        {errors.lastName && <Vhelp message={errors.lastName.message}/>}
                     </div>
                 </div>
 
                 <div className="field">
                     <label htmlFor="email">Email</label>
                     <div className="control">
-                        <input type="text" name="email" value={formik.values.email} onChange={formik.handleChange} />
-                        <Vhelp message={formik.errors.email} touchedField={formik.touched.email} />
+                        <input type="text" name="email"           {...register("email", {
+                            required: "Email is required",
+                            pattern: {
+                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                message: "Enter a valid email address",
+                            },
+                        })} />
+                        {errors.email && <Vhelp message={errors.email.message}/>}
+
                     </div>
                 </div>
 
                 <div className="field">
                     <label htmlFor="username">Username</label>
                     <div className="control">
-                        <input type="text" name="username" value={formik.values.username} onChange={formik.handleChange} />
-                        <Vhelp message={formik.errors.username} touchedField={formik.touched.username} />
+                        <input type="text" name="username" {...register("username", { required: "Username is required" })}/>
+                        {errors.username && <Vhelp message={errors.username.message}/>}
                     </div>
                 </div>
 
                 <div className="field">
                     <label htmlFor="password">Password</label>
                     <div className="control">
-                        <input type="password" name="password" value={formik.values.password} onChange={formik.handleChange} />
-                        <Vhelp message={formik.errors.password} touchedField={formik.touched.password} />
+                         <input type="password" name="password" {...register("password", { required: "Password is required" })}/>
+                         {errors.password && <Vhelp message={errors.password.message}/>}
                     </div>
                 </div>
 
@@ -113,8 +120,7 @@ export default function SignUpForm() {
                     <label ></label>
                     <div className="control">
                         <button className="btn btn-primary" type="submit">Submit</button>
-                        <button className="btn btn-primary" onClick={() => document.location = "/"}>Cancel</button>
-
+                        <button className="btn btn-primary" onClick={() => navigate("/admin/users")}>Cancel</button>
                     </div>
                 </div>
 
@@ -125,3 +131,133 @@ export default function SignUpForm() {
 
 
 }
+
+// -------------------------------------------------------------------
+
+// import React from 'react'
+// import { useNavigate } from 'react-router-dom'
+// import { useFormik } from 'formik'
+// import { toast } from 'react-toastify'
+// import * as yup from 'yup'
+// toast.configure()
+
+// export function Vhelp({ message, touchedField }) {
+//     if (touchedField) {
+//         return (<p className="help">{message}</p>)
+//     } else {
+//         return (<p className="help"></p>)
+//     }
+// }
+
+
+// export default function SignUpForm() {
+//     const navigate = useNavigate();
+
+//     let initialValues = {firstName: "",lastName: "",email: "", username: "", password: ""}
+//     const validationSchema = yup.object({
+//     firstName: yup.string().required("First name is required!!"),
+//     lastName: yup.string().required(),
+//     email: yup.string().email().required(),
+//     username: yup.string().required(),
+//     password: yup.string().required(),
+//     })
+//     const onSubmit = (values) =>{
+//         fetch('api/users/register', {
+//             method: "POST",
+//             headers: { 'Content-Type': 'application/json' },
+//             // following line instructs the browser to send the token along with every request:
+//             credentials: 'same-origin',
+//             body: JSON.stringify(values),
+//         }).then((response) => {
+//             console.log("Response status code", response.status)
+//             return response.json()
+//         }).then((response) => {
+//             if (response.errorCode === 11000) {
+//                 toast(response.message, {
+//                     autoClose: 4000,
+//                 })
+//                 formik.setFieldError('username', 'Username is already used');
+//             } else {
+//                 toast(response.message, {
+//                     autoClose: 3000,
+//                     onClose: () => {
+//                         navigate("/signin")
+//                     }
+//                 })
+//             }
+//         }).catch((error) => {
+//             toast("Sign up failed", {
+//                 onClose: () => {
+//                     navigate("/errorapi")
+//                 }
+//             })
+//         })
+
+//     }
+//     let formik = useFormik({
+//         initialValues,
+//         validationSchema,
+//         onSubmit
+        
+//     }
+//     )
+//     return (
+//         <div className="react-stuff form">
+//             <form onSubmit={formik.handleSubmit}>
+//                 <h1>Sign Up</h1>
+//                 <div className="field">
+//                     <label htmlFor="firstName">First Name</label>
+//                     <div className="control">
+//                         <input type="text" name="firstName" value={formik.values.firstName} onChange={formik.handleChange} />
+//                         <Vhelp message={formik.errors.firstName} touchedField={formik.touched.firstName} />
+//                     </div>
+//                 </div>
+
+//                 <div className="field">
+//                     <label htmlFor="lastName">Last Name</label>
+//                     <div className="control">
+//                         <input type="text" name="lastName" value={formik.values.lastName} onChange={formik.handleChange} />
+//                         <Vhelp message={formik.errors.lastName} touchedField={formik.touched.lastName} />
+//                     </div>
+//                 </div>
+
+//                 <div className="field">
+//                     <label htmlFor="email">Email</label>
+//                     <div className="control">
+//                         <input type="text" name="email" value={formik.values.email} onChange={formik.handleChange} />
+//                         <Vhelp message={formik.errors.email} touchedField={formik.touched.email} />
+//                     </div>
+//                 </div>
+
+//                 <div className="field">
+//                     <label htmlFor="username">Username</label>
+//                     <div className="control">
+//                         <input type="text" name="username" value={formik.values.username} onChange={formik.handleChange} />
+//                         <Vhelp message={formik.errors.username} touchedField={formik.touched.username} />
+//                     </div>
+//                 </div>
+
+//                 <div className="field">
+//                     <label htmlFor="password">Password</label>
+//                     <div className="control">
+//                         <input type="password" name="password" value={formik.values.password} onChange={formik.handleChange} />
+//                         <Vhelp message={formik.errors.password} touchedField={formik.touched.password} />
+//                     </div>
+//                 </div>
+
+//                 <div className="field">
+//                     <label ></label>
+//                     <div className="control">
+//                         <button className="btn btn-primary" type="submit">Submit</button>
+//                         <button className="btn btn-primary" onClick={() => document.location = "/"}>Cancel</button>
+
+//                     </div>
+//                 </div>
+
+
+//             </form>
+//         </div>
+//     )
+
+
+// }
