@@ -67,7 +67,6 @@ export default function CourseForm() {
                 toast(response.message, {
                     autoClose: 5000,
                 })
-                //formik.setFieldError('coursename', 'Coursename is already used');
                 setError("name", {
                     type: "manual", // important for custom errors
                     message: "Course name is already used"
