@@ -111,10 +111,7 @@ export function configureRoutes(app) {
   router.delete('/api/users/:id', isAdmin, deleteUserAPI)
 
   // Courses
-  router.get('/api/courses', isTeacher, allTeachersCoursesAPI)
-  router.post('/api/courses', isTeacher, createCourseAPI)
-  router.put('/api/courses/:id', isTeacher, updateCourseAPI)
-  router.delete('/api/courses/:id', isTeacher, deleteCourseAPI)
+  // *** code the courses apis here
 
   // Roles
   router.post('/api/roles', isAdmin, createRoleAPI)

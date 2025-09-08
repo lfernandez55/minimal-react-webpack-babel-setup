@@ -118,16 +118,7 @@ export const deleteUserAPI = async (req, res, next) => {
 };
 
 export const allUsersWhoAreStudentsAPI = async (req, res, next) => {
-  try {
-    const role = await Role.findOne({ name: 'student' }).lean();
-    if (!role) {
-      return res.send(JSON.stringify([]));
-    }
-
-    const students = await User.find({ roles: role._id }).lean();
-    res.send(JSON.stringify(students));
-  } catch (err) {
-    res.status(500).json({ success: false, message: 'Query failed', err });
-  }
+  // *** Add a controller here that will service an api/students route
+  // this route returns all users who are students and is used in the CourseForm
 };
 
