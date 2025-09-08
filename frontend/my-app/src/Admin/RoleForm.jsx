@@ -4,8 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from 'react-toastify'
-toast.configure()
-
 
 
 export function Vhelp({ message }) {

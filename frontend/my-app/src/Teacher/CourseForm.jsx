@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from 'react-toastify'
 import * as yup from 'yup'
-toast.configure()
+
 
 export function Vhelp({ message, touchedField }) {
     return (<p className="help">{message}</p>)

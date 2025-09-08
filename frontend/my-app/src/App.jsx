@@ -18,6 +18,7 @@ import ErrorAPI from './ErrorAPI.jsx'
 import SignInForm from './Auth/SignInForm.jsx'
 import SignUpForm from './Auth/SignUpForm.jsx'
 import SignOut from './Auth/SignOut.jsx'
+import { ToastContainer } from 'react-toastify'
 
 export const AppContext = createContext()
 
@@ -63,6 +64,7 @@ export default function App() {
     return (
         <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, hasRole, loggedInUser, setLoggedInUser, setCookie, removeCookie, courses, setCourses, students, setStudents }}>
             <div className="react-stuff">
+                <ToastContainer/>
                 <Router>
                     <Routes>
                         <Route path="/" element={<Nav />} >

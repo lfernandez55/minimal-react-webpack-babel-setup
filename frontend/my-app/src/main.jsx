@@ -6,8 +6,11 @@ import './stylesheets/index.css';
 import './stylesheets/main.css';
 import './stylesheets/ReactToastify.min.css'
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+// ReactDOM.createRoot(document.getElementById('root')).render(
+//   <React.StrictMode>
+//     <App />
+//   </React.StrictMode>,
+// )
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);

@@ -6,7 +6,6 @@ import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
 import { AppContext } from '../App.jsx';
 import { useContext } from 'react'
-toast.configure()
 
 export function Vhelp({ message }) {
     return (
@@ -37,10 +36,6 @@ export default function SignInForm() {
             })
             .then((response) => {
                 if (response.success === true) {
-                    // this toast generates the following warning in the browser console:
-                    // "Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead."
-                    // This is probably because Toastify is still using ReactDOM.render. So it's the dependency
-                    // generating the warning. 
                     toast(response.message, {
                         autoClose: 3000,
                         onClose: () => {
@@ -67,9 +62,7 @@ export default function SignInForm() {
 
     return (
         <div className="react-stuff form">
-            {/* Uncomment this line to see how React Hook Form Tracks Form State */}
-            {/* <p>Data: {JSON.stringify(data)}</p>{" "} */}
-
+            
             <form onSubmit={handleSubmit(onSubmit)}>
                 <h1>Sign In</h1>
 
