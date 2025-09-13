@@ -1,132 +1,105 @@
+// src/javascripts/config/routes.js
 import express from 'express'
-import { indexPage } from '../controllers/index'
-import { signUserInAPI, allUsersAPI, updateUserAPI, deleteUserAPI, createUserAPI, allUsersWhoAreStudentsAPI } from '../controllers/users'
-import { allTeachersCoursesAPI, updateCourseAPI, deleteCourseAPI, createCourseAPI } from '../controllers/courses'
-import { createRoleAPI, allRolesAPI, updateRoleAPI, deleteRoleAPI, dashInfo } from '../controllers/roles'
-import { createAdmin } from '../controllers/createAdmin'
+import { indexPage } from '../controllers/index.js'
+import {
+  allUsersAPI,
+  updateUserAPI,
+  deleteUserAPI,
+  createUserAPI,
+  allUsersWhoAreStudentsAPI
+} from '../controllers/users.js'
+import {
+  allTeachersCoursesAPI,
+  updateCourseAPI,
+  deleteCourseAPI,
+  createCourseAPI
+} from '../controllers/courses.js'
+import {
+  createRoleAPI,
+  allRolesAPI,
+  updateRoleAPI,
+  deleteRoleAPI,
+  dashInfo
+} from '../controllers/roles.js'
+import { createAdmin } from '../controllers/createAdmin.js'
 
-import jwt from 'jsonwebtoken'
-import { APP_SECRET } from './vars'
-import { User } from '../models/user'
+// Passport helpers
+import { passport, ensureAuthenticated, requireRole } from '../config/passport.js'
 
-let router = express.Router()
+const router = express.Router()
 
-function isTeacher(req, res, next) {
-  if (verifyJWTToken(req)) {
-    try {
-      const userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
-      if (userDecoded.roles.find(role => role.name === 'teacher')) {
-        return next()
-      }
-      return res.status(403).json({
-        success: false,
-        message: 'Aautherror: client authenticated but does not have permission to access the requested resource'
-      })
-    } catch (_err) {
-      return res.status(500).json({
-        success: false,
-        message: 'Autherror: the server encountered an unexpected condition that prevented it from fulfilling the request.'
-      })
-    }
-  } else {
-    return res.status(401).json({
-      success: false,
-      message: 'Autherror: client failed to authenticate with the server.'
-    })
-  }
-}
+export function configureRoutes(app) {
+  // Public
+  router.get('/', indexPage)
 
-// ✅ UPDATED: no callbacks passed to `.exec()`. Use async/await instead.
-async function isAdmin(req, res, next) {
-  if (!verifyJWTToken(req)) {
-    return res.status(401).json({
-      success: false,
-      message: 'Autherror: client failed to authenticate with the server.'
-    })
-  }
+router.post('/api/users/signin', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return next(err);
 
-  try {
-    const userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
-
-    // No callback; await the promise. You can omit `.exec()` entirely when using await.
-    const user = await User.findById(userDecoded._id)
-      .populate({ path: 'roles', match: { name: 'admin' } })
-
+    // ❌ Wrong creds → send clear JSON (from info.message)
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: 'Autherror: user not found.'
-      })
+        message: info?.message || 'Invalid credentials'
+      });
     }
 
-    const roleFound = (user.roles ?? []).some(r => /^(admin)$/i.test(r.name))
+    // ✅ Success → establish the session
+    req.logIn(user, (err) => {
+      if (err) return next(err);
 
-    if (roleFound) {
-      return next()
-    }
+      return res.status(200).json({
+        success: true,
+        user, // {id, username, name?, roles?} depending on your strategy
+        message: 'Successfully signed in.'
+      });
+    });
+  })(req, res, next);
+});
 
-    return res.status(403).json({
-      success: false,
-      message: 'Aautherror: client authenticated but does not have permission to access the requested resource'
-    })
-  } catch (_err) {
-    return res.status(500).json({
-      success: false,
-      message: 'Autherror: the server encountered an unexpected condition that prevented it from fulfilling the request.'
-    })
-  }
-}
 
-function isLoggedIn(req, res, next) {
-  if (verifyJWTToken(req)) {
-    return next()
-  }
-  return res.status(401).json({ success: false, message: 'Autherror: You are not signed in.' })
-}
+  // e.g., POST /logout
+app.post('/api/users/signout', (req, res, next) => {
+  req.logout(err => {
+    if (err) return next(err);
+    req.session.destroy(err2 => {
+      if (err2) return next(err2);
+      // Must match the cookie name you set in session() above
+      res.clearCookie('expressSession', { path: '/' });  // add domain/sameSite if you set them
+      return res.status(204).end(); // or res.redirect('/')
+    });
+  });
+});
 
-function verifyJWTToken(req) {
-  try {
-    const token = req.cookies?.token
-    jwt.verify(token, APP_SECRET)
-    if (token?.length >= 6) {
-      console.log('the cookie token: ', token.substring(token.length - 6))
-    }
-    return true
-  } catch {
-    return false
-  }
-}
 
-export function configureRoutes(app) {
-  router.get('/', indexPage)
-
-  // Users
+  // Registration (public by default; make admin-only if desired)
   router.post('/api/users/register', createUserAPI)
-  router.post('/api/users/signin', signUserInAPI)
-  router.get('/api/users', isAdmin, allUsersAPI)
-  router.get('/api/students', allUsersWhoAreStudentsAPI)
 
-  router.post('/api/users', isAdmin, createUserAPI)
-  router.put('/api/users/:id', isAdmin, updateUserAPI)
-  router.delete('/api/users/:id', isAdmin, deleteUserAPI)
+  // ----- Admin routes (must be authenticated + admin) -----
+  router.get('/api/users', ensureAuthenticated, requireRole('admin'), allUsersAPI)
+  router.post('/api/users', ensureAuthenticated, requireRole('admin'), createUserAPI)
+  router.put('/api/users/:id', ensureAuthenticated, requireRole('admin'), updateUserAPI)
+  router.delete('/api/users/:id', ensureAuthenticated, requireRole('admin'), deleteUserAPI)
+ 
+  router.post('/api/roles', ensureAuthenticated, requireRole('admin'), createRoleAPI)
+  router.get('/api/roles', ensureAuthenticated, requireRole('admin'), allRolesAPI)
+  router.put('/api/roles/:id', ensureAuthenticated, requireRole('admin'), updateRoleAPI)
+  router.delete('/api/roles/:id', ensureAuthenticated, requireRole('admin'), deleteRoleAPI)
 
-  // Courses
-  router.get('/api/courses', isTeacher, allTeachersCoursesAPI)
-  router.post('/api/courses', isTeacher, createCourseAPI)
-  router.put('/api/courses/:id', isTeacher, updateCourseAPI)
-  router.delete('/api/courses/:id', isTeacher, deleteCourseAPI)
+  // ----- Teacher routes (must be authenticated + teacher) -----
+  router.get('/api/courses', ensureAuthenticated, requireRole('teacher'), allTeachersCoursesAPI)
+  router.post('/api/courses', ensureAuthenticated, requireRole('teacher'), createCourseAPI)
+  router.put('/api/courses/:id', ensureAuthenticated, requireRole('teacher'), updateCourseAPI)
+  router.delete('/api/courses/:id', ensureAuthenticated, requireRole('teacher'), deleteCourseAPI)
+  router.get('/api/students', ensureAuthenticated, requireRole('teacher'), allUsersWhoAreStudentsAPI)
 
-  // Roles
-  router.post('/api/roles', isAdmin, createRoleAPI)
-  router.get('/api/roles', isAdmin, allRolesAPI)
-  router.put('/api/roles/:id', isAdmin, updateRoleAPI)
-  router.delete('/api/roles/:id', isAdmin, deleteRoleAPI)
+  // ----- Any authenticated user -----
+  router.get('/api/dashinfo', ensureAuthenticated, dashInfo)
 
-  // Dashboard
-  router.get('/api/dashinfo', isLoggedIn, dashInfo)
-
-  // One-time route for seeding admin
+  // Utility/seed
   router.get('/api/createAdmin', createAdmin)
 
   app.use('/', router)
 }
+
+

@@ -1,4 +1,7 @@
 let express = require('express')
+import session from 'express-session'
+import { passport } from './src/javascripts/config/passport.js'
+
 let path = require('path')
 import mongoose from 'mongoose'
 var cookieParser = require('cookie-parser');
@@ -22,6 +25,18 @@ app.locals.title = app.locals.appTitle = APP_TITLE
 
 app.use(cookieParser());
 
+// Sessions + Passport
+app.use(session({
+  name: 'expressSession',
+  secret: 'dev-secret-change-me',   // move to env var in prod
+  resave: false,
+  saveUninitialized: false,
+  cookie: { httpOnly: true }        // add secure:true on HTTPS
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.use('/',function(req, res, next){
     console.log(req.url);
     next();
@@ -39,13 +54,6 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 // set up a place for static files 7:07
 app.use(express.static(path.join(__dirname, 'public')))
-
-// authenticationx
-// import passport from 'passport'
-// import {strategy} from './src/javascripts/config/passport'
-// passport.use(strategy)
-// app.use(passport.initialize())
-
 
 // Routing
 import {configureRoutes} from './src/javascripts/config/routes'

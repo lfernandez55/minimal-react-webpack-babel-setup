@@ -120,7 +120,7 @@ export default function Users() {
                                     <td>
                                         {
                                             roles.map((r, i) => {
-                                                const found = e.roles.find(element => element === r._id);
+                                                const found = e.roles.find(element => element._id === r._id);
                                                 if (found) {
                                                     return (r.name + ", ")
                                                 } else {

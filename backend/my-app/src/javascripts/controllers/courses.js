@@ -7,13 +7,11 @@ export const createCourseAPI = async (req, res, next) => {
   try {
     const { name, enrolledStudents } = req.body
 
-    // jwt.verify can throw; wrap in try/catch or handle here
-    const userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
-
     const course = new Course({
       name,
       enrolledStudents,
-      teacher: userDecoded._id,
+      //teacher: userDecoded._id,
+      teacher: req._id
     })
 
     await course.save() // no callback in Mongoose 8
@@ -36,8 +34,7 @@ export const createCourseAPI = async (req, res, next) => {
 // GET /api/courses (teacher’s courses)
 export const allTeachersCoursesAPI = async (req, res, next) => {
   try {
-    const userDecoded = jwt.verify(req.cookies.token, APP_SECRET)
-    const courses = await Course.find({ teacher: userDecoded._id }) // no callbacks
+    const courses = await Course.find({ teacher: req._id })
     // Optional: res.json handles serialization
     return res.status(200).json(courses)
   } catch (err) {

@@ -10,4 +10,8 @@
 > npm run dev
 > In web browser open localhost:portnumber (the frontend should work and be talking with the backend)
 
-this is the branch where I'm refactoring from formik to react hook form
+Branched from viteCodeForStudents21_react_hook_form 
+
+The above branch migrated from formik to rhf, updated toastify and mongoose (which changed queries from exec to await)
+
+This new branch swaps out webtokens for passport

@@ -32,12 +32,13 @@ export default function SignInForm() {
         })
             .then((response) => {
                 // if (!response.ok) throw Error('Failed to sign in')
+                console.log(response)
                 return response.json()
             })
             .then((response) => {
                 if (response.success === true) {
                     toast(response.message, {
-                        autoClose: 3000,
+                        autoClose: 1000,
                         onClose: () => {
                             setLoggedInUser(response.user)
                             // without setAuthenticated("true") "Login" link wouldn't disappear from nav
