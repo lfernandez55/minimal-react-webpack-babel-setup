@@ -37,13 +37,6 @@ export default function App() {
     // users who have the role student 
     let [students, setStudents] = useState([])
 
-
-    useEffect(() => {
-        localStorage.setItem('loggedInUser', JSON.stringify(loggedInUser))
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [loggedInUser])
-
-
     function hasRole(role) {
         let roleFound = false;
         if (loggedInUser.roles){
