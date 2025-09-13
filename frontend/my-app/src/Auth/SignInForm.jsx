@@ -18,7 +18,7 @@ export default function SignInForm() {
     const [data, setData] = useState("");
     const {register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
-    let { setAuthenticated, setLoggedInUser } = useContext(AppContext)
+    let { setAuthenticated, setProfile } = useContext(AppContext)
 
     const onSubmit = (data) =>{
         setData(data);
@@ -39,7 +39,7 @@ export default function SignInForm() {
                     toast(response.message, {
                         autoClose: 1000,
                         onClose: () => {
-                            setLoggedInUser(response.user)
+                            setProfile(response.user)
                             // without setAuthenticated("true") "Login" link wouldn't disappear from nav
                             setAuthenticated(true)
                             navigate("/dashboard");

@@ -50,7 +50,7 @@ router.post('/api/users/signin', (req, res, next) => {
 
       return res.status(200).json({
         success: true,
-        user, // {id, username, name?, roles?} depending on your strategy
+        user, // {id, username, name, roles} this is made available to React and stored via setProfile
         message: 'Successfully signed in.'
       });
     });

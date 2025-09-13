@@ -5,7 +5,7 @@ import { AppContext } from './App.jsx';
 
 
 export default function Nav() {
-    let { authenticated, loggedInUser } = useContext(AppContext)
+    let { authenticated, profile } = useContext(AppContext)
 
         const removePassportSession = () =>{
             
@@ -62,7 +62,7 @@ export default function Nav() {
                             <Link to="">Home</Link> | <Link to="dashboard">Dashboard</Link>
                         </div>
                         <div>
-                            {loggedInUser.email} | <Link to="signout">Logout</Link>
+                            {profile.email} | <Link to="signout">Logout</Link>
                         </div>
                     </>
                 ) : (

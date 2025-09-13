@@ -27,10 +27,10 @@ export default function App() {
     let [authenticated, setAuthenticated] = useState(false)
     // this contains the logged in user's profile info (like firstname, lastname and their roles/role names)
     // used to display user info in nav, the roles info determines what tools to display in the dashboard
-    let [loggedInUser, setLoggedInUser] = useState([])
+    let [profile, setProfile] = useState([])
     // users is the list of all users in the DB
     let [users, setUsers] = useState([])
-    // roles is the list of all available roles in the DB (not the logged in user's roles which are in loggedInUser)
+    // roles is the list of all available roles in the DB (not the logged in user's roles which are in profile)
     let [roles, setRoles] = useState([])
     // courses is the list of courses that belong to the logged in teacher
     let [courses, setCourses] = useState([])
@@ -39,8 +39,8 @@ export default function App() {
 
     function hasRole(role) {
         let roleFound = false;
-        if (loggedInUser.roles){
-            loggedInUser.roles.forEach(element => {
+        if (profile.roles){
+            profile.roles.forEach(element => {
                 if (element === role) {
                     roleFound = true;
                 }
@@ -51,7 +51,7 @@ export default function App() {
     }
 
     return (
-        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, hasRole, loggedInUser, setLoggedInUser, courses, setCourses, students, setStudents }}>
+        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, hasRole, profile, setProfile, courses, setCourses, students, setStudents }}>
             <div className="react-stuff">
                 <ToastContainer/>
                 <Router>
