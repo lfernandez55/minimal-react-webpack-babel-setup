@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from 'react-toastify'
-import * as yup from 'yup'
 
 
 export function Vhelp({ message, touchedField }) {

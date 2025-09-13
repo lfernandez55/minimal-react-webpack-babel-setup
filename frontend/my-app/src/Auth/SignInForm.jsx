@@ -2,7 +2,6 @@ import React from 'react'
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from 'react-toastify'
-import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
 import { AppContext } from '../App.jsx';
 import { useContext } from 'react'
