@@ -5,7 +5,29 @@ import { AppContext } from './App.jsx';
 
 
 export default function Nav() {
-    let { authenticated, loggedInUser, removeCookie } = useContext(AppContext)
+    let { authenticated, loggedInUser } = useContext(AppContext)
+
+        const removePassportSession = () =>{
+            
+            fetch('api/users/signout', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                // following line instructs browser to send the token along with every request:
+                credentials: 'same-origin',
+                body: JSON.stringify(),
+            })
+                .then((response) => {
+                    // if (!response.ok) throw Error('Failed to sign in')
+                    console.log(response)
+                    return response.json()
+                })
+                .then((response) => {
+                    console.log(response.message)
+                }).catch((error) => {
+                    console.log(error)
+                })
+    
+    }
 
     function seedDB() {
         fetch('/api/createAdmin', {
@@ -28,8 +50,7 @@ export default function Nav() {
     }
 
     function deleteCookie() {
-        removeCookie('token')
-        alert("Deleting cookie - in Chrome dev tools, right click on cookie and click refresh to see it removed)")
+        alert("Deleting passport session - in Chrome dev tools, right click on cookie and click refresh to see it removed)")
     }
     return (
         <>
@@ -64,7 +85,7 @@ export default function Nav() {
 
             <footer>
                 <h6 className="link" style={{ color: 'blue' }} onClick={seedDB}>Reseed the DB with an account username: admin, password: asdf</h6>
-                <h6 className="link" style={{ color: 'blue' }} onClick={deleteCookie}>Delete Session Cookie</h6>
+                <h6 className="link" style={{ color: 'blue' }} onClick={removePassportSession}>Delete Session Cookie</h6>
             </footer>
         </>
     )

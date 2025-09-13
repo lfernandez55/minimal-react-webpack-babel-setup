@@ -2,7 +2,6 @@ import React, { useState, createContext, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
 import Admin from './Admin.jsx'
-import { useCookies } from 'react-cookie'
 import DashCards from './DashCards.jsx'
 import Users from './Admin/Users.jsx'
 import UserForm from './Admin/UserForm.jsx'
@@ -24,13 +23,11 @@ export const AppContext = createContext()
 
 export default function App() {
 
-    const [cookies, setCookie, removeCookie] = useCookies(['token'])
     // authenticated helps to determine what elements like "Log Out" or "Dashboard" to show in Nav.js
-    let [authenticated, setAuthenticated] = useState(cookies.token !== undefined)
+    let [authenticated, setAuthenticated] = useState(false)
     // this contains the logged in user's profile info (like firstname, lastname and their roles/role names)
-    // localstorage allows the user to persist across tabs, if you don't care about this feature just do: 
-    // let [loggedInUser, setLoggedInUser] = useState([])
-    let [loggedInUser, setLoggedInUser] = useState(typeof localStorage.loggedInUser === "undefined" ? [] : JSON.parse(localStorage.getItem('loggedInUser')) )
+    // used to display user info in nav, the roles info determines what tools to display in the dashboard
+    let [loggedInUser, setLoggedInUser] = useState([])
     // users is the list of all users in the DB
     let [users, setUsers] = useState([])
     // roles is the list of all available roles in the DB (not the logged in user's roles which are in loggedInUser)
@@ -61,7 +58,7 @@ export default function App() {
     }
 
     return (
-        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, hasRole, loggedInUser, setLoggedInUser, setCookie, removeCookie, courses, setCourses, students, setStudents }}>
+        <AppContext.Provider value={{ authenticated, setAuthenticated, users, setUsers, roles, setRoles, hasRole, loggedInUser, setLoggedInUser, courses, setCourses, students, setStudents }}>
             <div className="react-stuff">
                 <ToastContainer/>
                 <Router>

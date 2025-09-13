@@ -1,9 +1,4 @@
 import React from 'react'
-import { useContext } from 'react'
-import { AppContext } from '../App.jsx';
-import { toast } from 'react-toastify'
-
-
 export default function SignOut() {
 
     const removePassportSession = () =>{
@@ -23,19 +18,11 @@ export default function SignOut() {
                 .then((response) => {
                     console.log(response.message)
                 }).catch((error) => {
-                    toast('An unknown error occurred during sign out', {
-                        onClose: () => {
-                            navigate("/errorapi")
-                        }
-                    })
+                    console.log(error)
                 })
     
     }
     removePassportSession();
-    let { removeCookie } = useContext(AppContext)
-    //removeCookie('connect.sid') 
-    removeCookie('token')
-    //removeCookie('connect.sid')
     document.location = '/'
     return <></>
 }
