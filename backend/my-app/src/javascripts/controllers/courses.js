@@ -1,6 +1,4 @@
 import { Course } from '../models/course'
-import jwt from 'jsonwebtoken'
-import { APP_SECRET } from '../config/vars'
 
 // POST /api/courses
 export const createCourseAPI = async (req, res, next) => {
@@ -26,7 +24,7 @@ export const createCourseAPI = async (req, res, next) => {
           'Most likely you are trying to create a course with a name that already exists. Try a different course name.',
       })
     }
-    // JWT errors or validation errors land here too
+    // validation errors land here too
     return res.status(400).json({ success: false, message: err?.message || String(err) })
   }
 }
