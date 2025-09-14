@@ -5,8 +5,7 @@ import Admin from './Admin.jsx'
 import DashCards from './DashCards.jsx'
 import Users from './Admin/Users.jsx'
 import UserForm from './Admin/UserForm.jsx'
-import Roles from './Admin/Roles.jsx'
-import RoleForm from './Admin/RoleForm.jsx'
+//333 Role related components needed here
 import Teacher from './Teacher.jsx'
 //444 Course related component needed here
 //555 Course related component needed here */
@@ -76,9 +75,7 @@ export default function App() {
                                 <Route path="users/:uid/edit" element={<UserForm />}></Route>
 
 
-                                <Route path="roles" element={<Roles />}></Route>
-                                <Route path="roles/new" element={<RoleForm />}></Route>
-                                <Route path="roles/:rid/edit" element={<RoleForm />}></Route>
+                                {/* //333 Add role related routing here */}
                             </Route>
                          
                             {/* //444 Routing for course related components needed here */}

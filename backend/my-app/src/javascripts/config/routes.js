@@ -81,10 +81,9 @@ app.post('/api/users/signout', (req, res, next) => {
   router.put('/api/users/:id', ensureAuthenticated, requireRole('admin'), updateUserAPI)
   router.delete('/api/users/:id', ensureAuthenticated, requireRole('admin'), deleteUserAPI)
  
-  router.post('/api/roles', ensureAuthenticated, requireRole('admin'), createRoleAPI)
+  //333 routes needed here to serve role ui 
   router.get('/api/roles', ensureAuthenticated, requireRole('admin'), allRolesAPI)
-  router.put('/api/roles/:id', ensureAuthenticated, requireRole('admin'), updateRoleAPI)
-  router.delete('/api/roles/:id', ensureAuthenticated, requireRole('admin'), deleteRoleAPI)
+  
 
   // ----- Teacher routes (must be authenticated + teacher) -----
   //444 route needed here to populate course list
