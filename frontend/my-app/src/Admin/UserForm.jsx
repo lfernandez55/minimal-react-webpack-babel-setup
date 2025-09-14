@@ -19,25 +19,41 @@ export default function UserForm() {
     let user = uid ? users.find(u => u._id === uid) : {}
     // We set this to "dummy". If the server see's
     // this password, than it doesn't change it
-    user.password = "dummy"
 
-    const {register, handleSubmit, setError, formState: { errors } } = useForm({
+    //user.roles is an array of objects, this converts to array of role._ids
+    let roleids = user.roles.map(element => element._id)
+
+    const {register, handleSubmit, setError, formState: { errors, dirtyFields } } = useForm({
     defaultValues: {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
       username: user.username,
-      password: user.password,
-      roles: user.roles
+      roles: roleids
     }
     });
 
     const onSubmit = (data) =>{
+
+        const payload = { ...data };
+
+        // Only keep password if the user typed a non-empty one AND actually touched the field
+        const userTypedNewPwd =
+        dirtyFields?.password &&
+        typeof data.password === 'string' &&
+        data.password.trim().length > 0;
+
+        if (!userTypedNewPwd) {
+        delete payload.password; // ← prevents overwriting the existing hash
+        } else {
+        payload.password = data.password.trim();
+        }
+
         fetch(`api/users${is_new ? '' : '/' + user._id}`, {
             method: is_new ? 'POST' : "PUT",
             headers: { 'Content-Type': 'application/json' },
             credentials: 'same-origin',
-            body: JSON.stringify(data)
+            body: JSON.stringify(payload)
         }).then((response) => {
             return response.json()
         }).then((response) => {
@@ -135,7 +151,7 @@ export default function UserForm() {
                 <div className="field">
                     <label htmlFor="password">Password</label>
                     <div className="control">
-                         <input type="password" name="password" {...register("password", { required: "Password is required" })}/>
+                         <input type="password" name="password" {...register("password", { required: is_new ? "Password is required" : false })}/>
                          {errors.password && <Vhelp message={errors.password.message}/>}
                     </div>
                 </div>
