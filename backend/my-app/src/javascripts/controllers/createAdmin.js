@@ -1,6 +1,5 @@
 import { Role } from '../models/role'
 import { User } from '../models/user'
-import {Course} from '../models/course'
 
 export const createAdmin = (req, res, next) => {
 
@@ -12,7 +11,6 @@ export const createAdmin = (req, res, next) => {
             // in 5 one could use await Course.remove({})
             await User.deleteMany({});
             await Role.deleteMany({});
-            await Course.deleteMany({})
 
             let role1 = new Role
             role1.name = "admin"
