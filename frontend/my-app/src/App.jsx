@@ -9,7 +9,7 @@ import Roles from './Admin/Roles.jsx'
 import RoleForm from './Admin/RoleForm.jsx'
 import Teacher from './Teacher.jsx'
 import Courses from './Teacher/Courses.jsx'
-import CourseForm from './Teacher/CourseForm.jsx'
+//555 Course related component needed here */
 import Other from './Other.jsx'
 import Nav from './Nav.jsx'
 import ErrorAPI from './ErrorAPI.jsx'
@@ -83,8 +83,7 @@ export default function App() {
                          
                             <Route path="/teacher" element={<Teacher />}>
                                 <Route path="courses" element={<Courses />}></Route>
-                                <Route path="courses/new" element={<CourseForm />}></Route>
-                                <Route path="courses/:courseid/edit" element={<CourseForm />}></Route>
+                                {/* //555 Routing for courseform neede here */}
                             </Route>
 
                             <Route path="/other" element={<Other />}></Route>

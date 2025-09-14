@@ -88,9 +88,7 @@ app.post('/api/users/signout', (req, res, next) => {
 
   // ----- Teacher routes (must be authenticated + teacher) -----
   router.get('/api/courses', ensureAuthenticated, requireRole('teacher'), allTeachersCoursesAPI)
-  router.post('/api/courses', ensureAuthenticated, requireRole('teacher'), createCourseAPI)
-  router.put('/api/courses/:id', ensureAuthenticated, requireRole('teacher'), updateCourseAPI)
-  router.delete('/api/courses/:id', ensureAuthenticated, requireRole('teacher'), deleteCourseAPI)
+  //555 3 additional course related routes needed here  */
   router.get('/api/students', ensureAuthenticated, requireRole('teacher'), allUsersWhoAreStudentsAPI)
 
   // ----- Any authenticated user -----
