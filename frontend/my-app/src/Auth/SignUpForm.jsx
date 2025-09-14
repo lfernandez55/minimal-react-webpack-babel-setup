@@ -20,46 +20,10 @@ export default function UserForm() {
     });
 
     const onSubmit = (data) =>{
-        fetch('api/users/register', {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'same-origin',
-            body: JSON.stringify(data)
-        }).then((response) => {
-            return response.json()
-        }).then((response) => {
-            if (response.success === false && response.errorCode === 11000) {
-                toast(response.message, {
-                    autoClose: 5000,
-                })
-                setError("username", {
-                    type: "manual", // important for custom errors
-                    message: "Username is already used"
-                });
-            } else if (response.success === false){
-                toast(response.message, {
-                    autoClose: 5000,
-                    onClose: () => {
-                        navigate("/errorapi")
-                    }
-                })
-            }
-            else{
-                toast(response.message, {
-                    autoClose: 1000,
-                    onClose: () => {
-                        navigate("/admin/users")
-                    }
-                })
-            }
-        }).catch((error) => {
-            console.log(error)
-            toast("User create/edit failed", {
-                onClose: () => {
-                    navigate("/errorapi")
-                }
-            })
-        })
+        //222 add a fetch here. if you need a model check out the fetches in SignUpForm.jsx
+        //this fetch  should talk to the backend api:  "api/users/register"
+        //you can check routes.js on the backend to verify the method 
+        //eg get, post, put or delete
     }
 
 

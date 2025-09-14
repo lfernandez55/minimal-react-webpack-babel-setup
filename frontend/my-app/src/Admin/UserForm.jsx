@@ -17,8 +17,6 @@ export default function UserForm() {
     let is_new = uid === undefined
 
     let user = uid ? users.find(u => u._id === uid) : {}
-    // We set this to "dummy". If the server see's
-    // this password, than it doesn't change it
 
     //user.roles is an array of objects, this converts to array of role._ids
     let roleids = user.roles.map(element => element._id)
@@ -117,36 +115,7 @@ export default function UserForm() {
                     </div>
                 </div>
 
-                <div className="field">
-                    <label htmlFor="lastName">Last Name</label>
-                    <div className="control">
-                        <input type="text" name="lastName" {...register("lastName", { required: "Last name is required" })} />
-                        {errors.lastName && <Vhelp message={errors.lastName.message}/>}
-                    </div>
-                </div>
-
-                <div className="field">
-                    <label htmlFor="email">Email</label>
-                    <div className="control">
-                        <input type="text" name="email"           {...register("email", {
-                            required: "Email is required",
-                            pattern: {
-                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                message: "Enter a valid email address",
-                            },
-                        })} />
-                        {errors.email && <Vhelp message={errors.email.message}/>}
-
-                    </div>
-                </div>
-
-                <div className="field">
-                    <label htmlFor="username">Username</label>
-                    <div className="control">
-                        <input type="text" name="username" {...register("username", { required: "Username is required" })}/>
-                        {errors.username && <Vhelp message={errors.username.message}/>}
-                    </div>
-                </div>
+                {/* //222 add apropriate fields here */}
 
                 <div className="field">
                     <label htmlFor="password">Password</label>

@@ -65,15 +65,18 @@ export default function App() {
                                 }
                             />
                             <Route path="signin" element={<SignInForm />} ></Route>
-                            <Route path="signup" element={<SignUpForm />} ></Route>
+                            {/* Create a route to the SignUpForm Component */}
                             <Route path="signout" element={<SignOut />} ></Route>
                             <Route path="errorapi" element={<ErrorAPI />} ></Route>
                             <Route path="dashboard" element={<DashCards />} ></Route>
                             <Route path="/admin" element={<Admin />}>
                                 <Route path="users" element={<Users />}></Route>
-                                <Route path="users/new" element={<UserForm />}></Route>
-                                <Route path="users/:uid/edit" element={<UserForm />}></Route>
-
+                                {/* //222 Add two routes here for the UserForm component
+                                //  the path for the
+                                // two routes are "users/new and "users/:uid/edit
+                                // this will enable you to create a new user or edit an
+                                // existing user
+                                //  */}
 
                                 {/* //333 Add role related routing here */}
                             </Route>

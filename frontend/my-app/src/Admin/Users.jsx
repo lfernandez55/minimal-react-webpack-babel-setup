@@ -108,36 +108,7 @@ export default function Users() {
                 </thead>
                 <tbody>
 
-                    {
-                        users.map((e, i) => {
-                            return (
-                                <tr key={i}>
-                                    <td>{e._id}</td>
-                                    <td>{e.firstName}</td>
-                                    <td>{e.lastName}</td>
-                                    <td>{e.username}</td>
-                                    <td>{e.email}</td>
-                                    <td>
-                                        {
-                                            roles.map((r, i) => {
-                                                const found = e.roles.find(element => element._id === r._id);
-                                                if (found) {
-                                                    return (r.name + ", ")
-                                                } else {
-                                                    return ("")
-                                                }
-                                            })
-                                        }
-
-
-                                    </td>
-                                    <td><button className="link" onClick={() => navigate(`${e._id}/edit`)}>Edit</button></td>
-                                    <td><button className="link" onClick={() => { deleteMe(e._id) }} >Delete</button></td>
-                                </tr>
-
-                            )
-                        })
-                    }
+                    {/* //222 Add appropriate jsx code here */}
                 </tbody >
             </table >
         </div >

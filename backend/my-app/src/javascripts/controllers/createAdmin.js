@@ -12,7 +12,6 @@ export const createAdmin = (req, res, next) => {
             // in 5 one could use await Course.remove({})
             await User.deleteMany({});
             await Role.deleteMany({});
-            await Course.deleteMany({})
 
             let role1 = new Role
             role1.name = "admin"
@@ -40,27 +39,7 @@ export const createAdmin = (req, res, next) => {
             user2.roles.push(role2)
             await user2.save()
 
-            let role3 = new Role
-            role3.name = "student"
-            await role3.save()
-
-            let user3 = new User
-            user3.firstName = "Donald"
-            user3.lastName = "Duck"
-            user3.email = "donald@aa.edu"
-            user3.username = "donald"
-            user3.setPassword("asdf")
-            user3.roles.push(role3)
-            await user3.save()
-
-            let user4 = new User
-            user4.firstName = "Daisy"
-            user4.lastName = "Duck"
-            user4.email = "daisy@aa.edu"
-            user4.username = "daisy"
-            user4.setPassword("asdf")
-            user4.roles.push(role3)
-            await user4.save()
+            //222 -- using code above as model add two accounts ("Daisy" and "Donald") with student role
 
             //444 -- add a course titled "WEB 3430" that is taught by Peter here.
 
