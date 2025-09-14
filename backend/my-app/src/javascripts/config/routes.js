@@ -87,7 +87,7 @@ app.post('/api/users/signout', (req, res, next) => {
   router.delete('/api/roles/:id', ensureAuthenticated, requireRole('admin'), deleteRoleAPI)
 
   // ----- Teacher routes (must be authenticated + teacher) -----
-  router.get('/api/courses', ensureAuthenticated, requireRole('teacher'), allTeachersCoursesAPI)
+  //444 route needed here to populate course list
   //555 3 additional course related routes needed here  */
   router.get('/api/students', ensureAuthenticated, requireRole('teacher'), allUsersWhoAreStudentsAPI)
 

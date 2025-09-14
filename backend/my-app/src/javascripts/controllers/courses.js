@@ -7,13 +7,7 @@ export const createCourseAPI = async (req, res, next) => {
 
 // GET /api/courses (teacher’s courses)
 export const allTeachersCoursesAPI = async (req, res, next) => {
-  try {
-    const courses = await Course.find({ teacher: req._id })
-    // Optional: res.json handles serialization
-    return res.status(200).json(courses)
-  } catch (err) {
-    return res.status(500).json({ success: false, message: err?.message || 'Query failed' })
-  }
+  //444 Code needed here to populate teacher's course list
 }
 
 // PUT /api/courses/:id

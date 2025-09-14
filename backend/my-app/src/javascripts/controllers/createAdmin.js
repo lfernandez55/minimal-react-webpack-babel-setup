@@ -62,10 +62,7 @@ export const createAdmin = (req, res, next) => {
             user4.roles.push(role3)
             await user4.save()
 
-            let course1 = new Course
-            course1.name = "WEB 3430"
-            course1.teacher = user2
-            await course1.save()
+            //444 -- add a course titled "WEB 3430" that is taught by Peter here.
 
             res.status(200).json({ success: true, message: "DB Seeded...." })
 
