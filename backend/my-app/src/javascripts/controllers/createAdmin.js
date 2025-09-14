@@ -1,6 +1,5 @@
 import { Role } from '../models/role'
 import { User } from '../models/user'
-import {Course} from '../models/course'
 
 export const createAdmin = (req, res, next) => {
 
