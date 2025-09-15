@@ -14,7 +14,7 @@ import Nav from './Nav.jsx'
 import ErrorAPI from './ErrorAPI.jsx'
 
 import SignInForm from './Auth/SignInForm.jsx'
-import SignUpForm from './Auth/SignUpForm.jsx'
+//222 SignUpForm related component needed here
 import SignOut from './Auth/SignOut.jsx'
 import { ToastContainer } from 'react-toastify'
 
@@ -65,7 +65,7 @@ export default function App() {
                                 }
                             />
                             <Route path="signin" element={<SignInForm />} ></Route>
-                            {/* Create a route to the SignUpForm Component */}
+                            {/* //222 Create a route to the SignUpForm Component */}
                             <Route path="signout" element={<SignOut />} ></Route>
                             <Route path="errorapi" element={<ErrorAPI />} ></Route>
                             <Route path="dashboard" element={<DashCards />} ></Route>
