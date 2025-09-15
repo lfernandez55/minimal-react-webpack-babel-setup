@@ -2,32 +2,9 @@ import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 import { AppContext } from './App.jsx';
-import { useNavigate } from 'react-router-dom'
 
 export default function DashCards() {
     let { hasRole } = useContext(AppContext)
-    const navigate = useNavigate()
-    useEffect(() => {
-        fetch('api/dashinfo', {
-            method: "GET",
-        })
-            .then((response) => {
-                return response.json();
-            })
-            .then((resp) => {
-                if (resp.success === false) {
-                    navigate("/errorapi")
-                } else {
-                    // info from json not currently used (the query is simply being used to illustrate how the backend gatekeeps logged in users)
-                }
-
-            })
-            .catch((err) => {
-                console.log(err.message);
-                navigate("/errorapi")
-            });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
 
     return (
         <>
@@ -46,28 +23,9 @@ export default function DashCards() {
                 ) : (<></>)
                 }
 
-                {hasRole('teacher') ? (
-                    <Link to="/teacher/courses">
-                        <div className="card custom-card" >
-                            <div className="card-body">
-                                <h5 className="card-title">Teacher Tools</h5>
-                                <h6 className="card-subtitle mb-2 text-muted">A stub for tools with teacher role</h6>
-                            </div>
-                        </div>
-                    </Link>
-                ) : (<></>)
-                }
-
-
-
-                <Link to="/other">
-                    <div className="card custom-card" >
-                        <div className="card-body">
-                            <h5 className="card-title">Other Tools</h5>
-                            <h6 className="card-subtitle mb-2 text-muted">These can be assigned to other roles</h6>
-                        </div>
-                    </div>
-                </Link>
+                {/* //111 Add cards for the teacher tools and tools that are
+                // available for everyone.  Make sure to add code so the teacher tools
+                // only appear for users who have the teacher role */}
             </div>
         </>
     )

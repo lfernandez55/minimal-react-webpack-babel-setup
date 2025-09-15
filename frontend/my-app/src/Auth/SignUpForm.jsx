@@ -3,3 +3,15 @@
 //you can check routes.js on the backend to verify the method for the fetch
 //eg get, post, put or delete
 //your form needs to perform field validations.  I recommend using react hook form
+
+// export default function SignUpForm() {
+   
+//     return (
+//         <div className="react-stuff form">
+
+//            <div>Stub</div>
+//         </div>
+//     )
+
+
+// }
