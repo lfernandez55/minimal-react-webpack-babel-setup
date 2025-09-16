@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import Admin from './Admin.jsx'
 import DashCards from './DashCards.jsx'
 import Users from './Admin/Users.jsx'
+import Dev from './Dev.jsx'
 import UserForm from './Admin/UserForm.jsx'
 //333 Role related components needed here
 import Teacher from './Teacher.jsx'
@@ -12,10 +13,8 @@ import Teacher from './Teacher.jsx'
 import Other from './Other.jsx'
 import Nav from './Nav.jsx'
 import ErrorAPI from './ErrorAPI.jsx'
-
-import SignInForm from './Auth/SignInForm.jsx'
-import SignUpForm from './Auth/SignUpForm.jsx'
-import SignOut from './Auth/SignOut.jsx'
+//111 SignIn and SignOut components needed here
+//222 SignUpForm related component needed here
 import { ToastContainer } from 'react-toastify'
 
 export const AppContext = createContext()
@@ -57,16 +56,19 @@ export default function App() {
                     <Routes>
                         <Route path="/" element={<Nav />} >
                             <Route
-                                index
                                 element={
                                     <main style={{ padding: "1rem" }}>
                                         <h2>My App</h2>
                                     </main>
                                 }
                             />
-                            <Route path="signin" element={<SignInForm />} ></Route>
-                            {/* Create a route to the SignUpForm Component */}
-                            <Route path="signout" element={<SignOut />} ></Route>
+                            {/* //111 after finishing and testing code for final project week 1
+                            // remove the Dev component and put the index in the above route
+                            // so it becomes the splash page */}
+                            <Route index path="dev" element={<Dev />} ></Route>
+                            {/* //111 Create route for SignInForm component */}
+                            {/* //111 Create route for SignOut component */}  
+                            {/* //222 Create a route to the SignUpForm Component */}
                             <Route path="errorapi" element={<ErrorAPI />} ></Route>
                             <Route path="dashboard" element={<DashCards />} ></Route>
                             <Route path="/admin" element={<Admin />}>

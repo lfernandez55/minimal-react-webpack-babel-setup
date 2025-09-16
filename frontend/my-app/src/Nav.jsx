@@ -55,27 +55,10 @@ export default function Nav() {
     return (
         <>
             <header>
+                {/* //111 Using state variables display Home Link, Dashboard Link, User's email and Logout Link
+                if user is authenticated.  Otherwise show Home Link, Register Link and Login Link
+                See video for exact functionality */}
 
-                {authenticated ? (
-                    <>
-                        <div>
-                            <Link to="">Home</Link> | <Link to="dashboard">Dashboard</Link>
-                        </div>
-                        <div>
-                            {profile.email} | <Link to="signout">Logout</Link>
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <div>
-                            <Link to="">Home</Link>
-                        </div>
-                        <div>
-                            <Link to="signup">Register</Link> | <Link to="signin">Log in</Link>
-                        </div>
-                    </>
-                )
-                }
 
 
             </header>

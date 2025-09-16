@@ -4,29 +4,33 @@ import { useContext } from 'react'
 import { AppContext } from './App.jsx';
 
 export default function DashCards() {
-    let { hasRole } = useContext(AppContext)
+    let { hasRole, authenticated } = useContext(AppContext)
 
     return (
         <>
-            <h1>Dashboard</h1>
-            <p>What would you like to do?</p>
-            <div className="dashboard-cards">
-                {hasRole('admin') ? (
-                    <Link to="/admin/users">
-                        <div className="card custom-card" >
-                            <div className="card-body">
-                                <h5 className="card-title">Admin Tools</h5>
-                                <h6 className="card-subtitle mb-2 text-muted">Manage Users and Roles</h6>
-                            </div>
-                        </div>
-                    </Link>
-                ) : (<></>)
-                }
 
-                {/* //111 Add cards for the teacher tools and tools that are
-                // available for everyone.  Make sure to add code so the teacher tools
-                // only appear for users who have the teacher role */}
-            </div>
+            { authenticated ? 
+            (<div>
+                <h1>Dashboard</h1>
+                <p>What would you like to do?</p>
+                <div className="dashboard-cards">
+                    {hasRole('admin') ? (
+                        <Link to="/admin/users">
+                            <div className="card custom-card" >
+                                <div className="card-body">
+                                    <h5 className="card-title">Admin Tools</h5>
+                                    <h6 className="card-subtitle mb-2 text-muted">Manage Users and Roles</h6>
+                                </div>
+                            </div>
+                        </Link>
+                    ) : (<></>)
+                    }
+
+                    {/* //111 Add cards for the teacher tools and tools that are
+                    // available for everyone.  Make sure to add code so the teacher tools
+                    // only appear for users who have the teacher role */}
+                </div>
+            </div>) : (<div>You are not authenticated</div>) }
         </>
     )
 }
