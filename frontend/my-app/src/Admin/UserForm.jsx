@@ -16,7 +16,7 @@ export default function UserForm() {
     let { uid } = useParams()
     let is_new = uid === undefined
 
-    let user = uid ? users.find(u => u._id === uid) : {}
+    let user = uid ? users.find(u => u._id === uid) : {firstname:"",lastname:"",email:"",username:"",roles:[]}
     // We set this to "dummy". If the server see's
     // this password, than it doesn't change it
 
