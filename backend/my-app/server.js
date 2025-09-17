@@ -8,7 +8,9 @@ var cookieParser = require('cookie-parser');
 import { APP_TITLE } from './src/javascripts/config/vars'
 
 // the name of the db can be changed. it will be created automatically on startup
-mongoose.connect("mongodb://localhost:27017/authdbxx", {
+//mongoose.connect("mongodb://localhost:27017/authdbxx", {
+//for render.com deploy that connects to atlas mongo db (set db_string as env var in render)  
+mongoose.connect("process.env.db_string", {  
 })
 .then(() => {
   console.log("Connected");
