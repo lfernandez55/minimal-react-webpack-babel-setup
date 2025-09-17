@@ -30,25 +30,25 @@ app.locals.title = app.locals.appTitle = APP_TITLE
 app.use(cookieParser());
 
 //Cors 
-import cors from 'cors';
+// import cors from 'cors';
 
-const allowedOrigins = [
-  'https://joyful-arithmetic-7f16e1.netlify.app','https://deluxe-basbousa-9b81e2.netlify.app',
-  // add localhost during dev if needed: 'http://localhost:5173'
-];
+// const allowedOrigins = [
+//   'https://joyful-arithmetic-7f16e1.netlify.app','https://deluxe-basbousa-9b81e2.netlify.app',
+//   // add localhost during dev if needed: 'http://localhost:5173'
+// ];
 
-app.use(cors({
-  origin: allowedOrigins,
-  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization'],
-  credentials: true,              // <-- needed if you send cookies
-}));
+// app.use(cors({
+//   origin: allowedOrigins,
+//   methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+//   allowedHeaders: ['Content-Type','Authorization'],
+//   credentials: true,              // <-- needed if you send cookies
+// }));
 
-// Make sure preflight succeeds quickly
-app.options('*', cors({
-  origin: allowedOrigins,
-  credentials: true,
-}));
+// // Make sure preflight succeeds quickly
+// app.options('*', cors({
+//   origin: allowedOrigins,
+//   credentials: true,
+// }));
 
 
 
