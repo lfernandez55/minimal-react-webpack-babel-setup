@@ -10,6 +10,26 @@ import { APP_TITLE } from './src/javascripts/config/vars'
 
 
 // server.js (Express)
+
+//connect to the database
+mongoose.connect(process.env.db_string, {  
+})
+.then(() => {
+  console.log("Connected");
+})
+.catch((err) => {
+  console.error("Error connecting:", err);
+});
+
+//create the web server
+export let app = express()
+
+//set a global var from 
+app.locals.title = app.locals.appTitle = APP_TITLE
+
+app.use(cookieParser());
+
+//Cors 
 import cors from 'cors';
 
 const allowedOrigins = [
@@ -30,23 +50,8 @@ app.options('*', cors({
   credentials: true,
 }));
 
-//connect to the database
-mongoose.connect(process.env.db_string, {  
-})
-.then(() => {
-  console.log("Connected");
-})
-.catch((err) => {
-  console.error("Error connecting:", err);
-});
 
-//create the web server
-export let app = express()
 
-//set a global var from 
-app.locals.title = app.locals.appTitle = APP_TITLE
-
-app.use(cookieParser());
 
 // Sessions + Passport
 app.use(session({
