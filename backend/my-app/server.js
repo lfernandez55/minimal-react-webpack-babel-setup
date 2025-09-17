@@ -8,7 +8,29 @@ import mongoose from 'mongoose'
 var cookieParser = require('cookie-parser');
 import { APP_TITLE } from './src/javascripts/config/vars'
 
- 
+
+// server.js (Express)
+import cors from 'cors';
+
+const allowedOrigins = [
+  'https://joyful-arithmetic-7f16e1.netlify.app',
+  // add localhost during dev if needed: 'http://localhost:5173'
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+  allowedHeaders: ['Content-Type','Authorization'],
+  credentials: true,              // <-- needed if you send cookies
+}));
+
+// Make sure preflight succeeds quickly
+app.options('*', cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+
+//connect to the database
 mongoose.connect(process.env.db_string, {  
 })
 .then(() => {
