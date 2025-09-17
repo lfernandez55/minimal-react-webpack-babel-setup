@@ -33,7 +33,7 @@ app.use(cookieParser());
 import cors from 'cors';
 
 const allowedOrigins = [
-  'https://joyful-arithmetic-7f16e1.netlify.app',
+  'https://joyful-arithmetic-7f16e1.netlify.app','https://deluxe-basbousa-9b81e2.netlify.app',
   // add localhost during dev if needed: 'http://localhost:5173'
 ];
 
