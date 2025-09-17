@@ -8,7 +8,7 @@ export default function Users() {
     const [DBUpdated, setDBUpdated] = useState(false);
     let { authenticated, roles, setRoles } = useContext(AppContext)
     useEffect(() => {
-        fetch('api/roles', {
+        fetch(import.meta.env.VITE_REACT_APP_BASE_URL + 'api/roles', {
             method: "GET",
         })
             .then((response) => {

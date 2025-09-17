@@ -3,7 +3,7 @@ export default function SignOut() {
 
     const removePassportSession = () =>{
             
-            fetch('api/users/signout', {
+            fetch(import.meta.env.VITE_REACT_APP_BASE_URL + 'api/users/signout', {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
                 // following line instructs browser to send the token along with every request:

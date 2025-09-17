@@ -8,7 +8,7 @@ export default function DashCards() {
     let { hasRole } = useContext(AppContext)
     const navigate = useNavigate()
     useEffect(() => {
-        fetch('api/dashinfo', {
+        fetch(import.meta.env.VITE_REACT_APP_BASE_URL + 'api/dashinfo', {
             method: "GET",
         })
             .then((response) => {

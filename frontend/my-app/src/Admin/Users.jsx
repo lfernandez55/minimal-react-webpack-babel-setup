@@ -9,7 +9,7 @@ export default function Users() {
     const [DBUpdated, setDBUpdated] = useState(false);
 
     useEffect(() => {
-        fetch('api/users', {
+        fetch(import.meta.env.VITE_REACT_APP_BASE_URL + 'api/users', {
             method: "GET",
         })
             .then((response) => {
@@ -32,7 +32,7 @@ export default function Users() {
     }, [DBUpdated])
 
     useEffect(() => {
-        fetch('api/roles', {
+        fetch(import.meta.env.VITE_REACT_APP_BASE_URL + 'api/roles', {
             method: "GET",
         })
             .then((response) => {

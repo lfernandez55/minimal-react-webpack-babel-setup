@@ -22,7 +22,7 @@ export default function SignInForm() {
 
     const onSubmit = (data) =>{
         setData(data);
-        fetch('api/users/signin', {
+        fetch(import.meta.env.VITE_REACT_APP_BASE_URL + 'api/users/signin', {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             // following line instructs browser to send the token along with every request:

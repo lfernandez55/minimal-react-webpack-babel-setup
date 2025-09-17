@@ -20,7 +20,7 @@ export default function UserForm() {
     });
 
     const onSubmit = (data) =>{
-        fetch('api/users/register', {
+        fetch(import.meta.env.VITE_REACT_APP_BASE_URL + 'api/users/register', {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             credentials: 'same-origin',
