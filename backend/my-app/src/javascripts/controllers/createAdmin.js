@@ -1,6 +1,6 @@
-import { Role } from '../models/role'
-import { User } from '../models/user'
-import {Course} from '../models/course'
+import { Role } from '../models/role.js'
+import { User } from '../models/user.js'
+import {Course} from '../models/course.js'
 
 export const createAdmin = (req, res, next) => {
 
