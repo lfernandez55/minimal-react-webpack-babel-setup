@@ -1,4 +1,4 @@
-import { Course } from '../models/course'
+//import { Course } from '../models/course.js'
 
 // POST /api/courses
 export const createCourseAPI = async (req, res, next) => {
