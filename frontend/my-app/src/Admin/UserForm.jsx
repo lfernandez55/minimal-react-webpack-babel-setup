@@ -21,9 +21,9 @@ export default function UserForm() {
     //user.roles is an array of objects, this converts to array of role._ids
     let roleids = []
     if (!is_new) {
-        let roleids = user.roles.map(element => element._id)
+        roleids = user.roles.map(element => element._id)
     }
-    
+        
 
     const {register, handleSubmit, setError, formState: { errors, dirtyFields } } = useForm({
     defaultValues: {
@@ -31,6 +31,7 @@ export default function UserForm() {
       lastName: user.lastName,
       email: user.email,
       username: user.username,
+      //this fills the multi select with the user's current roles. it should really be called usersRoles to avoid confusion
       roles: roleids
     }
     });
@@ -158,6 +159,12 @@ export default function UserForm() {
                     </div>
                 </div>
 
+                {/* For clarity name="roles" should probably be called name="usersRoles" to distinguish it from Roles
+                which describes the full list of Roles in the db. This would also need to be made   This would also better highlight how roles in
+                one context describes the full list of roles in the below select list while the other describes
+                the highlighted roles that belong to a particular user.  However, changing it would also require
+                changes to the updateUser and createuser controller on the backend as well as the user model and
+                passport queries as well. TODO:  refactor roles to usersroles */}
                 <div className="field">
                     <label htmlFor="roles">Roles</label>
                     <div className="control">
