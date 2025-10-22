@@ -17,11 +17,13 @@ export default function UserForm() {
     let is_new = uid === undefined
 
     let user = uid ? users.find(u => u._id === uid) : {}
-    // We set this to "dummy". If the server see's
-    // this password, than it doesn't change it
 
     //user.roles is an array of objects, this converts to array of role._ids
-    let roleids = user.roles.map(element => element._id)
+    let roleids = []
+    if (!is_new) {
+        let roleids = user.roles.map(element => element._id)
+    }
+    
 
     const {register, handleSubmit, setError, formState: { errors, dirtyFields } } = useForm({
     defaultValues: {
